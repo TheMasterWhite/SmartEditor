@@ -50,8 +50,8 @@ class SModel:  # 小模型应用接口类
                 json.dump(OcrResponseData, f, ensure_ascii=False, indent=4)
 
             return Text
-        except:
-            return Exception("Inner Error!")
+        except Exception as e:
+            return str(e)
 
 
     @staticmethod
