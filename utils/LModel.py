@@ -75,6 +75,7 @@ class LModel:  # 大模型处理类
         except Exception as e:
             return str(e)
 
+
     @staticmethod
     def Summary(Tartext):  # 精炼语言，传入目标句子，返回String
         try:
