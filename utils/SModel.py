@@ -104,35 +104,45 @@ class SModel:  # 小模型应用接口类
             "Authorization": f"token {GLOBAL_ERNIETOKEN}",
             "Content-Type": "application/json"
         }
-
         try:
-            # 获取绝对路径
-            ABSPath = FileProcess.AbsPath(FilePath)
-            Base64File = FileProcess.Base64(ABSPath)
+            # 获取文件对路径并转码
+            absPath = FileProcess.AbsPath(FilePath)
+            base64File = FileProcess.Base64(absPath)
 
             payload = {
-                "image": image_base64
+                "image": base64File
             }
             # 请求结果并解析
-            Response = requests.post(API_URL, json=payload, headers=headers)
-            ResponseData = json.loads(detectResponse.content)
-            boxResult = response["result"]["bboxResult"]
+            response = requests.post(API_URL, json=payload, headers=headers)
+            responseData = json.loads(response.content)
+            boxResult = responseData["result"]["bboxResult"]
 
-            savePath = FileProcess.SaveWithTime(fileName="TarDetectResult",
-                                                folderPath=SavePath,
+            # 保存预测结果json文件
+            savePath = FileProcess.SaveWithTime(fileName="Result",
+                                                tarPath=SavePath,
                                                 fileExtension="json")
             with open(savePath, "w") as f:
-                json.dump(response, f)
+                json.dump(boxResult, f)
 
+            # 处理识别结果图片并保存
+            savePath = FileProcess.SaveWithTime(fileName="Result",
+                                                tarPath=SavePath,
+                                                fileExtension="jpg")
+            imageBase64 = responseData["result"]["image"]
+            imageBytes = base64.b64decode(imageBase64)
+            imageArray = np.frombuffer(imageBytes, dtype=np.uint8)
+            predictedImage = cv2.imdecode(imageArray, flags=cv2.IMREAD_COLOR)
+            cv2.imwrite(savePath, predictedImage)
+
+            return boxResult
         except Exception as e:
             return str(e)
 
 
 def test():
-    t = "123"
-    a = FileProcess.SaveWithTime(fileName="Test", tarPath="Saves", fileExtension="txt")
-    with open(a, "w") as f:
-        f.write(t)
+    path = "resources/house.jpeg"
+    a = SModel.GetTarDetectResult(FilePath=path)
+    print(a)
 
 
 if __name__ == '__main__':
