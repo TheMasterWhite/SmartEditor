@@ -35,4 +35,4 @@ os.environ['OSS_ACCESS_KEY_ID'] = OSS_ACCESS_KEY_ID
 os.environ['OSS_ACCESS_KEY_SECRET'] = OSS_ACCESS_KEY_SECRET
 os.environ["EB_AGENT_ACCESS_TOKEN"] = GLOBAL_ERNIETOKEN
 erniebot.api_type = "aistudio"
-#erniebot.access_token = GLOBAL_ERNIETOKEN
+erniebot.access_token = GLOBAL_ERNIETOKEN
