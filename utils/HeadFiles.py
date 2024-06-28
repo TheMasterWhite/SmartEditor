@@ -20,10 +20,10 @@ def ReadConfigFile():
     # 读取配置文件
     Config = ConfigParser()
     Config.optionxform = str
-    Config.read('Config.cfg')
+    Config.read("Config.cfg")
     # 遍历配置文件中的所有选项，创建全局变量
 
-    global_vars = dict(Config['TOKENS'])
+    global_vars = dict(Config["TOKENS"])
     for key, value in global_vars.items():
         globals()[key] = value
 
