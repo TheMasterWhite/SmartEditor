@@ -15,7 +15,7 @@ class SModel:  # 小模型应用接口类
         return str(requests.post(url, params=params).json().get("access_token"))
 
     @staticmethod
-    def GetOcrResult(FilePath, FileType=0, SavePath="Saves"):
+    def GetOcrResult(FilePath, FileType=0, SavePath="Saves/OcrResult"):
         # 获取OCR识别内容，传入相对文件地址、文件类型和JSON文件保存地址，0为PDF，1为图片,返回解析文本
         try:
             ABSPath = FileProcess.AbsPath(FilePath)
@@ -43,7 +43,7 @@ class SModel:  # 小模型应用接口类
             # 处理文件路径
             FolderPath = FileProcess.AbsPath(SavePath)
             Time = datetime.datetime.now()
-            SaveFileName = "OcrResult_" + Time.strftime("%Y_%m_%d_%H_%M_%S") + ".json"
+            SaveFileName = "OcrResult" + Time.strftime("%Y_%m_%d_%H_%M_%S") + ".json"
             SavePath = os.path.join(FolderPath, SaveFileName)
             with open(SavePath, 'w', encoding='utf-8') as f:
                 # 确保指定ensure_ascii为False以支持中文字符
@@ -53,9 +53,8 @@ class SModel:  # 小模型应用接口类
         except Exception as e:
             return str(e)
 
-
     @staticmethod
-    def GetSTTResult(FilePath, FileExtension, Language="Chinese", SavePath="Saves"):  # Chinese或English
+    def GetSTTResult(FilePath, FileExtension, Language="Chinese", SavePath="Saves/SttResult"):  # Chinese或English
         # 获取语音转文字结果，传入相对路径、扩展名和语言，返回转写结果
 
         AbsPath = FileProcess.AbsPath(FilePath)
@@ -97,6 +96,44 @@ class SModel:  # 小模型应用接口类
             elif (Status == "Failed"):
                 return "Failed!"
 
+    @staticmethod
+    def GetTarDetectResult(FilePath, SavePath="Saves/TarResult"):
+        # 获取目标检测结果
+        API_URL = "https://mas5g0dfrereq9ta.aistudio-hub.baidu.com/objectdetection"
+        headers = {
+            "Authorization": f"token {GLOBAL_ERNIETOKEN}",
+            "Content-Type": "application/json"
+        }
+
+        try:
+            # 获取绝对路径
+            ABSPath = FileProcess.AbsPath(FilePath)
+            Base64File = FileProcess.Base64(ABSPath)
+
+            payload = {
+                "image": image_base64
+            }
+            # 请求结果并解析
+            Response = requests.post(API_URL, json=payload, headers=headers)
+            ResponseData = json.loads(detectResponse.content)
+            boxResult = response["result"]["bboxResult"]
+
+            savePath = FileProcess.SaveWithTime(fileName="TarDetectResult",
+                                                folderPath=SavePath,
+                                                fileExtension="json")
+            with open(savePath, "w") as f:
+                json.dump(response, f)
+
+        except Exception as e:
+            return str(e)
+
+
+def test():
+    t = "123"
+    a = FileProcess.SaveWithTime(fileName="Test", tarPath="Saves", fileExtension="txt")
+    with open(a, "w") as f:
+        f.write(t)
+
 
 if __name__ == '__main__':
-    SModel.GetSTTResult(FilePath="resources/作业作答.mp3", FileExtension="mp3", Language="English")
+    test()
