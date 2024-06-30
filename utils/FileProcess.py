@@ -1,45 +1,61 @@
 from utils.HeadFiles import *
 
 
+class GetPrompt:  # 获取Prompt的单例模式类
+
+    instance = None  # 存储实例
+    data = None  # 存储数据
+
+    def __new__(cls, *args, **kwargs):  # 创建实例
+        if not cls.instance:
+            cls.instance = super(GetPrompt, cls).__new__(cls, *args, **kwargs)
+            with open("Prompts.json", "r", encoding="utf-8") as f:
+                cls.data = json.load(f)
+        return cls.instance
+
+    def Data(self):
+        return self.data
+
+
 class FileProcess:  # 文件处理类
 
-    @classmethod
-    def ReadTxt(cls, filePath):  # 打开txt文件并返回内容，传参为文件地址
+    @staticmethod
+    def ReadTxt(FilePath):  # 打开txt文件并返回内容，传参为文件地址
         try:
-            File = open(filePath, 'r', encoding='utf-8')
-            Content = File.read()
-            File.close()
+            file = open(FilePath, 'r', encoding='utf-8')
+            Content = file.read()
+            file.close()
             return Content
         except:
             raise
 
-    @classmethod
-    def Base64(cls, inputFilePath):  # 对文件进行Base64编码，返回编码内容文件，传入文件路径
+    @staticmethod
+    def Base64(FilePath):  # 对文件进行Base64编码，返回编码内容文件，传入文件路径
         try:
-            FileBytes = pathlib.Path(inputFilePath).read_bytes()
-            FileBase64 = base64.b64encode(FileBytes).decode('ascii')
-            return FileBase64
+            fileBytes = pathlib.Path(FilePath).read_bytes()
+            fileBase64 = base64.b64encode(fileBytes).decode('ascii')
+            return fileBase64
         except:
             raise
 
-    @classmethod
-    def AbsPath(cls, filePath):  # 传入相对路径返回绝对路径
+    @staticmethod
+    def AbsPath(FilePath):  # 传入相对路径返回绝对路径
         try:
-            CurrentPath = Path(__file__).resolve()
-            CurrentDir = CurrentPath.parent
-            AbsPath = CurrentDir.parent / filePath
-            return AbsPath
+            currentPath = Path(__file__).resolve()
+            currentDir = currentPath.parent
+            absPath = currentDir.parent / FilePath
+            return absPath
         except:
             raise
 
-    @classmethod
-    def SaveWithTime(cls, fileName, tarPath, fileExtension):  # 将文件名赋予时间并返回绝对路径
+    @staticmethod
+    def SaveWithTime(FileName, TarPath, FileExtension):  # 将文件名赋予时间并返回绝对路径
         # 传入文件名，保存路径，文件扩展名
         try:
-            folderPath = FileProcess.AbsPath(tarPath)
+            folderPath = FileProcess.AbsPath(TarPath)
             Time = datetime.datetime.now()
-            fileName += "_"
-            saveFileName = fileName + Time.strftime("%Y_%m_%d_%H_%M_%S") + "." + fileExtension
+            FileName += "_"
+            saveFileName = FileName + Time.strftime("%Y_%m_%d_%H_%M_%S") + "." + FileExtension
             savePath = os.path.join(folderPath, saveFileName)
             return savePath
         except:
@@ -70,5 +86,10 @@ class OSSProcess:  # OSS云服务处理类
             raise
 
 
+def test():
+    a = GetPrompt().Data()["FunctionPrompt"]["Translate"]
+    print(a)
+
+
 if __name__ == '__main__':
-    OSSProcess.UploadFile("resources/zh.wav", "wav")
+    test()
