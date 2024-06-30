@@ -57,52 +57,42 @@ class LModel:  # 大模型处理类
             return str(e)
 
     @staticmethod
-    def Translate(Tartext, LanCode=2):  # Tartext传入翻译目标字符串，TarLanguage传入int型目标语言代号,返回String
+    def Translate(Tartext, Tarlanguage="英语"):  # Tartext传入翻译目标字符串，TarLanguage传入目标语言,返回String
 
         try:
-            AbsPromptPath = FileProcess.AbsPath(GLOBAL_TranslationPath)
-            Prompt = FileProcess.ReadTxt(AbsPromptPath)
-            Code = {1: "中文", 2: "英语", 3: "日语", 4: "俄语", 5: "法语"}
-            TarLanguage = Code.get(LanCode, "ErrorCode")
+            prompt = GetPrompt().Data()["FunctionPrompt"]["Translate"]
+            prompt = prompt.replace("@Replace@", Tarlanguage)
+            prompt += Tartext
 
-            if TarLanguage == "ErrorCode":
-                return "Invalid Language Code!"
-
-            Prompt = Prompt.replace("@Replace@", TarLanguage)
-            Prompt += Tartext
-
-            return LModel.GetResponse_String(Prompt)
+            return LModel.GetResponse_String(prompt)
         except Exception as e:
             return str(e)
 
     @staticmethod
     def Summary(Tartext):  # 精炼语言，传入目标句子，返回String
         try:
-            AbsPromptPath = FileProcess.AbsPath(GLOBAL_SummaryPath)
-            Prompt = FileProcess.ReadTxt(AbsPromptPath)
-            Prompt += Tartext
-            return LModel.GetResponse_String(Prompt)
+            prompt = GetPrompt().Data()["FunctionPrompt"]["Summary"]
+            prompt += Tartext
+            return LModel.GetResponse_String(prompt)
         except Exception as e:
             return str(e)
 
     @staticmethod
-    def Correct(Tartext):  # 句子纠错，Tartext传入目标字符串，OpeartionCode传入操作代码(int),返回String
+    def Correct(Tartext):  # 句子纠错，Tartext传入目标字符串,返回String
 
         try:
-            AbsPromptPath = FileProcess.AbsPath(GLOBAL_CorrectPath)
-            Prompt = FileProcess.ReadTxt(AbsPromptPath)
-            Prompt += Tartext
-            return LModel.GetResponse_String(Prompt)
+            prompt = GetPrompt().Data()["FunctionPrompt"]["Correct"]
+            prompt += Tartext
+            return LModel.GetResponse_String(prompt)
         except Exception as e:
             return str(e)
 
     @staticmethod
     def Polish(Tartext):  # 文章润色
         try:
-            AbsPromptPath = FileProcess.AbsPath(GLOBAL_PolishPath)
-            Prompt = FileProcess.ReadTxt(AbsPromptPath)
-            Prompt += Tartext
-            return LModel.GetResponse_String(Prompt)
+            prompt = GetPrompt().Data()["FunctionPrompt"]["Polish"]
+            prompt += Tartext
+            return LModel.GetResponse_String(prompt)
         except Exception as e:
             return str(e)
 
@@ -121,10 +111,13 @@ class LModel:  # 大模型处理类
         return Dialogue
 
 
-def Test():
-    a = LModel.Correct("我是一只雪狐！我要吃浆果！")
+class LModel2:
+    pass
+
+
+def UnitTest():
+    a = LModel.GetResponse_String("我是雪狐！快夸我可爱！")
     print(a)
 
-
 if __name__ == '__main__':
-    Test()
+    UnitTest()
