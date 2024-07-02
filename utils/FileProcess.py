@@ -1,20 +1,5 @@
 from utils.HeadFiles import *
-
-
-class GetPrompt:  # 获取Prompt的单例模式类
-
-    instance = None  # 存储实例
-    data = None  # 存储数据
-
-    def __new__(cls, *args, **kwargs):  # 创建实例
-        if not cls.instance:
-            cls.instance = super(GetPrompt, cls).__new__(cls, *args, **kwargs)
-            with open("Prompts.json", "r", encoding="utf-8") as f:
-                cls.data = json.load(f)
-        return cls.instance
-
-    def Data(self):
-        return self.data
+from utils.PMTProcess import *
 
 
 class FileProcess:  # 文件处理类
@@ -65,7 +50,7 @@ class FileProcess:  # 文件处理类
 class OSSProcess:  # OSS云服务处理类
 
     @staticmethod
-    def UploadFile(FilePath, FileExtension, BucketName="masterwhite"):  # 上传文件到阿里云，传入相对路径和文件扩展名,返回OSS文件路径
+    def UploadFile(FilePath, FileExtension, BucketName="smart-editor"):  # 上传文件到阿里云，传入相对路径和文件扩展名,返回OSS文件路径
         try:
             # 获取鉴权
             Auth = oss2.ProviderAuth(EnvironmentVariableCredentialsProvider())
@@ -93,3 +78,5 @@ def test():
 
 if __name__ == '__main__':
     test()
+    print(a)
+    print(b)
