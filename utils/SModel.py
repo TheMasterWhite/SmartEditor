@@ -6,10 +6,7 @@ class SModel:  # 小模型应用接口类
 
     @staticmethod
     def GetAccessToken():  # 百度智能云获取access_token
-        """
-        使用 AK，SK 生成鉴权签名（Access Token）
-        :return: access_token，或是None(如果错误)
-        """
+
         url = "https://aip.baidubce.com/oauth/2.0/token"
         params = {"grant_type": "client_credentials", "client_id": GLOBAL_Baidu_AK, "client_secret": GLOBAL_Baidu_SK}
         return str(requests.post(url, params=params).json().get("access_token"))
@@ -20,12 +17,10 @@ class SModel:  # 小模型应用接口类
         try:
             ABSPath = FileProcess.AbsPath(FilePath)
             Base64File = FileProcess.Base64(ABSPath)
-            # 设置鉴权头
             headers = {
                 "Authorization": f"token {GLOBAL_ERNIETOKEN}",
                 "Content-Type": "application/json"
             }
-            # 请求头
             Payload = {
                 "file": Base64File,  # Base64编码的文件内容或者文件链接
                 "fileType": FileType,  # 本地文件类型，0:pdf,1:图片，此参数在上传本地文件时必须设置，使用文件链接时可省略
@@ -39,17 +34,19 @@ class SModel:  # 小模型应用接口类
             OcrResponseData = OcrResponse.json()
 
             # JSON文件操作
-            Text = OcrResponseData['result']['tableOcrResult']['text_result']
+            text = OcrResponseData['result']['tableOcrResult']['text_result']
+            tableText = OcrResponseData['result']['tableOcrResult']['table_text_rec']
+            resultText = max(text,tableText)
+
             # 处理文件路径
-            FolderPath = FileProcess.AbsPath(SavePath)
-            Time = datetime.datetime.now()
-            SaveFileName = "OcrResult" + Time.strftime("%Y_%m_%d_%H_%M_%S") + ".json"
-            SavePath = os.path.join(FolderPath, SaveFileName)
-            with open(SavePath, 'w', encoding='utf-8') as f:
-                # 确保指定ensure_ascii为False以支持中文字符
+            savePath = FileProcess.SaveWithTime(FileName="Result",
+                                                TarPath=SavePath,
+                                                FileExtension="json")
+            print(savePath)
+            with open(savePath, 'w', encoding='utf-8') as f:
                 json.dump(OcrResponseData, f, ensure_ascii=False, indent=4)
 
-            return Text
+            return resultText
         except Exception as e:
             return str(e)
 
@@ -85,15 +82,19 @@ class SModel:  # 小模型应用接口类
         QuertPayload = json.dumps({"task_ids": [CreateTask]})
 
         while (1):
-            QueryResponse = requests.request("POST", QueryUrl, headers=headers, data=QuertPayload)
-            QueryData = json.loads(QueryResponse.text)
+            queryResponse = requests.request("POST", QueryUrl, headers=headers, data=QuertPayload)
+            queryData = json.loads(queryResponse.text)
             # 获取状态
-            Status = QueryData['tasks_info'][0]['task_status']
-            print(Status)
+            status = queryData['tasks_info'][0]['task_status']
 
-            if (Status == "Success"):
-                return QueryData['tasks_info'][0]['task_result']
-            elif (Status == "Failed"):
+            if (status == "Success"):
+                savePath = FileProcess.SaveWithTime(FileName="Result",
+                                                    TarPath=SavePath,
+                                                    FileExtension="json")
+                with open(savePath, "w") as f:
+                    json.dump(queryData, f)
+                return queryData['tasks_info'][0]['task_result']['result']
+            elif (status == "Failed"):
                 return "Failed!"
 
     @staticmethod
@@ -147,4 +148,3 @@ def test():
 
 if __name__ == '__main__':
     test()
-
