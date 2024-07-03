@@ -7,12 +7,13 @@ class FileProcess:  # 文件处理类
     @staticmethod
     def ReadTxt(FilePath):  # 打开txt文件并返回内容，传参为文件地址
         try:
-            file = open(FilePath, 'r', encoding='utf-8')
+            file = open(FilePath, 'r', encoding = 'utf-8')
             Content = file.read()
             file.close()
             return Content
         except:
             raise
+
 
     @staticmethod
     def Base64(FilePath):  # 对文件进行Base64编码，返回编码内容文件，传入文件路径
@@ -23,6 +24,7 @@ class FileProcess:  # 文件处理类
         except:
             raise
 
+
     @staticmethod
     def AbsPath(FilePath):  # 传入相对路径返回绝对路径
         try:
@@ -32,6 +34,7 @@ class FileProcess:  # 文件处理类
             return absPath
         except:
             raise
+
 
     @staticmethod
     def SaveWithTime(FileName, TarPath, FileExtension):  # 将文件名赋予时间并返回绝对路径
@@ -50,21 +53,21 @@ class FileProcess:  # 文件处理类
 class OSSProcess:  # OSS云服务处理类
 
     @staticmethod
-    def UploadFile(FilePath, FileExtension, BucketName="smart-editor"):  # 上传文件到阿里云，传入相对路径和文件扩展名,返回OSS文件路径
+    def UploadFile(FilePath, FileExtension, BucketName = "smart-editor"):  # 上传文件到阿里云，传入相对路径和文件扩展名,返回OSS文件路径
         try:
             # 获取鉴权
             Auth = oss2.ProviderAuth(EnvironmentVariableCredentialsProvider())
             # 设置Bucket信息
             EndPoint = OSS_ENDPOINT
-            Bucket = oss2.Bucket(auth=Auth, endpoint=EndPoint,
-                                 bucket_name=BucketName)
+            Bucket = oss2.Bucket(auth = Auth, endpoint = EndPoint,
+                                 bucket_name = BucketName)
 
             FileName = os.path.basename(FilePath)
             AbsPath = FileProcess.AbsPath(FilePath)
             with open(AbsPath, 'rb') as fileobj:
                 # Tell方法用于返回当前位置。
                 current = fileobj.tell()
-                Bucket.put_object(key=FileName, data=fileobj)
+                Bucket.put_object(key = FileName, data = fileobj)
             OSSPath = EndPoint[:8] + BucketName + "." + EndPoint[8:] + "/" + FileName
             return OSSPath
 
