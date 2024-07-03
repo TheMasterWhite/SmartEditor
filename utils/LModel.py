@@ -11,13 +11,14 @@ class LLMBasic:  # 大模型基本通信接口类
         try:
             Parameter = [{"role": "user", "content": Prompt}]
             Response = erniebot.ChatCompletion.create(
-                model="ernie-4.0",
-                messages=Parameter
+                model = "ernie-4.0",
+                messages = Parameter
             )
             return Response.get_result()
 
         except Exception as e:
-            return str(e)
+            raise e
+
 
     @staticmethod
     def GetResponseStream_String(Prompt):  # 流式获取推理结果，传入字符串，返回迭代器
@@ -25,49 +26,51 @@ class LLMBasic:  # 大模型基本通信接口类
         try:
             Parameter = [{"role": "user", "content": Prompt}]
             Response = erniebot.ChatCompletion.create(
-                model="ernie-4.0",
-                messages=Parameter,
-                stream=True
+                model = "ernie-4.0",
+                messages = Parameter,
+                stream = True
             )
             for i in Response:
-                yield i
+                yield i.get_result()
 
         except Exception as e:
-            return str(e)
+            raise e
+
 
     @staticmethod
     def GetResponse_List(ListPrompt):  # 获取推理结果，传入List，返回String
 
         try:
             Response = erniebot.ChatCompletion.create(
-                model="ernie-4.0",
-                messages=ListPrompt,
+                model = "ernie-4.0",
+                messages = ListPrompt,
             )
             return Response.get_result()
 
         except Exception as e:
-            return str(e)
+            raise e
+
 
     @staticmethod
     def GetResponseStream_List(ListPrompt):  # 流式获取推理结果，传入List，返回迭代器
 
         try:
             Response = erniebot.ChatCompletion.create(
-                model="ernie-4.0",
-                messages=ListPrompt,
-                stream=True
+                model = "ernie-4.0",
+                messages = ListPrompt,
+                stream = True
             )
             for i in Response.get_result():
-                yield i
+                yield i.get_result()
 
         except Exception as e:
-            return str(e)
+            raise e
 
 
-class LLMInterface(LLMBasic):  # 大模型高级功能调用接口类
+class LLMInterface(LLMBasic):  # 大模型高级功能接口类
 
     @staticmethod
-    def Translate(Tartext, Tarlanguage="英语"):  # 翻译，Tartext传入翻译目标字符串，TarLanguage传入目标语言,返回String
+    def Translate(Tartext, Tarlanguage = "英语"):  # 翻译，Tartext传入翻译目标字符串，TarLanguage传入目标语言,返回String
 
         try:
             prompt = GetPrompt().Data()["FunctionPrompt"]["Translate"]
@@ -77,6 +80,7 @@ class LLMInterface(LLMBasic):  # 大模型高级功能调用接口类
 
         except Exception as e:
             return str(e)
+
 
     @staticmethod
     def Summary(Tartext):  # 精炼语言，，Tartext传入目标字符串,返回String
@@ -89,6 +93,7 @@ class LLMInterface(LLMBasic):  # 大模型高级功能调用接口类
         except Exception as e:
             return str(e)
 
+
     @staticmethod
     def Correct(Tartext):  # 句子纠错，Tartext传入目标字符串,返回String
 
@@ -100,6 +105,7 @@ class LLMInterface(LLMBasic):  # 大模型高级功能调用接口类
         except Exception as e:
             return str(e)
 
+
     @staticmethod
     def Polish(Tartext):  # 文章润色，Tartext传入目标字符串,返回String
 
@@ -110,6 +116,7 @@ class LLMInterface(LLMBasic):  # 大模型高级功能调用接口类
 
         except Exception as e:
             return str(e)
+
 
     @staticmethod
     def Check_String(Tartext, KnowledgeString):  # 检查输入内容与知识库的差异，传入目标文本和用户知识库字符串
@@ -124,6 +131,7 @@ class LLMInterface(LLMBasic):  # 大模型高级功能调用接口类
         except Exception as e:
             return str(e)
 
+
     @staticmethod
     def Check_List(Tartext, KnowledgeList):  # 检查输入内容与知识库的差异，传入目标文本和初始化之后的列表
 
@@ -135,6 +143,7 @@ class LLMInterface(LLMBasic):  # 大模型高级功能调用接口类
 
         except Exception as e:
             return str(e)
+
 
     @staticmethod
     def AgentInit():  # 初始化聊天助手，暂时没用
