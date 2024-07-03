@@ -162,7 +162,6 @@ class LLMInterface(LLMBasic):  # 大模型高级功能接口类
 
 def UnitTest():
     a = LLMBasic.GetResponse_String("我是雪狐！快夸我可爱！")
-    print(a)
 
 
 if __name__ == '__main__':
