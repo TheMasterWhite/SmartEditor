@@ -55,7 +55,7 @@ class OSSProcess:  # OSS云服务处理类
             # 获取鉴权
             Auth = oss2.ProviderAuth(EnvironmentVariableCredentialsProvider())
             # 设置Bucket信息
-            EndPoint = "https://oss-cn-guangzhou.aliyuncs.com"
+            EndPoint = OSS_ENDPOINT
             Bucket = oss2.Bucket(auth=Auth, endpoint=EndPoint,
                                  bucket_name=BucketName)
 
@@ -67,6 +67,7 @@ class OSSProcess:  # OSS云服务处理类
                 Bucket.put_object(key=FileName, data=fileobj)
             OSSPath = EndPoint[:8] + BucketName + "." + EndPoint[8:] + "/" + FileName
             return OSSPath
+
         except:
             raise
 
