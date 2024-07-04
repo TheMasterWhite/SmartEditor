@@ -20,15 +20,25 @@ from pathlib import Path
 
 class HeadFiles:
 
+    @classmethod
+    def AbsPath(cls, FilePath):  # 传入相对路径返回绝对路径
+        currentPath = Path(__file__).resolve()
+        currentDir = currentPath.parent
+        absPath = currentDir.parent / FilePath
+        return absPath
+
+
     def ReadConfigFile():
         # 读取配置文件
         Config = ConfigParser()
         Config.optionxform = str
-        Config.read("Config.cfg")
+        absPath = HeadFiles.AbsPath("utils/Config.cfg")
+        Config.read(absPath)
         # 遍历配置文件中的所有选项，创建全局变量
-        global_vars = dict(Config["TOKENS"])
+        global_vars = dict(Config['TOKENS'])
         for key, value in global_vars.items():
             globals()[key] = value
+
 
     def InitToken():  # 初始化环境变量
 
@@ -37,6 +47,7 @@ class HeadFiles:
         os.environ["EB_AGENT_ACCESS_TOKEN"] = GLOBAL_ERNIETOKEN
         erniebot.api_type = "aistudio"
         erniebot.access_token = GLOBAL_ERNIETOKEN
+
 
     @staticmethod
     def InitProcess():
