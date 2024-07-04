@@ -1,7 +1,8 @@
-from HeadFiles import *
-from SModel import *
+from utils.HeadFiles import *
+from utils.SModel.OCR import *
+from utils.SModel.TarDetect import *
+from utils.SModel.STT import *
 from LModel import *
-import pprint
 
 
 def LModelTest():
@@ -22,17 +23,19 @@ def SModelTest():
     englishSTTPath = "resources/英文语音测试.mp3"
     pdfPath = "resources/作文.pdf"
 
-    a = SModelInterface.GetDocOcrResult(FilePath = pdfPath, FileType = "PDF")
-    b = SModelInterface.GetRawOcrResult(FilePath = posterPath)
-    c = SModelInterface.GetTarDetectResult(FilePath = housePath)
-    d = SModelInterface.GetSTTResult(FilePath = englishSTTPath, FileExtension = "mp3", Language = "English")
-    e = SModelInterface.GetSTTResult(FilePath = chineseSTTPath, FileExtension = "mp3", Language = "Chinese")
+    # a = TarInterface.GetResult(housePath)
+    # b = OCRInterface.Raw(posterPath)
+    # c = OCRInterface.Doc(posterPath)
+    # d = OCRInterface.Doc(pdfPath,FileType = "PDF")
+    e = STTInterface.GetResult(chineseSTTPath, Language = "Chinese", FileExtension = "mp3")
+    f = STTInterface.GetResult(englishSTTPath, Language = "English", FileExtension = "mp3")
 
-    print(a)
-    print(b)
-    print(c)
-    print(d)
+    # print("a = " + a)
+    # print("b = " + b)
+    # print("c = " + c)
+    # print("d = " + d)
     print(e)
+    print(f)
 
 
 def Test():
@@ -67,7 +70,4 @@ def SaveMoney():
 
 
 if __name__ == '__main__':
-    posterPath = "resources/Poster.jpg"
-    print(SModelInterface.GetRawOcrResult(FilePath = posterPath))
-
-    # GetTarDetectResult()需要增加json解析器
+    SModelTest()
