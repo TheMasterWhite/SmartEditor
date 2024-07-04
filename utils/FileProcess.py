@@ -6,6 +6,7 @@ class FileProcess:  # 文件处理类
 
     @staticmethod
     def ReadTxt(FilePath):  # 打开txt文件并返回内容，传参为文件地址
+
         try:
             file = open(FilePath, 'r', encoding = 'utf-8')
             Content = file.read()
@@ -17,6 +18,7 @@ class FileProcess:  # 文件处理类
 
     @staticmethod
     def Base64(FilePath):  # 对文件进行Base64编码，返回编码内容文件，传入文件路径
+
         try:
             fileBytes = pathlib.Path(FilePath).read_bytes()
             fileBase64 = base64.b64encode(fileBytes).decode('ascii')
@@ -27,6 +29,7 @@ class FileProcess:  # 文件处理类
 
     @staticmethod
     def AbsPath(FilePath):  # 传入相对路径返回绝对路径
+
         try:
             currentPath = Path(__file__).resolve()
             currentDir = currentPath.parent
@@ -37,7 +40,7 @@ class FileProcess:  # 文件处理类
 
 
     @staticmethod
-    def SaveWithTime(FileName, TarPath, FileExtension):  # 将文件名赋予时间并返回绝对路径
+    def GetFileTimePath(FileName, TarPath, FileExtension):  # 将文件名赋予时间并返回绝对路径
         # 传入文件名，保存路径，文件扩展名
         try:
             folderPath = FileProcess.AbsPath(TarPath)
@@ -54,25 +57,58 @@ class OSSProcess:  # OSS云服务处理类
 
     @staticmethod
     def UploadFile(FilePath, FileExtension, BucketName = "smart-editor"):  # 上传文件到阿里云，传入相对路径和文件扩展名,返回OSS文件路径
+
         try:
             # 获取鉴权
-            Auth = oss2.ProviderAuth(EnvironmentVariableCredentialsProvider())
+            endPoint = OSS_ENDPOINT
+            auth = oss2.ProviderAuth(EnvironmentVariableCredentialsProvider())
             # 设置Bucket信息
-            EndPoint = OSS_ENDPOINT
-            Bucket = oss2.Bucket(auth = Auth, endpoint = EndPoint,
+            bucket = oss2.Bucket(auth = auth, endpoint = endPoint,
                                  bucket_name = BucketName)
 
-            FileName = os.path.basename(FilePath)
-            AbsPath = FileProcess.AbsPath(FilePath)
-            with open(AbsPath, 'rb') as fileobj:
+            fileName = os.path.basename(FilePath)
+            absPath = FileProcess.AbsPath(FilePath)
+            with open(absPath, 'rb') as fileobj:
                 # Tell方法用于返回当前位置。
                 current = fileobj.tell()
-                Bucket.put_object(key = FileName, data = fileobj)
-            OSSPath = EndPoint[:8] + BucketName + "." + EndPoint[8:] + "/" + FileName
-            return OSSPath
+                bucket.put_object(key = fileName, data = fileobj)
 
-        except:
-            raise
+            # 字符串处理获取OSS文件外链
+            ossPath = endPoint[:8] + BucketName + "." + endPoint[8:] + "/" + fileName
+            return ossPath
+
+        except Exception as e:
+            raise e
+
+
+class JsonOperator:
+
+    @staticmethod
+    def Save(JsonObject, Path, FileName):  # 保存Json文件至指定目录，传入Json对象、保存路径与文件名
+
+        try:
+            saveData = json.dumps(JsonObject, ensure_ascii = False, indent = 4)
+            savePath = FileProcess.GetFileTimePath(FileName = FileName,
+                                                   TarPath = Path,
+                                                   FileExtension = "json")
+            with open(savePath, "w", encoding = 'utf-8') as f:
+                f.write(saveData)
+            pass
+
+        except Exception as e:
+            raise e
+
+
+    @staticmethod
+    def Load(FilePath, FileName):  # 加载Json文件
+
+        try:
+            absPath = FileProcess.AbsPath(FilePath)
+            JsonObject = json.loads(absPath)
+            return JsonObject
+
+        except Exception as e:
+            raise e
 
 
 def test():
