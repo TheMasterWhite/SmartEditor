@@ -79,8 +79,3 @@ class BotInterface(BotBasic):  # 聊天机器人功能接口类
 
 if __name__ == '__main__':
     bot = BotInterface()
-    while(1):
-        a = input()
-        b = bot.GetResponseStream(a)
-        for i in b:
-            print(i,end="")
