@@ -29,14 +29,14 @@ class FileProcess:  # 文件处理类
 
 
     @staticmethod
-    def AbsPath(FilePath):
-        currentPath = Path(__file__).resolve()
-        currentDir = currentPath.parent
-        projectRoot = currentDir
-        projectName = Path.cwd().name
-        while projectRoot.name != "SmartEditor":
+    def AbsPath(FilePath):  # 获取绝对路径
+        currentPath = Path(__file__).resolve()  # 获取当前文件绝对路径
+        currentDir = currentPath.parent  # 获取当前文件目录
+        projectRoot = currentDir  # 复制
+        projectName = Path.cwd().name  # 获取项目名称
+        while projectRoot.name != projectName:  # 遍历项目目录
             projectRoot = projectRoot.parent
-        tarAbsPath = projectRoot / FilePath
+        tarAbsPath = projectRoot / FilePath  # 获取绝对地址
         return tarAbsPath
 
 
