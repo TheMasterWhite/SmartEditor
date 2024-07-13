@@ -20,26 +20,28 @@ from pathlib import Path
 
 class HeadFiles:
 
-    @classmethod
-    def AbsPath(cls, FilePath):  # 传入相对路径返回绝对路径
+    @staticmethod
+    def AbsPath(FilePath):  # 传入相对路径返回绝对路径
         currentPath = Path(__file__).resolve()
         currentDir = currentPath.parent
         absPath = currentDir.parent / FilePath
         return absPath
 
 
+    @staticmethod
     def ReadConfigFile():
         # 读取配置文件
         Config = ConfigParser()
         Config.optionxform = str
-        absPath = HeadFiles.AbsPath("utils/Config.cfg")
+        absPath = HeadFiles.AbsPath("Config/Config.cfg")
         Config.read(absPath)
         # 遍历配置文件中的所有选项，创建全局变量
-        global_vars = dict(Config['TOKENS'])
+        global_vars = dict(Config["TOKENS"])
         for key, value in global_vars.items():
             globals()[key] = value
 
 
+    @staticmethod
     def InitToken():  # 初始化环境变量
 
         os.environ['OSS_ACCESS_KEY_ID'] = OSS_ACCESS_KEY_ID

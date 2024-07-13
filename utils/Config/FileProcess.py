@@ -1,5 +1,6 @@
-from utils.HeadFiles import *
-from utils.PMTProcess import *
+import os
+
+from utils.Config.HeadFiles import *
 
 
 class FileProcess:  # 文件处理类
@@ -12,8 +13,8 @@ class FileProcess:  # 文件处理类
             Content = file.read()
             file.close()
             return Content
-        except:
-            raise
+        except Exception as e:
+            raise e
 
 
     @staticmethod
@@ -23,25 +24,38 @@ class FileProcess:  # 文件处理类
             fileBytes = pathlib.Path(FilePath).read_bytes()
             fileBase64 = base64.b64encode(fileBytes).decode('ascii')
             return fileBase64
-        except:
-            raise
+        except Exception as e:
+            raise e
 
 
     @staticmethod
-    def AbsPath(FilePath):  # 传入相对路径返回绝对路径
+    def AbsPath1(FilePath):  # 传入相对路径返回绝对路径
 
         try:
             currentPath = Path(__file__).resolve()
             currentDir = currentPath.parent
             absPath = currentDir.parent / FilePath
             return absPath
-        except:
-            raise
+        except Exception as e:
+            raise e
+
+    @staticmethod
+    def AbsPath(FilePath):
+        currentPath = Path(__file__).resolve()
+        currentDir = currentPath.parent
+        projectRoot = currentDir
+        projectName = Path.cwd().name
+        while projectRoot.name != "SmartEditor":
+            projectRoot = projectRoot.parent
+        tarAbsPath = projectRoot / FilePath
+        return tarAbsPath
+
 
 
     @staticmethod
     def GetFileTimePath(FileName, TarPath, FileExtension):  # 将文件名赋予时间并返回绝对路径
         # 传入文件名，保存路径，文件扩展名
+
         try:
             folderPath = FileProcess.AbsPath(TarPath)
             Time = datetime.datetime.now()
@@ -49,8 +63,9 @@ class FileProcess:  # 文件处理类
             saveFileName = FileName + Time.strftime("%Y_%m_%d_%H_%M_%S") + "." + FileExtension
             savePath = os.path.join(folderPath, saveFileName)
             return savePath
-        except:
-            raise
+
+        except Exception as e:
+            raise e
 
 
 class OSSProcess:  # OSS云服务处理类
@@ -104,8 +119,8 @@ class JsonOperator:
 
         try:
             absPath = FileProcess.AbsPath(FilePath)
-            JsonObject = json.loads(absPath)
-            return JsonObject
+            jsonObject = json.loads(absPath)
+            return jsonObject
 
         except Exception as e:
             raise e
