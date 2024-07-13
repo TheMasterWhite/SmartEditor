@@ -29,17 +29,6 @@ class FileProcess:  # 文件处理类
 
 
     @staticmethod
-    def AbsPath1(FilePath):  # 传入相对路径返回绝对路径
-
-        try:
-            currentPath = Path(__file__).resolve()
-            currentDir = currentPath.parent
-            absPath = currentDir.parent / FilePath
-            return absPath
-        except Exception as e:
-            raise e
-
-    @staticmethod
     def AbsPath(FilePath):
         currentPath = Path(__file__).resolve()
         currentDir = currentPath.parent
@@ -49,7 +38,6 @@ class FileProcess:  # 文件处理类
             projectRoot = projectRoot.parent
         tarAbsPath = projectRoot / FilePath
         return tarAbsPath
-
 
 
     @staticmethod
