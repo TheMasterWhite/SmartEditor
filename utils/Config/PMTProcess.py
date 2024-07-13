@@ -45,4 +45,3 @@ class KnowledgeLib:  # 用于维护用户知识库
                      {"role": "assistant", "content": "明白"}]
 
         return parameter
-    
