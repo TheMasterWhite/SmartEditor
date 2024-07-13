@@ -1,7 +1,5 @@
-from utils.HeadFiles import *
-from utils.FileProcess import *
-from utils.LModel import *
-from utils.PMTProcess import *
+from utils.LModel.Interface import *
+from utils.Config.PMTProcess import *
 
 
 class OCRBasic:
