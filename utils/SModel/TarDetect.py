@@ -5,7 +5,7 @@ class TarDetectBasic:
 
     @staticmethod
     def GetJson(FilePath):
-        # 获取目标检测结果，传入文件地址返回结果String并保存json到SavePath
+        # 获取目标检测结果，传入文件地址返回结果String并返回Json对象
         headers = {
             "Authorization": f"token {GLOBAL_ERNIETOKEN}",
             "Content-Type": "application/json"
