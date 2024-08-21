@@ -3,9 +3,7 @@ import os
 import time
 from configparser import ConfigParser
 import numpy as np
-import cv2
 import erniebot
-import gradio as gr
 import asyncio
 from erniebot_agent.memory import HumanMessage, AIMessage
 from erniebot_agent.chat_models import ERNIEBot
