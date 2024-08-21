@@ -1,8 +1,6 @@
 import Tools, logging, json, os, sys
 from flask import Flask, request, jsonify
 from wsgiref.simple_server import WSGIServer
-
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from utils.LModel.Interface import LLMInterface
 
 app = Flask(__name__)
