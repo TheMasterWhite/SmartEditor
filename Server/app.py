@@ -2,8 +2,7 @@ import Tools, logging, json, os, sys
 from flask import Flask, request, jsonify
 from wsgiref.simple_server import WSGIServer
 
-rootPath = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sys.path.append(rootPath)
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from utils.LModel.Interface import LLMInterface
 
 app = Flask(__name__)
@@ -148,4 +147,4 @@ def StartServer():
 
 if __name__ == "__main__":
     # StartServer()
-    print(rootPath)
+    print(sys.path)
