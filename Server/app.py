@@ -3,14 +3,8 @@ from flask import Flask, request, jsonify
 from wsgiref.simple_server import WSGIServer
 from utils.LModel.Interface import LLMInterface
 
-# 获取app.py的绝对路径
-app_path = os.path.abspath(__file__)
-# 获取app.py所在的目录
-app_dir = os.path.dirname(app_path)
-# 获取项目根目录（假设Server是根目录的一个子目录）
-project_root = os.path.join(app_dir, os.path.pardir)
-# 将项目根目录添加到sys.path中
-sys.path.append(project_root)
+rootPath = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.append(rootPath)
 
 app = Flask(__name__)
 logging.basicConfig(filename = "Log.log",
@@ -154,4 +148,4 @@ def StartServer():
 
 if __name__ == "__main__":
     # StartServer()
-    print("666")
+    print(rootPath)
