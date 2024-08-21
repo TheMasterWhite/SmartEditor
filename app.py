@@ -1,7 +1,8 @@
-import Tools, logging, json, os, sys
+import logging, json, os, sys
 from flask import Flask, request, jsonify
 from wsgiref.simple_server import WSGIServer
 from utils.LModel.Interface import LLMInterface
+from utils import Tools
 
 app = Flask(__name__)
 logging.basicConfig(filename = "Log.log",
