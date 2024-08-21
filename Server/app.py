@@ -1,14 +1,7 @@
 import Tools, logging, json
 from flask import Flask, request, jsonify
 from wsgiref.simple_server import WSGIServer
-from utils.Config.FileProcess import FileProcess, OSSProcess, JsonOperator
-from utils.Config.HeadFiles import *
-from utils.Config.PMTProcess import GetPrompt, KnowledgeLib
-from utils.LModel.ChatBot import BotInterface
 from utils.LModel.Interface import LLMInterface
-from utils.SModel.OCR import *
-from utils.SModel.STT import *
-from utils.SModel.TarDetect import *
 
 app = Flask(__name__)
 logging.basicConfig(filename = "Log.log",
