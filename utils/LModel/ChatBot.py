@@ -48,29 +48,41 @@ class BotInterface(BotBasic):  # 聊天机器人功能接口类
 
 
     def GetResponse(self, Content):  # 获取机器人问答结果，传入内容
-        result = self.AddMessage("user", Content)
-        self.AddMessage("assistant", result)
-        return result
+        try:
+            result = self.AddMessage("user", Content)
+            self.AddMessage("assistant", result)
+            return result
+        except Exception as e:
+            raise e
 
 
     def GetResponseStream(self, Content):
-        # 流式获取机器人回复内容，传入输入内容返回迭代器
-        tmp = ""
-        result = self.AddMessageStream("user", Content)
-        for i in result:
-            tmp += i
-            yield i
-        self.AddMessage("assistant", tmp)
+        try:
+            # 流式获取机器人回复内容，传入输入内容返回迭代器
+            tmp = ""
+            result = self.AddMessageStream("user", Content)
+            for i in result:
+                tmp += i
+                yield i
+            self.AddMessage("assistant", tmp)
+        except Exception as e:
+            raise e
 
 
     def LoadKnowledgeLib_String(self, KnowledgeText):  # 载入知识库，传入知识库文本
-        InitedList = KnowledgeLib.InitList_String(KnowledgeText)
-        self.Parameter += InitedList
+        try:
+            InitedList = KnowledgeLib.InitList_String(KnowledgeText)
+            self.Parameter += InitedList
+        except Exception as e:
+            raise e
 
 
     def LoadKnowledgeLib_Path(self, KnowledgePath):  # 载入知识库，传入知识库路径
-        InitedList = KnowledgeLib.InitList_Path(KnowledgePath)
-        self.Parameter += InitedList
+        try:
+            InitedList = KnowledgeLib.InitList_Path(KnowledgePath)
+            self.Parameter += InitedList
+        except Exception as e:
+            raise e
 
 
     def ClearHistory(self):  # 清除历史记录

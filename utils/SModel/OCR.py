@@ -6,7 +6,7 @@ class OCRBasic:
 
     @staticmethod
     def GetDocJson(FilePath, FileCode):  # 获取文档抽取OCR模型识别内容，
-        # 传入相对文件地址、文件类型和JSON文件保存地址，文件类型为"IMG"或"PDF",返回解析json
+        # 传入相对文件地址、文件类型，文件类型为"IMG"或"PDF",返回解析json
 
         try:
             absPath = FileProcess.AbsPath(FilePath)
@@ -63,7 +63,6 @@ class OCRInterface(OCRBasic):
             fileCode = {"PDF": 0, "IMG": 1}
             code = fileCode[FileType]
             response = super(OCRInterface, OCRInterface).GetDocJson(FilePath, code)
-            JsonOperator.Save(response, SavePath, "DocResult")
             text = response['result']['tableOcrResult']['text_result']
             tableText = response['result']['tableOcrResult']['table_text_rec']
             resultText = max(text, tableText)
@@ -78,7 +77,6 @@ class OCRInterface(OCRBasic):
 
         try:
             response = super(OCRInterface, OCRInterface).GetRawJson(FilePath)
-            JsonOperator.Save(response, SavePath, "RawResult")
             result = [i['text'] for i in response['result']['texts']]
             resultText = "".join(result)
             return resultText

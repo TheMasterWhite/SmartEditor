@@ -10,7 +10,7 @@ from utils.SModel.TarDetect import *
 
 def LModelExample():
     # General情景
-    Translate = LLMInterface.Translate(Tartext = "你好",
+    Translate = LLMInterface.Translate(Tartext = "生活就像海洋，只有意志坚强的人才能到达彼岸",
                                        Tarlanguage = "英语")
     print(Translate)
     Summary = LLMInterface.Summary(Tartext = "生活就像海洋，只有意志坚强的人才能到达彼岸")
@@ -45,16 +45,13 @@ def LModelExample2():
 
 def BotExample():
     bot = BotInterface()
+    bot2 = BotInterface()
     response = bot.GetResponse("我是小王")
     print(response)
     response = bot.GetResponse("我是谁")
     print(response)
-    bot.ClearHistory()  # 清除历史记录
-    bot.LoadKnowledgeLib_Path("resources/亚托莉.txt")  # 载入知识库
-    response = bot.GetResponse("刚才输入给你的知识库有哪些")
-    print(response)
-
 
 if __name__ == '__main__':
-    BotExample()
-    pass
+    LModelExample()
+
+

@@ -29,15 +29,12 @@ class FileProcess:  # 文件处理类
 
 
     @staticmethod
-    def AbsPath(FilePath):  # 获取绝对路径
-        currentPath = Path(__file__).resolve()  # 获取当前文件绝对路径
-        currentDir = currentPath.parent  # 获取当前文件目录
-        projectRoot = currentDir  # 复制
-        projectName = Path.cwd().name  # 获取项目名称
-        while projectRoot.name != projectName:  # 遍历项目目录
-            projectRoot = projectRoot.parent
-        tarAbsPath = projectRoot / FilePath  # 获取绝对地址
-        return tarAbsPath
+    def AbsPath(PackageName, RelativePath):  # 获取绝对路径
+        # PackageName: 包名
+        # RelativePath: 相对于包目录的文件或目录路径
+
+        packagePath = os.path.dirname(os.path.abspath(__import__(PackageName).__file__))
+        return os.path.join(packagePath, RelativePath)
 
 
     @staticmethod
