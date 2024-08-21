@@ -1,10 +1,10 @@
 import Tools, logging, json, os, sys
 from flask import Flask, request, jsonify
 from wsgiref.simple_server import WSGIServer
-from utils.LModel.Interface import LLMInterface
 
 rootPath = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(rootPath)
+from utils.LModel.Interface import LLMInterface
 
 app = Flask(__name__)
 logging.basicConfig(filename = "Log.log",
