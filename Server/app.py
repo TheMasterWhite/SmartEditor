@@ -146,6 +146,4 @@ def StartServer():
 
 
 if __name__ == "__main__":
-    # StartServer()
-    print("Current working directory:", os.getcwd())
-    print("Python module search path:", sys.path)
+    StartServer()
