@@ -11,7 +11,7 @@ class GetPrompt:  # 获取Prompt的单例模式类
     def __new__(cls, *args, **kwargs):  # 创建实例
         if not cls.instance:
             cls.instance = super(GetPrompt, cls).__new__(cls, *args, **kwargs)
-            absPath = FileProcess.AbsPath("utils","Config\Prompts.json")
+            absPath = FileProcess.AbsPath("utils","Config/Prompts.json")
             with open(absPath, "r", encoding = "utf-8") as f:
                 cls.data = json.load(f)
         return cls.instance
