@@ -3,10 +3,11 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from wsgiref.simple_server import WSGIServer
 from utils.LModel.Interface import LLMInterface
+from utils.LModel.ChatBot import BotInterface
 from utils import Tools
 
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "*"}})
+CORS(app, resources = {r"/*": {"origins": "*"}})
 logging.basicConfig(filename = "Log.log",
                     filemode = 'a',
                     level = logging.INFO)
@@ -124,6 +125,35 @@ def Correct():
             "response": response
         }
         logging.info(f"[{curTime}]Correct successed.")
+
+    except Exception as e:
+        curTime = Tools.GetTime()
+        logging.error(f"[{curTime}]" + str(e))
+        retObj = {
+            "status": "failed",
+            "requestTime": curTime,
+            "response": str(e)
+        }
+
+    finally:
+        return jsonify(retObj)
+
+
+# 对话机器人功能接口
+@app.route("/LLMInterface/ChatBot", methods = ["POST"])
+def Bot():
+    try:
+        Bot = BotInterface()
+        requestData = request.json
+        content = requestData["content"]
+        response = Bot.GetResponse(content)
+        curTime = Tools.GetTime()
+        retObj = {
+            "status": "success",
+            "requestTime": curTime,
+            "response": response
+        }
+        logging.info(f"[{curTime}]Chatbot request successed.")
 
     except Exception as e:
         curTime = Tools.GetTime()
