@@ -140,7 +140,7 @@ def Correct():
 
 
 # 对话机器人功能接口
-@app.route("/LLMInterface/ChatBot", methods = ["POST"])
+@app.route("/LLMInterface/Chatbot", methods = ["POST"])
 def Bot():
     try:
         Bot = BotInterface()
