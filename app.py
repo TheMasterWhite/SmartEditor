@@ -1,10 +1,12 @@
 import logging, json, os, sys
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 from wsgiref.simple_server import WSGIServer
 from utils.LModel.Interface import LLMInterface
 from utils import Tools
 
 app = Flask(__name__)
+CORS(app, resources={r"/*": {"origins": "*"}})
 logging.basicConfig(filename = "Log.log",
                     filemode = 'a',
                     level = logging.INFO)
@@ -19,11 +21,9 @@ def Translate():
         language = requestData.get("language", "English")  # 目标语言
         content = requestData["content"]  # 待润色文本内容
         scene = requestData.get("scene", "General")  # 润色情境
-        logging.info("reeive")
-        response = LLMInterface.Translate(Tartext = "生活就像海洋，只有意志坚强的人才能到达彼岸。",
+        response = LLMInterface.Translate(Tartext = content,
                                           Tarlanguage = language,
                                           Scene = scene)
-        logging.info("6666")
         curTime = Tools.GetTime()
         retObj = {
             "status": "success",

@@ -4,9 +4,9 @@ from utils.Config.FileProcess import *
 
 
 def test():
-    url = 'http://127.0.0.1:8888/LLMInterface/Summary'
+    url = 'http://8.148.25.61:8888/LLMInterface/Translate'
     data = {
-        "content": "生活就像海洋，只有意志坚强的人才能到达彼岸。"
+        "content": "你说你不想在这里"
     }
     headers = {'Content-Type': 'application/json'}
     response = requests.post(url, data = json.dumps(data), headers = headers)
@@ -15,4 +15,5 @@ def test():
 
 if __name__ == "__main__":
     test()
+    #print(LLMInterface.Translate("生活就像海洋，只有意志坚强的人才能到达彼岸。"))
     #print(LLMInterface.Translate("你好"))

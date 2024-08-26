@@ -52,6 +52,6 @@ def BotExample():
     print(response)
 
 if __name__ == '__main__':
-    LModelExample()
+    BotExample()
 
 

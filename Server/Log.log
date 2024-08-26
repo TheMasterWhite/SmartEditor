@@ -1,0 +1,443 @@
+INFO:werkzeug:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8888
+ * Running on http://172.30.184.6:8888
+INFO:werkzeug:[33mPress CTRL+C to quit[0m
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:24:31] "OPTIONS /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:reeive
+INFO:root:6666
+INFO:root:[15:24:33]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:24:33] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:reeive
+INFO:root:6666
+INFO:root:[15:24:52]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:24:52] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:25:45] "OPTIONS /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:reeive
+INFO:root:6666
+INFO:root:[15:25:49]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:25:49] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:25:53] "OPTIONS /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:reeive
+INFO:root:reeive
+INFO:root:6666
+INFO:root:[15:25:56]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:25:56] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:6666
+INFO:root:[15:25:57]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:25:57] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:26:12] "OPTIONS /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:reeive
+INFO:root:6666
+INFO:root:[15:26:15]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:26:15] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:26:29] "OPTIONS /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:reeive
+INFO:root:6666
+INFO:root:[15:26:31]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:26:31] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:reeive
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:26:35] "OPTIONS /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:reeive
+INFO:root:6666
+INFO:root:[15:26:35]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:26:35] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:6666
+INFO:root:[15:26:37]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:26:37] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:28:16] "OPTIONS /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:reeive
+INFO:root:6666
+INFO:root:[15:28:19]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:28:19] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:31:03] "OPTIONS /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:reeive
+INFO:root:6666
+INFO:root:[15:31:05]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:31:05] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:32:35] "OPTIONS /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:reeive
+INFO:root:6666
+INFO:root:[15:32:37]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:32:37] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:reeive
+INFO:root:6666
+INFO:root:[15:32:41]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:32:41] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:32:48] "OPTIONS /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:reeive
+INFO:root:6666
+INFO:root:[15:32:50]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:32:50] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:33:03] "OPTIONS /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:reeive
+INFO:root:reeive
+INFO:root:6666
+INFO:root:[15:33:06]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:33:06] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:6666
+INFO:root:[15:33:08]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:33:08] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:33:11] "OPTIONS /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:reeive
+INFO:root:6666
+INFO:root:[15:33:13]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:33:13] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:reeive
+INFO:root:6666
+INFO:root:[15:33:19]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:33:19] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:33:24] "OPTIONS /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:reeive
+INFO:root:reeive
+INFO:root:6666
+INFO:root:[15:33:26]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:33:26] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:6666
+INFO:root:[15:33:28]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:33:28] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:34:09] "OPTIONS /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:reeive
+INFO:root:6666
+INFO:root:[15:34:11]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:34:11] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:reeive
+INFO:root:6666
+INFO:root:[15:34:15]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:34:15] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:34:17] "OPTIONS /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:reeive
+INFO:root:6666
+INFO:root:[15:34:19]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:34:19] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:34:27] "OPTIONS /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:reeive
+INFO:root:6666
+INFO:root:[15:34:30]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:34:30] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:34:41] "OPTIONS /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:reeive
+INFO:root:6666
+INFO:root:[15:34:44]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:34:44] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:34:48] "OPTIONS /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:reeive
+INFO:root:6666
+INFO:root:[15:34:50]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:34:50] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:reeive
+INFO:root:reeive
+INFO:root:6666
+INFO:root:[15:34:54]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:34:54] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:34:55] "OPTIONS /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:6666
+INFO:root:[15:34:55]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:34:55] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:reeive
+INFO:root:6666
+INFO:root:[15:34:57]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:34:57] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:35:01] "OPTIONS /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:reeive
+INFO:root:6666
+INFO:root:[15:35:04]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:35:04] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:reeive
+INFO:root:6666
+INFO:root:[15:35:07]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:35:07] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:35:19] "OPTIONS /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:reeive
+INFO:root:6666
+INFO:root:[15:35:21]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:35:21] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:35:24] "OPTIONS /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:reeive
+INFO:root:6666
+INFO:root:[15:35:27]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:35:27] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:reeive
+INFO:root:6666
+INFO:root:[15:35:30]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:35:30] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:35:33] "OPTIONS /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:reeive
+INFO:root:6666
+INFO:root:[15:35:35]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:35:35] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:reeive
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:35:39] "OPTIONS /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:reeive
+INFO:root:6666
+INFO:root:[15:35:40]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:35:40] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:reeive
+INFO:root:6666
+INFO:root:[15:35:43]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:35:43] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:6666
+INFO:root:[15:35:45]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:35:45] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:35:45] "OPTIONS /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:reeive
+INFO:root:6666
+INFO:root:[15:35:49]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:35:49] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:reeive
+INFO:root:6666
+INFO:root:[15:35:51]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:35:51] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:35:52] "OPTIONS /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:reeive
+INFO:root:6666
+INFO:root:[15:35:55]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:35:55] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:reeive
+INFO:root:6666
+INFO:root:[15:35:59]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:35:59] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:36:06] "OPTIONS /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:reeive
+INFO:root:6666
+INFO:root:[15:36:08]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:36:08] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:36:11] "OPTIONS /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:reeive
+INFO:root:6666
+INFO:root:[15:36:13]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:36:13] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:reeive
+INFO:root:6666
+INFO:root:[15:36:17]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:36:17] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:36:20] "OPTIONS /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:reeive
+INFO:root:6666
+INFO:root:[15:36:22]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:36:22] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:reeive
+INFO:root:6666
+INFO:root:[15:36:25]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:36:25] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:37:16] "OPTIONS /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:reeive
+INFO:root:6666
+INFO:root:[15:37:18]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:37:18] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:37:26] "OPTIONS /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:reeive
+INFO:root:6666
+INFO:root:[15:37:29]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:37:29] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:37:34] "OPTIONS /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:reeive
+INFO:root:6666
+INFO:root:[15:37:36]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:37:36] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:reeive
+INFO:root:6666
+INFO:root:[15:37:41]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:37:41] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:37:43] "OPTIONS /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:reeive
+INFO:root:6666
+INFO:root:[15:37:45]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:37:45] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:reeive
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:37:50] "OPTIONS /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:reeive
+INFO:root:6666
+INFO:root:[15:37:50]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:37:50] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:6666
+INFO:root:[15:37:52]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:37:52] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:38:05] "OPTIONS /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:reeive
+INFO:root:6666
+INFO:root:[15:38:07]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:38:07] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:40:30] "OPTIONS /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:reeive
+INFO:root:6666
+INFO:root:[15:40:32]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:40:32] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:40:38] "OPTIONS /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:reeive
+INFO:root:6666
+INFO:root:[15:40:42]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:40:42] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:40:54] "OPTIONS /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:reeive
+INFO:root:6666
+INFO:root:[15:40:56]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:40:56] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:41:19] "OPTIONS /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:reeive
+INFO:root:6666
+INFO:root:[15:41:22]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:41:22] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:reeive
+INFO:root:6666
+INFO:root:[15:41:24]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:41:24] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:41:40] "OPTIONS /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:reeive
+INFO:root:6666
+INFO:root:[15:41:42]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:41:42] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:41:59] "OPTIONS /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:reeive
+INFO:root:6666
+INFO:root:[15:42:02]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:42:02] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:reeive
+INFO:root:6666
+INFO:root:[15:42:05]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 15:42:05] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 16:18:28] "OPTIONS /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:reeive
+INFO:root:6666
+INFO:root:[16:18:31]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 16:18:31] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 16:21:16] "OPTIONS /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:reeive
+INFO:root:6666
+INFO:root:[16:21:18]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 16:21:18] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 16:21:59] "OPTIONS /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:reeive
+INFO:root:6666
+INFO:root:[16:22:01]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 16:22:01] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 16:26:17] "OPTIONS /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:reeive
+INFO:root:6666
+INFO:root:[16:26:19]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 16:26:19] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 16:26:23] "OPTIONS /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:reeive
+INFO:root:6666
+INFO:root:[16:26:27]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 16:26:27] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 16:26:33] "OPTIONS /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:reeive
+INFO:root:6666
+INFO:root:[16:26:35]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 16:26:35] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 16:26:46] "OPTIONS /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:reeive
+INFO:root:6666
+INFO:root:[16:26:49]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 16:26:49] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 16:26:54] "OPTIONS /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:reeive
+INFO:root:6666
+INFO:root:[16:26:57]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 16:26:57] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 16:28:01] "OPTIONS /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:reeive
+INFO:root:6666
+INFO:root:[16:28:03]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 16:28:03] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 16:32:16] "OPTIONS /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:reeive
+INFO:root:6666
+INFO:root:[16:32:18]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 16:32:18] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:werkzeug:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8888
+ * Running on http://172.30.184.6:8888
+INFO:werkzeug:[33mPress CTRL+C to quit[0m
+INFO:root:[16:45:19]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 16:45:19] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 16:45:30] "OPTIONS /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:[16:45:32]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 16:45:32] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:[16:45:35]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 16:45:35] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 16:45:46] "OPTIONS /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:[16:45:47]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 16:45:47] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:[16:46:14]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 16:46:14] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 16:46:16] "OPTIONS /LLMInterface/Translate HTTP/1.1" 200 -
+ERROR:root:[16:46:17]∑√Œ π˝”⁄∆µ∑±£¨«Î…‘∫Ú‘Ÿ ‘
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 16:46:17] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:[16:46:17]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 16:46:17] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:[16:46:18]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 16:46:18] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 16:46:27] "OPTIONS /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:[16:46:28]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 16:46:28] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 16:46:49] "OPTIONS /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:[16:46:51]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 16:46:51] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:[16:46:54]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 16:46:54] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 16:47:02] "OPTIONS /LLMInterface/Translate HTTP/1.1" 200 -
+ERROR:root:[16:47:03]∑√Œ π˝”⁄∆µ∑±£¨«Î…‘∫Ú‘Ÿ ‘
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 16:47:03] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:[16:47:04]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 16:47:04] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:[16:47:04]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 16:47:04] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 16:47:30] "OPTIONS /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 16:47:30] "OPTIONS /LLMInterface/Translate HTTP/1.1" 200 -
+ERROR:root:[16:47:31]∑√Œ π˝”⁄∆µ∑±£¨«Î…‘∫Ú‘Ÿ ‘
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 16:47:31] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+ERROR:root:[16:47:31]∑√Œ π˝”⁄∆µ∑±£¨«Î…‘∫Ú‘Ÿ ‘
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 16:47:31] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:[16:47:32]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 16:47:32] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:[16:47:32]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 16:47:32] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 16:47:52] "OPTIONS /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:[16:47:54]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 16:47:54] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 16:48:00] "OPTIONS /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:[16:48:02]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 16:48:02] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 17:28:20] "OPTIONS /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:[17:28:22]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 17:28:22] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 17:28:28] "OPTIONS /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:[17:28:30]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 17:28:30] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 17:29:35] "OPTIONS /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:[17:29:37]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 17:29:37] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 17:33:46] "OPTIONS /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:[17:33:48]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 17:33:48] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:[17:34:01]Server Started!
+INFO:werkzeug:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8888
+ * Running on http://172.30.184.6:8888
+INFO:werkzeug:[33mPress CTRL+C to quit[0m
+INFO:root:[17:44:24]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 17:44:24] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 17:44:33] "OPTIONS /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:[17:44:35]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 17:44:35] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 17:45:18] "OPTIONS /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:[17:45:21]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 17:45:21] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 17:45:29] "OPTIONS /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:[17:45:31]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 17:45:31] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 17:45:49] "OPTIONS /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:[17:45:52]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 17:45:52] "POST /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:werkzeug:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8888
+ * Running on http://172.30.184.9:8888
+INFO:werkzeug:[33mPress CTRL+C to quit[0m
+INFO:werkzeug:127.0.0.1 - - [26/Aug/2024 09:30:50] "OPTIONS /LLMInterface/Translate HTTP/1.1" 200 -
+INFO:root:[09:30:52]Translate successed.
+INFO:werkzeug:127.0.0.1 - - [26/Aug/2024 09:30:52] "POST /LLMInterface/Translate HTTP/1.1" 200 -
