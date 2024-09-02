@@ -15,7 +15,7 @@ class BotBasic():  # 聊天机器人基本接口
             self.Parameter[UserId] = []
 
         # 向对象添加交互内容，如果添加的是用户信息则会返回结果，否则返回Lambda表达式
-        self.Parameter.append({"role": Role, "content": content})
+        self.Parameter[UserId].append({"role": Role, "content": content})
 
 
         def GetResponseOrAdd():  # 判断添加聊天记录还是发送请求函数

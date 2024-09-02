@@ -271,15 +271,15 @@ def CorrectStream():
 
 
 # 对话机器人功能接口
-@app.route("/LLMInterface/Chatbot", methods = ["POST"])
-def Bot():
+@app.route("/LLMInterface/ChatBot", methods = ["POST"])
+def ChatBot():
     try:
-        Bot = BotInterface()
+        bot = BotInterface()
         requestData = request.json
         content = requestData["content"]
         userId = requestData.get("userId", "user")
 
-        response = Bot.GetResponse(content, userId)
+        response = bot.GetResponse(content, userId)
         curTime = Tools.GetTime()
         retObj = {
             "status": "success",
@@ -302,8 +302,8 @@ def Bot():
 
 
 # 对话机器人功能接口，返回迭代器
-@app.route("/LLMInterface/ChatbotStream", methods = ["POST"])
-def BotStream():
+@app.route("/LLMInterface/ChatBotStream", methods = ["POST"])
+def ChatBotStream():
     try:
         bot = BotInterface()
         requestData = request.json
