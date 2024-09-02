@@ -8,6 +8,7 @@ from utils import Tools
 
 app = Flask(__name__)
 CORS(app, resources = {r"/*": {"origins": "*"}})
+
 logging.basicConfig(filename = "Log.log",
                     filemode = 'a',
                     level = logging.INFO)
@@ -35,7 +36,41 @@ def Translate():
 
     except Exception as e:
         curTime = Tools.GetTime()
-        logging.error(f"[{curTime}]" + str(e))
+        logging.error(f"[{curTime}]Module:[Translate]" + str(e))
+        retObj = {
+            "status": "failed",
+            "requestTime": curTime,
+            "response": str(e)
+        }
+
+    finally:
+        return jsonify(retObj)
+
+
+# 翻译功能接口
+@app.route("/LLMInterface/TranslateStream", methods = ["POST"])
+def TranslateStream():
+    try:
+
+        requestData = request.json
+        language = requestData.get("language", "English")  # 目标语言
+        content = requestData["content"]  # 待润色文本内容
+        scene = requestData.get("scene", "General")  # 润色情境
+        response = LLMInterface.TranslateStream(Tartext = content,
+                                                Tarlanguage = language,
+                                                Scene = scene)
+        responseList = list(response)
+        curTime = Tools.GetTime()
+        retObj = {
+            "status": "success",
+            "requestTime": curTime,
+            "response": responseList
+        }
+        logging.info(f"[{curTime}]Translate_Stream successed.")
+
+    except Exception as e:
+        curTime = Tools.GetTime()
+        logging.error(f"[{curTime}]Module:[TranslateStream]" + str(e))
         retObj = {
             "status": "failed",
             "requestTime": curTime,
@@ -66,7 +101,39 @@ def Summary():
 
     except Exception as e:
         curTime = Tools.GetTime()
-        logging.error(f"[{curTime}]" + str(e))
+        logging.error(f"[{curTime}]Module:[Summary]" + str(e))
+        retObj = {
+            "status": "failed",
+            "requestTime": curTime,
+            "response": str(e)
+        }
+
+    finally:
+        return jsonify(retObj)
+
+
+# 总结功能接口，返回迭代器
+@app.route("/LLMInterface/SummaryStream", methods = ["POST"])
+def SummaryStream():
+    try:
+        requestData = request.json
+        content = requestData["content"]  # 待润色文本内容
+        scene = requestData.get("scene", "General")
+
+        response = LLMInterface.SummaryStream(Tartext = content,
+                                              Scene = scene)
+        responseList = list(response)
+        curTime = Tools.GetTime()
+        retObj = {
+            "status": "success",
+            "requestTime": curTime,
+            "response": responseList
+        }
+        logging.info(f"[{curTime}]Summary_Stream successed.")
+
+    except Exception as e:
+        curTime = Tools.GetTime()
+        logging.error(f"[{curTime}]Module:[SummaryStream]" + str(e))
         retObj = {
             "status": "failed",
             "requestTime": curTime,
@@ -97,7 +164,7 @@ def Polish():
 
     except Exception as e:
         curTime = Tools.GetTime()
-        logging.error(f"[{curTime}]" + str(e))
+        logging.error(f"[{curTime}]Module:[Polish]" + str(e))
         retObj = {
             "status": "failed",
             "requestTime": curTime,
@@ -108,7 +175,39 @@ def Polish():
         return jsonify(retObj)
 
 
-# 总结功能接口
+# 润色功能接口，返回迭代器
+@app.route("/LLMInterface/PolishStream", methods = ["POST"])
+def PolishStream():
+    try:
+        requestData = request.json
+        content = requestData["content"]  # 待润色文本内容
+        scene = requestData.get("scene", "General")
+
+        response = LLMInterface.PolishStream(Tartext = content,
+                                             Scene = scene)
+        responseList = list(response)
+        curTime = Tools.GetTime()
+        retObj = {
+            "status": "success",
+            "requestTime": curTime,
+            "response": responseList
+        }
+        logging.info(f"[{curTime}]Polish successed.")
+
+    except Exception as e:
+        curTime = Tools.GetTime()
+        logging.error(f"[{curTime}]Module:[Polish]" + str(e))
+        retObj = {
+            "status": "failed",
+            "requestTime": curTime,
+            "response": str(e)
+        }
+
+    finally:
+        return jsonify(retObj)
+
+
+# 纠错功能接口
 @app.route("/LLMInterface/Correct", methods = ["POST"])
 def Correct():
     try:
@@ -128,7 +227,39 @@ def Correct():
 
     except Exception as e:
         curTime = Tools.GetTime()
-        logging.error(f"[{curTime}]" + str(e))
+        logging.error(f"[{curTime}]Module:[Correct]" + str(e))
+        retObj = {
+            "status": "failed",
+            "requestTime": curTime,
+            "response": str(e)
+        }
+
+    finally:
+        return jsonify(retObj)
+
+
+# 纠错功能接口，返回迭代器
+@app.route("/LLMInterface/CorrectStream", methods = ["POST"])
+def CorrectStream():
+    try:
+        requestData = request.json
+        content = requestData["content"]  # 待润色文本内容
+        scene = requestData.get("scene", "General")
+
+        response = LLMInterface.CorrectStream(Tartext = content,
+                                              Scene = scene)
+        responseList = list(response)
+        curTime = Tools.GetTime()
+        retObj = {
+            "status": "success",
+            "requestTime": curTime,
+            "response": responseList
+        }
+        logging.info(f"[{curTime}]Correct_Stream successed.")
+
+    except Exception as e:
+        curTime = Tools.GetTime()
+        logging.error(f"[{curTime}]Module:[CorrectStream]" + str(e))
         retObj = {
             "status": "failed",
             "requestTime": curTime,
@@ -146,7 +277,9 @@ def Bot():
         Bot = BotInterface()
         requestData = request.json
         content = requestData["content"]
-        response = Bot.GetResponse(content)
+        userId = requestData.get("userId", "user")
+
+        response = Bot.GetResponse(content, userId)
         curTime = Tools.GetTime()
         retObj = {
             "status": "success",
@@ -157,13 +290,44 @@ def Bot():
 
     except Exception as e:
         curTime = Tools.GetTime()
-        logging.error(f"[{curTime}]" + str(e))
+        logging.error(f"[{curTime}]Module:[ChatBot]" + str(e))
         retObj = {
             "status": "failed",
             "requestTime": curTime,
             "response": str(e)
         }
 
+    finally:
+        return jsonify(retObj)
+
+
+# 对话机器人功能接口，返回迭代器
+@app.route("/LLMInterface/ChatbotStream", methods = ["POST"])
+def BotStream():
+    try:
+        bot = BotInterface()
+        requestData = request.json
+        content = requestData["content"]
+        userId = requestData.get("userId", "user")
+
+        responseStream = bot.GetResponseStream(content, userId)
+        responseStreamList = list(responseStream)
+        curTime = Tools.GetTime()
+        retObj = {
+            "status": "success",
+            "requestTime": curTime,
+            "response": responseStreamList
+        }
+        logging.info(f"[{curTime}]ChatbotStream request successed.")
+
+    except Exception as e:
+        curTime = Tools.GetTime()
+        logging.error(f"[{curTime}]Module:[ChatBotStream]" + str(e))
+        retObj = {
+            "status": "failed",
+            "requestTime": curTime,
+            "response": str(e)
+        }
     finally:
         return jsonify(retObj)
 
