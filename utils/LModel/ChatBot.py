@@ -2,6 +2,7 @@ from utils.Config.PMTProcess import *
 from utils.Config.HeadFiles import *
 from utils.LModel.Interface import LLMBasic
 from utils.Config.FileProcess import *
+import copy
 
 
 class BotBasic():  # 聊天机器人基本接口
@@ -20,7 +21,7 @@ class BotBasic():  # 聊天机器人基本接口
 
         def GetResponseOrAdd():  # 判断添加聊天记录还是发送请求函数
             if Role == "user":
-                if len(self.Parameter[UserId]) >= 30:
+                if len(self.Parameter[UserId]) >= 50:
                     del self.Parameter[UserId][2]
                     del self.Parameter[UserId][3]
                 return LLMBasic.GetResponse_List(self.Parameter[UserId])

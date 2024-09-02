@@ -1,5 +1,5 @@
 import logging, json, os, sys
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, Response, stream_with_context
 from flask_cors import CORS
 from wsgiref.simple_server import WSGIServer
 from utils.LModel.Interface import LLMInterface
@@ -56,17 +56,12 @@ def TranslateStream():
         language = requestData.get("language", "English")  # 目标语言
         content = requestData["content"]  # 待润色文本内容
         scene = requestData.get("scene", "General")  # 润色情境
-        response = LLMInterface.TranslateStream(Tartext = content,
-                                                Tarlanguage = language,
-                                                Scene = scene)
-        responseList = list(response)
+        responseStream = LLMInterface.TranslateStream(Tartext = content,
+                                                      Tarlanguage = language,
+                                                      Scene = scene)
         curTime = Tools.GetTime()
-        retObj = {
-            "status": "success",
-            "requestTime": curTime,
-            "response": responseList
-        }
         logging.info(f"[{curTime}]Translate_Stream successed.")
+        return Response(stream_with_context(responseStream))
 
     except Exception as e:
         curTime = Tools.GetTime()
@@ -76,8 +71,6 @@ def TranslateStream():
             "requestTime": curTime,
             "response": str(e)
         }
-
-    finally:
         return jsonify(retObj)
 
 
@@ -120,16 +113,11 @@ def SummaryStream():
         content = requestData["content"]  # 待润色文本内容
         scene = requestData.get("scene", "General")
 
-        response = LLMInterface.SummaryStream(Tartext = content,
-                                              Scene = scene)
-        responseList = list(response)
+        responseStream = LLMInterface.SummaryStream(Tartext = content,
+                                                    Scene = scene)
         curTime = Tools.GetTime()
-        retObj = {
-            "status": "success",
-            "requestTime": curTime,
-            "response": responseList
-        }
         logging.info(f"[{curTime}]Summary_Stream successed.")
+        return Response(stream_with_context(responseStream))
 
     except Exception as e:
         curTime = Tools.GetTime()
@@ -139,9 +127,8 @@ def SummaryStream():
             "requestTime": curTime,
             "response": str(e)
         }
-
-    finally:
         return jsonify(retObj)
+
 
 
 # 润色功能接口
@@ -183,16 +170,11 @@ def PolishStream():
         content = requestData["content"]  # 待润色文本内容
         scene = requestData.get("scene", "General")
 
-        response = LLMInterface.PolishStream(Tartext = content,
-                                             Scene = scene)
-        responseList = list(response)
+        responseStream = LLMInterface.PolishStream(Tartext = content,
+                                                   Scene = scene)
         curTime = Tools.GetTime()
-        retObj = {
-            "status": "success",
-            "requestTime": curTime,
-            "response": responseList
-        }
         logging.info(f"[{curTime}]Polish successed.")
+        return Response(stream_with_context(responseStream))
 
     except Exception as e:
         curTime = Tools.GetTime()
@@ -202,9 +184,8 @@ def PolishStream():
             "requestTime": curTime,
             "response": str(e)
         }
-
-    finally:
         return jsonify(retObj)
+
 
 
 # 纠错功能接口
@@ -246,16 +227,11 @@ def CorrectStream():
         content = requestData["content"]  # 待润色文本内容
         scene = requestData.get("scene", "General")
 
-        response = LLMInterface.CorrectStream(Tartext = content,
-                                              Scene = scene)
-        responseList = list(response)
+        responseStream = LLMInterface.CorrectStream(Tartext = content,
+                                                    Scene = scene)
         curTime = Tools.GetTime()
-        retObj = {
-            "status": "success",
-            "requestTime": curTime,
-            "response": responseList
-        }
         logging.info(f"[{curTime}]Correct_Stream successed.")
+        return Response(stream_with_context(responseStream))
 
     except Exception as e:
         curTime = Tools.GetTime()
@@ -265,9 +241,8 @@ def CorrectStream():
             "requestTime": curTime,
             "response": str(e)
         }
-
-    finally:
         return jsonify(retObj)
+
 
 
 # 对话机器人功能接口
@@ -311,14 +286,10 @@ def ChatBotStream():
         userId = requestData.get("userId", "user")
 
         responseStream = bot.GetResponseStream(content, userId)
-        responseStreamList = list(responseStream)
         curTime = Tools.GetTime()
-        retObj = {
-            "status": "success",
-            "requestTime": curTime,
-            "response": responseStreamList
-        }
         logging.info(f"[{curTime}]ChatbotStream request successed.")
+        return Response(stream_with_context(responseStream))
+
 
     except Exception as e:
         curTime = Tools.GetTime()
@@ -328,14 +299,12 @@ def ChatBotStream():
             "requestTime": curTime,
             "response": str(e)
         }
-    finally:
-        return jsonify(retObj)
 
 
 def StartServer():
-    app.run(host = "0.0.0.0", port = 8888)
     curTime = Tools.GetTime()
     logging.info(f"[{curTime}]Server Started!")
+    app.run(host = "0.0.0.0", port = 8888)
 
 
 if __name__ == "__main__":
