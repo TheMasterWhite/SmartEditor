@@ -364,7 +364,7 @@ INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 16:45:47] "POST /LLMInterface/Translate
 INFO:root:[16:46:14]Translate successed.
 INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 16:46:14] "POST /LLMInterface/Translate HTTP/1.1" 200 -
 INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 16:46:16] "OPTIONS /LLMInterface/Translate HTTP/1.1" 200 -
-ERROR:root:[16:46:17]·ÃÎÊ¹ýÓÚÆµ·±£¬ÇëÉÔºòÔÙÊÔ
+ERROR:root:[16:46:17]ï¿½ï¿½ï¿½Ê¹ï¿½ï¿½ï¿½Æµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ôºï¿½ï¿½ï¿½ï¿½ï¿½
 INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 16:46:17] "POST /LLMInterface/Translate HTTP/1.1" 200 -
 INFO:root:[16:46:17]Translate successed.
 INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 16:46:17] "POST /LLMInterface/Translate HTTP/1.1" 200 -
@@ -379,7 +379,7 @@ INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 16:46:51] "POST /LLMInterface/Translate
 INFO:root:[16:46:54]Translate successed.
 INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 16:46:54] "POST /LLMInterface/Translate HTTP/1.1" 200 -
 INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 16:47:02] "OPTIONS /LLMInterface/Translate HTTP/1.1" 200 -
-ERROR:root:[16:47:03]·ÃÎÊ¹ýÓÚÆµ·±£¬ÇëÉÔºòÔÙÊÔ
+ERROR:root:[16:47:03]ï¿½ï¿½ï¿½Ê¹ï¿½ï¿½ï¿½Æµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ôºï¿½ï¿½ï¿½ï¿½ï¿½
 INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 16:47:03] "POST /LLMInterface/Translate HTTP/1.1" 200 -
 INFO:root:[16:47:04]Translate successed.
 INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 16:47:04] "POST /LLMInterface/Translate HTTP/1.1" 200 -
@@ -387,9 +387,9 @@ INFO:root:[16:47:04]Translate successed.
 INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 16:47:04] "POST /LLMInterface/Translate HTTP/1.1" 200 -
 INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 16:47:30] "OPTIONS /LLMInterface/Translate HTTP/1.1" 200 -
 INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 16:47:30] "OPTIONS /LLMInterface/Translate HTTP/1.1" 200 -
-ERROR:root:[16:47:31]·ÃÎÊ¹ýÓÚÆµ·±£¬ÇëÉÔºòÔÙÊÔ
+ERROR:root:[16:47:31]ï¿½ï¿½ï¿½Ê¹ï¿½ï¿½ï¿½Æµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ôºï¿½ï¿½ï¿½ï¿½ï¿½
 INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 16:47:31] "POST /LLMInterface/Translate HTTP/1.1" 200 -
-ERROR:root:[16:47:31]·ÃÎÊ¹ýÓÚÆµ·±£¬ÇëÉÔºòÔÙÊÔ
+ERROR:root:[16:47:31]ï¿½ï¿½ï¿½Ê¹ï¿½ï¿½ï¿½Æµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ôºï¿½ï¿½ï¿½ï¿½ï¿½
 INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 16:47:31] "POST /LLMInterface/Translate HTTP/1.1" 200 -
 INFO:root:[16:47:32]Translate successed.
 INFO:werkzeug:127.0.0.1 - - [23/Aug/2024 16:47:32] "POST /LLMInterface/Translate HTTP/1.1" 200 -
