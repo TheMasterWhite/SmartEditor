@@ -8,8 +8,8 @@ from utils.Config.FileProcess import *
 # 用于单元测试
 
 def UnitTest():
-    url2 = 'http://8.148.25.61:8888/LLMInterface/'
-    #url2 = 'http://localhost:8888/LLMInterface/'
+    # url2 = 'http://8.148.25.61:8888/LLMInterface/'
+    url2 = 'http://localhost:8888/LLMInterface/'
     data = {
         "content": "生活就像海洋，只有意志坚强的人才能到达彼岸",
         "userId": "666"
@@ -41,7 +41,7 @@ def UnitTest():
 
 def UnitTestGen():
     url2 = 'http://8.148.25.61:8888/LLMInterface/'
-    #url2 = 'http://localhost:8888/LLMInterface/'
+    # url2 = 'http://localhost:8888/LLMInterface/'
     data = {
         "content": "生活就像海洋，只有意志坚强的人才能到达彼岸",
         "userId": "666"
@@ -82,7 +82,6 @@ def UnitTestGen():
 
 
 if __name__ == "__main__":
-    # UnitTest()
+    UnitTest()
     # print("666")
     # UnitTestGen()
-    pass

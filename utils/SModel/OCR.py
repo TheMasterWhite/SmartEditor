@@ -6,11 +6,10 @@ class OCRBasic:
 
     @staticmethod
     def GetDocJson(FilePath, FileCode):  # 获取文档抽取OCR模型识别内容，
-        # 传入相对文件地址、文件类型，文件类型为"IMG"或"PDF",返回解析json
+        # 传入绝对文件地址、文件类型，文件类型为"IMG"或"PDF",返回解析json
 
         try:
-            absPath = FileProcess.AbsPath(FilePath)
-            base64File = FileProcess.Base64(absPath)
+            base64File = FileProcess.Base64(FilePath)
             headers = {
                 "Authorization": f"token {GLOBAL_ERNIETOKEN}",
                 "Content-Type": "application/json"
