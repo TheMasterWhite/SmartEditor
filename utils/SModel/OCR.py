@@ -30,7 +30,6 @@ class OCRBasic:
             # 获取解析结果
             ocrResponse = requests.post(GLOBAL_DOC_OCRURL, json = Payload, headers = headers)
             ocrResponseData = ocrResponse.json()
-            logging.info(f"OCR Response: {ocrResponseData}")
             return ocrResponseData
 
         except Exception as e:
