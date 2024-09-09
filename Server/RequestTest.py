@@ -80,20 +80,21 @@ def UnitTestGen():
 
 def UploadFileOCR():
     url = 'http://8.148.25.61:8888/Server/UploadFile'
-    files = {"file": open("E:/Code/CodeLibrary/Python/SmartEditor/resources/作文.pdf", "rb")}
+    files = {"file": open("E:/Code/CodeLibrary/Python/SmartEditor/resources/沁园春长沙.mp4", "rb")}
     response = requests.post(url, files = files)
     print(response.json())
 
-    url = 'http://8.148.25.61:8888/OCRInterface/Doc'
-    data = {
-        "fileName": "作文.pdf",
-    }
-    headers = {'Content-Type': 'application/json'}
-    response = requests.post(url, data = json.dumps(data), headers = headers)
-    print(response.json())
+    # url = 'http://8.148.25.61:8888/OCRInterface/Doc'
+    # data = {
+    #     "fileName": "作文.pdf",
+    # }
+    # headers = {'Content-Type': 'application/json'}
+    # response = requests.post(url, data = json.dumps(data), headers = headers)
+    # print(response.json())
 
 
 if __name__ == "__main__":
     # UnitTest()
     # print("666")
-    UnitTestGen()
+    # UnitTestGen()
+    UploadFileOCR()
