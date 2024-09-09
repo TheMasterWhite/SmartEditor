@@ -7,7 +7,7 @@ from utils.SModel.STT import *
 import os
 
 OCRBlueprint = Blueprint("OCRBlueprint", __name__, url_prefix = "/OCRInterface")
-fileSavePath = "/Server/UserFiles"
+fileSavePath = GLOBAL_FileSavePath
 
 
 @OCRBlueprint.route("/Doc", methods = ["POST"])

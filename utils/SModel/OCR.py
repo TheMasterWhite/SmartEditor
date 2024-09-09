@@ -113,5 +113,3 @@ class OCRInterface(OCRBasic):
 
         except Exception as e:
             raise e
-
-print(GLOBAL_ERNIETOKEN)

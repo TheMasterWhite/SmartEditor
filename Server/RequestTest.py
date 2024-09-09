@@ -3,6 +3,7 @@ import requests, json, os
 from utils.LModel.ChatBot import BotInterface
 from utils.LModel.Interface import LLMInterface
 from utils.Config.FileProcess import *
+from Config import *
 
 
 # 用于单元测试
@@ -91,12 +92,10 @@ if __name__ == "__main__":
     # response = requests.post(url, files = files)
     # print(response.json())
 
-    # url = 'http://8.148.25.61:8888/OCRInterface/Doc'
-    # data = {
-    #     "fileName": "Poster.jpg",
-    # }
-    # headers = {'Content-Type': 'application/json'}
-    # response = requests.post(url, data = json.dumps(data), headers = headers)
-    # print(response.json())
-    Config.ReadConfigFile()
-    print(GLOBAL_ERNIETOKEN)
+    url = 'http://8.148.25.61:8888/OCRInterface/Doc'
+    data = {
+        "fileName": "Poster.jpg",
+    }
+    headers = {'Content-Type': 'application/json'}
+    response = requests.post(url, data = json.dumps(data), headers = headers)
+    print(response.json())

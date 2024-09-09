@@ -1,5 +1,4 @@
 import os
-from configparser import ConfigParser
 import erniebot
 import asyncio
 import base64
@@ -10,13 +9,13 @@ from pathlib import Path
 
 def ReadConfigFile():
     # 读取配置文件
-    Config = ConfigParser()
-    Config.optionxform = str
-    cfgPath = "Config.cfg"
-    Config.read(cfgPath)
-    # 遍历配置文件中的所有选项，创建全局变量
-    global_vars = dict(Config["TOKENS"])
-    for key, value in global_vars.items():
+    #filePath = "/Server/SmartEditor/onfig.json"  # linux
+    filePath = "E:/Code/CodeLibrary/Python/SmartEditor/config.json"  # windows
+
+    with open(filePath, "r", encoding = "utf-8") as f:
+        configData = json.load(f)
+
+    for key, value in configData.items():
         globals()[key] = value
 
 
@@ -31,5 +30,4 @@ def InitToken():  # 初始化环境变量
 
 ReadConfigFile()
 InitToken()
-
-print(GLOBAL_ERNIETOKEN)
+print(GLOBAL_FileSavePath)
