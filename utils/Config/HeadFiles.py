@@ -1,5 +1,6 @@
 import os
 from configparser import ConfigParser
+import erniebot
 import asyncio
 import base64
 import pathlib
