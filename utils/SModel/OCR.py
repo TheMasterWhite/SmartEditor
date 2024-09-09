@@ -1,6 +1,10 @@
 from utils.LModel.Interface import *
 from utils.Config.PMTProcess import *
-from utils.Config.HeadFiles import *
+import base64
+import pathlib
+import json
+from pathlib import Path
+
 
 class OCRBasic:
 

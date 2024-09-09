@@ -5,12 +5,11 @@ from wsgiref.simple_server import WSGIServer
 from LLMRoute import LLMBlueprint
 from SModelRoute import OCRBlueprint
 from ServerProcess import ServerProcessBlueprint
-from utils.Config.HeadFiles import *
+import Config
 from utils import Tools
 
 app = Flask(__name__)
 CORS(app, resources = {r"/*": {"origins": "*"}})
-
 
 logging.basicConfig(filename = "Server/Log.log",
                     filemode = 'a',

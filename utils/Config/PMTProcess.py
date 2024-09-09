@@ -1,5 +1,7 @@
 from utils.Config.FileProcess import FileProcess, OSSProcess, JsonOperator
-from utils.Config.HeadFiles import *
+import base64
+import pathlib
+import json
 from pathlib import Path
 
 class GetPrompt:  # 获取Prompt的单例模式类

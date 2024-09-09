@@ -1,5 +1,8 @@
 import os
-from utils.Config.HeadFiles import *
+import base64
+import pathlib
+import json
+from pathlib import Path
 
 
 class FileProcess:  # 文件处理类
