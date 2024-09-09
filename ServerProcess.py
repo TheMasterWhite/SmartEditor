@@ -31,7 +31,8 @@ def UploadFile():
         # 如果是音视频文件那就预处理成wav
         fileExtension = Tools.GetExtension(fileName)
         if fileExtension in ["mp3", "mp4"]:
-            FileProcess.ConvertToWav(fileName)
+            FileProcess.ConvertToWav(FileName = fileName,
+                                     FileExtension = fileExtension)
 
     except Exception as e:
         curTime = Tools.GetTime()
