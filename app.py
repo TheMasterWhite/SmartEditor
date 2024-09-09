@@ -10,6 +10,7 @@ from utils import Tools
 
 app = Flask(__name__)
 CORS(app, resources = {r"/*": {"origins": "*"}})
+I
 
 logging.basicConfig(filename = "Server/Log.log",
                     filemode = 'a',
