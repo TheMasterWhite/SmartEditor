@@ -19,7 +19,7 @@ def UploadFile():
         file = request.files["file"]
         fileName = file.filename
         # savePath = "E:\Code\CodeLibrary\Python\SmartEditor\Saves"
-        savePath = "/Server/UserFiles"
+        savePath = GLOBAL_UploadFileFolder
         file.save(os.path.join(savePath, fileName))
 
         retObj = {

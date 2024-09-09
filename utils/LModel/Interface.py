@@ -1,5 +1,5 @@
 from utils.Config.PMTProcess import GetPrompt, KnowledgeLib
-from utils.Config.HeadFiles import *
+import erniebot
 from utils.Config.FileProcess import FileProcess, OSSProcess, JsonOperator
 
 
