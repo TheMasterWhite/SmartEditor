@@ -29,9 +29,5 @@ def InitToken():  # 初始化环境变量
     erniebot.access_token = GLOBAL_ERNIETOKEN
 
 
-def InitProcess():
-    HeadFiles.ReadConfigFile()
-    HeadFiles.InitToken()
-
-
-HeadFiles.InitProcess()
+ReadConfigFile()
+InitToken()
