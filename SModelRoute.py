@@ -34,6 +34,7 @@ def GetDocOCR():
         OCR_ResultString = OCRInterface.Doc(FilePath = filePath,
                                             FileType = fileType)
         savePath = os.path.join(fileSavePath, fileName)
+        curTime = Tools.GetTime()
         logging.info(f"[{curTime}]Get OCR result successfully.")
         with open(savePath, "w") as f:
             f.write(OCR_ResultString)
@@ -44,7 +45,7 @@ def GetDocOCR():
             "response": "OCR result saved successfully."
         }
         curTime = Tools.GetTime()
-
+        logging.info(f"[{curTime}]Write OCR result successfully.")
         return jsonify(retObj)
 
     except FileNotFoundError as e:
