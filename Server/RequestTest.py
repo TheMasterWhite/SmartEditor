@@ -82,9 +82,9 @@ def UnitTestGen():
 
 
 if __name__ == "__main__":
-    UnitTest()
-    print("666")
-    UnitTestGen()
+    # UnitTest()
+    # print("666")
+    # UnitTestGen()
 
     # url = 'http://8.148.25.61:8888/Server/UploadFile'
     # files = {"file": open("E:/Code/CodeLibrary/Python/SmartEditor/resources/Poster.jpg", "rb")}

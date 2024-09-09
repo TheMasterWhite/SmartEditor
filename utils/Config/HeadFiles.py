@@ -23,7 +23,7 @@ class HeadFiles:
         # 读取配置文件
         Config = ConfigParser()
         Config.optionxform = str
-        cfgPath = "utils/Config/Config.cfg"
+        cfgPath = "Config.cfg"
         Config.read(cfgPath)
         # 遍历配置文件中的所有选项，创建全局变量
         global_vars = dict(Config["TOKENS"])
