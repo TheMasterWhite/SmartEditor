@@ -47,4 +47,3 @@ class HeadFiles:
         HeadFiles.InitToken()
 
 
-HeadFiles.InitProcess()
