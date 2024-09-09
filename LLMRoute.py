@@ -21,7 +21,7 @@ def Translate():
                                           Scene = scene)
         curTime = Tools.GetTime()
         retObj = {
-            "status": "success",
+            "statusCode": 1,
             "requestTime": curTime,
             "response": response
         }
@@ -31,7 +31,7 @@ def Translate():
         curTime = Tools.GetTime()
         logging.error(f"[{curTime}]Module:[Translate]" + str(e))
         retObj = {
-            "status": "failed",
+            "statusCode": 0,
             "requestTime": curTime,
             "response": str(e)
         }
@@ -60,7 +60,7 @@ def TranslateStream():
         curTime = Tools.GetTime()
         logging.error(f"[{curTime}]Module:[TranslateStream]" + str(e))
         retObj = {
-            "status": "failed",
+            "statusCode": 0,
             "requestTime": curTime,
             "response": str(e)
         }
@@ -79,7 +79,7 @@ def Summary():
                                         Scene = scene)
         curTime = Tools.GetTime()
         retObj = {
-            "status": "success",
+            "statusCode": 1,
             "requestTime": curTime,
             "response": response
         }
@@ -89,7 +89,7 @@ def Summary():
         curTime = Tools.GetTime()
         logging.error(f"[{curTime}]Module:[Summary]" + str(e))
         retObj = {
-            "status": "failed",
+            "statusCode": 0,
             "requestTime": curTime,
             "response": str(e)
         }
@@ -116,7 +116,7 @@ def SummaryStream():
         curTime = Tools.GetTime()
         logging.error(f"[{curTime}]Module:[SummaryStream]" + str(e))
         retObj = {
-            "status": "failed",
+            "statusCode": 0,
             "requestTime": curTime,
             "response": str(e)
         }
@@ -135,7 +135,7 @@ def Polish():
                                        Scene = scene)
         curTime = Tools.GetTime()
         retObj = {
-            "status": "success",
+            "statusCode": 1,
             "requestTime": curTime,
             "response": response
         }
@@ -145,7 +145,7 @@ def Polish():
         curTime = Tools.GetTime()
         logging.error(f"[{curTime}]Module:[Polish]" + str(e))
         retObj = {
-            "status": "failed",
+            "statusCode": 0,
             "requestTime": curTime,
             "response": str(e)
         }
@@ -172,7 +172,7 @@ def PolishStream():
         curTime = Tools.GetTime()
         logging.error(f"[{curTime}]Module:[Polish]" + str(e))
         retObj = {
-            "status": "failed",
+            "statusCode": 0,
             "requestTime": curTime,
             "response": str(e)
         }
@@ -191,7 +191,7 @@ def Correct():
                                         Scene = scene)
         curTime = Tools.GetTime()
         retObj = {
-            "status": "success",
+            "statusCode": 1,
             "requestTime": curTime,
             "response": response
         }
@@ -201,7 +201,7 @@ def Correct():
         curTime = Tools.GetTime()
         logging.error(f"[{curTime}]Module:[Correct]" + str(e))
         retObj = {
-            "status": "failed",
+            "statusCode": 0,
             "requestTime": curTime,
             "response": str(e)
         }
@@ -228,7 +228,7 @@ def CorrectStream():
         curTime = Tools.GetTime()
         logging.error(f"[{curTime}]Module:[CorrectStream]" + str(e))
         retObj = {
-            "status": "failed",
+            "statusCode": 0,
             "requestTime": curTime,
             "response": str(e)
         }
@@ -247,7 +247,7 @@ def ChatBot():
         response = bot.GetResponse(content, userId)
         curTime = Tools.GetTime()
         retObj = {
-            "status": "success",
+            "statusCode": 1,
             "requestTime": curTime,
             "response": response
         }
@@ -280,12 +280,11 @@ def ChatBotStream():
         logging.info(f"[{curTime}]ChatbotStream request successed.")
 
 
-
     except Exception as e:
         curTime = Tools.GetTime()
         logging.error(f"[{curTime}]Module:[ChatBotStream]" + str(e))
         retObj = {
-            "status": "failed",
+            "statusCode": 0,
             "requestTime": curTime,
             "response": str(e)
         }

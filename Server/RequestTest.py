@@ -87,6 +87,6 @@ if __name__ == "__main__":
     # UnitTestGen()
 
     url = 'http://8.148.25.61:8888/Server/UploadFile'
-    files = {"file": open("E:/Code/CodeLibrary/Python/SmartEditor/resources/Poster.jpg", "rb")}
+    files = {"file": open("E:/Code/CodeLibrary/Python/SmartEditor/resources/亚托莉.txt", "rb")}
     response = requests.post(url, files = files)
     print(response)

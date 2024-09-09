@@ -1,16 +1,16 @@
-from flask import Flask, Blueprint, request, jsonify
+from flask import Flask, Blueprint, request, jsonify, send_file
 from utils import Tools
 from werkzeug.utils import secure_filename
 import os
 
 ServerProcessBlueprint = Blueprint("ServerProcessBlueprint", __name__, url_prefix = "/Server")
+fileSavePath = "/Server/UserFiles"
 
 
 # 从前端接收文件接口
 @ServerProcessBlueprint.route("/UploadFile", methods = ["POST"])
 def UploadFile():
     try:
-        curTime = Tools.GetTime()
         # 请求中不存在文件
         if "file" not in request.files:
             raise Exception("No file in the request.")
@@ -18,24 +18,55 @@ def UploadFile():
         # 获取文件并保存
         file = request.files["file"]
         fileName = file.filename
-        # savePath = "E:\Code\CodeLibrary\Python\SmartEditor\Saves"
-        savePath = "/Server/UserFiles"
-        file.save(os.path.join(savePath, fileName))
+        file.save(os.path.join(fileSavePath, fileName))
+        curTime = Tools.GetTime()
 
         retObj = {
-            "status": "success",
+            "statusCode": 1,
             "requestTime": curTime,
-            "response": "File uploaded successfully"
+            "response": "File uploaded successfully."
         }
 
     except Exception as e:
         curTime = Tools.GetTime()
         logging.error(f"[{curTime}]Module:[UploadFile]" + str(e))
         retObj = {
-            "status": "failed",
+            "statusCode": 0,
             "requestTime": curTime,
             "response": str(e)
         }
 
     finally:
         return jsonify(retObj)
+
+
+# 文件下载接口
+@ServerProcessBlueprint.route("/DownloadFile/<fileName>", methods = ["GET"])
+def DownloadFile(fileName):
+    try:
+        filePath = os.path.join(fileSavePath, fileName)
+        # 文件不存在
+        if not os.path.exists(filePath):
+            raise FileNotFoundError(f"File {fileName} does not exist.")
+
+        return send_file(filePath, as_attachment = True)
+
+    except FileNotFoundError as e:
+        curTime = Tools.GetTime()
+        logging.error(f"[{curTime}]Module:[DownloadFile]" + str(e))
+        retObj = {
+            "statusCode": 0,
+            "requestTime": curTime,
+            "response": str(e)
+        }
+        return jsonify(retObj), 404
+
+    except Exception as e:
+        curTime = Tools.GetTime()
+        logging.error(f"[{curTime}]Module:[DownloadFile]" + str(e))
+        retObj = {
+            "statusCode": 0,
+            "requestTime": curTime,
+            "response": str(e)
+        }
+        return jsonify(retObj), 500
