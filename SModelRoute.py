@@ -40,7 +40,7 @@ def GetDocOCR():
         retObj = {
             "statusCode": 1,
             "requestTime": curTime,
-            "response": "OCR success."
+            "response": "OCR result saved successfully."
         }
         curTime = Tools.GetTime()
         logging.info(f"[{curTime}]OCR success.")

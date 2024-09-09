@@ -55,7 +55,7 @@ class OCRBasic:
 class OCRInterface(OCRBasic):
 
     @staticmethod
-    def Doc(FilePath, SavePath, FileType):
+    def Doc(FilePath, FileType):
         # 获取DocOCR识别结果，返回String
 
         try:
