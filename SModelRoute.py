@@ -4,6 +4,7 @@ from utils import Tools
 from utils.SModel.OCR import *
 from utils.SModel.TarDetect import *
 from utils.SModel.STT import *
+import os
 
 OCRBlueprint = Blueprint("OCRBlueprint", __name__, url_prefix = "/OCRInterface")
 fileSavePath = "/Server/UserFiles"
