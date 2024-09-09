@@ -278,7 +278,7 @@ def ChatBotStream():
         responseStream = bot.GetResponseStream(content, userId)
         curTime = Tools.GetTime()
         logging.info(f"[{curTime}]ChatbotStream request successed.")
-
+        return Response(stream_with_context(responseStream))
 
     except Exception as e:
         curTime = Tools.GetTime()
@@ -288,3 +288,4 @@ def ChatBotStream():
             "requestTime": curTime,
             "response": str(e)
         }
+        return jsonify(retObj)
