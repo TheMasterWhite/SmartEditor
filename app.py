@@ -1,4 +1,4 @@
-import logging, json, os, sys
+import logging, json, os, sys, requests
 from flask import Flask, request, jsonify, Response, stream_with_context
 from flask_cors import CORS
 from wsgiref.simple_server import WSGIServer

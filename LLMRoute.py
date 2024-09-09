@@ -1,4 +1,4 @@
-import logging, json, os, sys
+import logging, json, os, sys, requests
 from flask import Flask, request, jsonify, Response, stream_with_context, Blueprint
 from utils.LModel.Interface import LLMInterface
 from utils.LModel.ChatBot import BotInterface
