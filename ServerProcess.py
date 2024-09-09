@@ -1,6 +1,7 @@
 from flask import Flask, Blueprint, request, jsonify, send_file
 from utils import Tools
 from werkzeug.utils import secure_filename
+from utils.Config.FileProcess import *
 import os
 
 ServerProcessBlueprint = Blueprint("ServerProcessBlueprint", __name__, url_prefix = "/Server")
@@ -26,6 +27,11 @@ def UploadFile():
             "requestTime": curTime,
             "response": "File uploaded successfully."
         }
+
+        # 如果是音视频文件那就预处理成wav
+        fileExtension = Tools.GetExtension(fileName)
+        if fileExtension in ["mp3", "mp4"]:
+            FileProcess.ConvertToWav()
 
     except Exception as e:
         curTime = Tools.GetTime()
