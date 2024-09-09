@@ -44,54 +44,56 @@ def UnitTestGen():
         "userId": "666"
     }
     headers = {'Content-Type': 'application/json'}
-    #
-    # url = copy.deepcopy(url2) + "TranslateStream"
-    # response = requests.post(url, data = json.dumps(data), headers = headers, stream = True)
-    # for i in response.iter_content(chunk_size = 1024):
-    #     print(i.decode('utf-8'), end = "")
-    # print()
-    #
-    # url = copy.deepcopy(url2) + "PolishStream"
-    # response = requests.post(url, data = json.dumps(data), headers = headers, stream = True)
-    # for i in response.iter_content(chunk_size = 1024):
-    #     print(i.decode('utf-8'), end = "")
-    # print()
-    #
-    # url = copy.deepcopy(url2) + "CorrectStream"
-    # response = requests.post(url, data = json.dumps(data), headers = headers, stream = True)
-    # for i in response.iter_content(chunk_size = 1024):
-    #     print(i.decode('utf-8'), end = "")
-    # print()
-    #
-    # url = copy.deepcopy(url2) + "SummaryStream"
-    # response = requests.post(url, data = json.dumps(data), headers = headers, stream = True)
-    # for i in response.iter_content(chunk_size = 1024):
-    #     print(i.decode('utf-8'), end = "")
-    # print()
 
-    url = copy.deepcopy(url2) + "ChatBotStream"
-    data2 = data.copy()
-    data2["content"] = "你好，我是小王"
+    url = copy.deepcopy(url2) + "TranslateStream"
     response = requests.post(url, data = json.dumps(data), headers = headers, stream = True)
     for i in response.iter_content(chunk_size = 1024):
         print(i.decode('utf-8'), end = "")
     print()
+
+    url = copy.deepcopy(url2) + "PolishStream"
+    response = requests.post(url, data = json.dumps(data), headers = headers, stream = True)
+    for i in response.iter_content(chunk_size = 1024):
+        print(i.decode('utf-8'), end = "")
+    print()
+
+    url = copy.deepcopy(url2) + "CorrectStream"
+    response = requests.post(url, data = json.dumps(data), headers = headers, stream = True)
+    for i in response.iter_content(chunk_size = 1024):
+        print(i.decode('utf-8'), end = "")
+    print()
+
+    url = copy.deepcopy(url2) + "SummaryStream"
+    response = requests.post(url, data = json.dumps(data), headers = headers, stream = True)
+    for i in response.iter_content(chunk_size = 1024):
+        print(i.decode('utf-8'), end = "")
+    print()
+
+    url = copy.deepcopy(url2) + "ChatBotStream"
+    data2 = data.copy()
+    data2["content"] = "你好，我是小王"
+    response = requests.post(url, data = json.dumps(data2), headers = headers, stream = True)
+    for i in response.iter_content(chunk_size = 1024):
+        print(i.decode('utf-8'), end = "")
+    print()
+
+
+def UploadFileOCR():
+    url = 'http://8.148.25.61:8888/Server/UploadFile'
+    files = {"file": open("E:/Code/CodeLibrary/Python/SmartEditor/resources/作文.pdf", "rb")}
+    response = requests.post(url, files = files)
+    print(response.json())
+
+    url = 'http://8.148.25.61:8888/OCRInterface/Doc'
+    data = {
+        "fileName": "作文.pdf",
+    }
+    headers = {'Content-Type': 'application/json'}
+    response = requests.post(url, data = json.dumps(data), headers = headers)
+    print(response.json())
 
 
 if __name__ == "__main__":
     # UnitTest()
     # print("666")
     UnitTestGen()
-
-    # url = 'http://8.148.25.61:8888/Server/UploadFile'
-    # files = {"file": open("E:/Code/CodeLibrary/Python/SmartEditor/resources/作文.pdf", "rb")}
-    # response = requests.post(url, files = files)
-    # print(response.json())
-    #
-    # url = 'http://8.148.25.61:8888/OCRInterface/Doc'
-    # data = {
-    #     "fileName": "作文.pdf",
-    # }
-    # headers = {'Content-Type': 'application/json'}
-    # response = requests.post(url, data = json.dumps(data), headers = headers)
-    # print(response.json())

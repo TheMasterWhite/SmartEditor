@@ -4,7 +4,7 @@ from werkzeug.utils import secure_filename
 import os
 
 ServerProcessBlueprint = Blueprint("ServerProcessBlueprint", __name__, url_prefix = "/Server")
-fileSavePath = "/Server/UserFiles"
+fileSavePath = GLOBAL_FileSavePath
 
 
 # 从前端接收文件接口

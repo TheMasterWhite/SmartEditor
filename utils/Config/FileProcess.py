@@ -1,8 +1,13 @@
+import logging
 import os
 import base64
 import pathlib
 import json
 from pathlib import Path
+from pydub import AudioSegment
+from utils import Tools
+
+fileSavePath = GLOBAL_FileSavePath
 
 
 class FileProcess:  # 文件处理类
@@ -53,6 +58,28 @@ class FileProcess:  # 文件处理类
 
         except Exception as e:
             raise e
+
+
+    # 将多媒体文件转换成wav格式
+    @staticmethod
+    def ConvertToWav(FileName):
+        try:
+            filePath = os.path.join(fileSavePath, FileName)
+            fileExtension = Tools.GetExtension(FileName)
+            fileName = Tools.GetFileName(FileName)
+            # 文件不存在
+            if not os.path.exists(filePath):
+                raise FileNotFoundError(f"File {fileName} does not exist.")
+            # 音频处理
+            audio = AudioSegment.from_file(filePath, format = fileExtension)
+            savePath = fileSavePath + ".wav"
+            audio.export(savePath, format = "wav")
+            curTime = Tools.GetTime()
+            logging.info(f"[{curTime}]File {FileName} converted successfully.")
+
+        except Exception as e:
+            curTime = Tools.GetTime()
+            logging.error(f"[{curTime}]Module:[ConvertToWav]" + str(e))
 
 
 class OSSProcess:  # OSS云服务处理类
