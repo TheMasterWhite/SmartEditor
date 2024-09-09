@@ -31,11 +31,16 @@ def GetDocOCR():
         else:
             raise ValueError("Unsupported file type.")
 
+        # 发起OCR调用
         OCR_ResultString = OCRInterface.Doc(FilePath = filePath,
                                             FileType = fileType)
-        savePath = os.path.join(fileSavePath, fileName)
+
         curTime = Tools.GetTime()
         logging.info(f"[{curTime}]Get OCR result successfully.")
+
+        # 写入OCR识别结果
+        saveFileName = Tools.GetFileName(fileName) + ".txt"
+        savePath = os.path.join(fileSavePath, saveFileName)
         with open(savePath, "w") as f:
             f.write(OCR_ResultString)
 
