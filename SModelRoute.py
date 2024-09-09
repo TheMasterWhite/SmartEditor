@@ -1,4 +1,4 @@
-import logging
+import logging, requests
 from flask import Flask, Blueprint, jsonify, request
 from Config import *
 from utils import Tools
@@ -9,6 +9,7 @@ import os
 
 OCRBlueprint = Blueprint("OCRBlueprint", __name__, url_prefix = "/OCRInterface")
 fileSavePath = GLOBAL_FileSavePath
+
 
 @OCRBlueprint.route("/Doc", methods = ["POST"])
 def GetDocOCR():
