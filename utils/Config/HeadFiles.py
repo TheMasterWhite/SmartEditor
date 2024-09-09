@@ -23,8 +23,8 @@ class HeadFiles:
         # 读取配置文件
         Config = ConfigParser()
         Config.optionxform = str
-        absPath = HeadFiles.AbsPath("Config/Config.cfg")
-        Config.read(absPath)
+        cfgPath = "utils/Config/Config.cfg"
+        Config.read(cfgPath)
         # 遍历配置文件中的所有选项，创建全局变量
         global_vars = dict(Config["TOKENS"])
         for key, value in global_vars.items():
@@ -45,5 +45,3 @@ class HeadFiles:
     def InitProcess():
         HeadFiles.ReadConfigFile()
         HeadFiles.InitToken()
-
-
