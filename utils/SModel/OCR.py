@@ -1,5 +1,6 @@
 from utils.LModel.Interface import *
 from utils.Config.PMTProcess import *
+from utils.Config.FileProcess import *
 import base64, os, pathlib, json, logging
 from pathlib import Path
 from Config import *
@@ -29,6 +30,7 @@ class OCRBasic:
             # 获取解析结果
             ocrResponse = requests.post(GLOBAL_DOC_OCRURL, json = Payload, headers = headers)
             ocrResponseData = ocrResponse.json()
+            logging.info(f"OCR Response: {ocrResponseData}")
             return ocrResponseData
 
         except Exception as e:
