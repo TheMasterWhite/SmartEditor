@@ -45,3 +45,6 @@ class HeadFiles:
     def InitProcess():
         HeadFiles.ReadConfigFile()
         HeadFiles.InitToken()
+
+
+HeadFiles.InitProcess()

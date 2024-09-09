@@ -1,6 +1,6 @@
 from utils.LModel.Interface import *
 from utils.Config.PMTProcess import *
-
+from utils.Config.HeadFiles import *
 
 class OCRBasic:
 
@@ -61,7 +61,7 @@ class OCRInterface(OCRBasic):
         try:
             fileCode = {"PDF": 0, "IMG": 1}
             code = fileCode[FileType]
-            response = super(OCRInterface, OCRInterface).GetDocJson(FilePath, code)
+            response = OCRBasic.GetDocJson(FilePath, code)
             text = response['result']['tableOcrResult']['text_result']
             tableText = response['result']['tableOcrResult']['table_text_rec']
             resultText = max(text, tableText)
