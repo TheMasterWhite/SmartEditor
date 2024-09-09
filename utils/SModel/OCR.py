@@ -31,7 +31,8 @@ class OCRBasic:
             return ocrResponseData
 
         except Exception as e:
-            raise e
+            curTime = Tools.GetTime()
+            logging.error(f"[{curTime}]Module:[GetDocJson]" + str(e))
 
 
     @staticmethod
@@ -52,7 +53,8 @@ class OCRBasic:
             return responseData
 
         except Exception as e:
-            raise e
+            curTime = Tools.GetTime()
+            logging.error(f"[{curTime}]Module:[GetRawJson]" + str(e))
 
 
 class OCRInterface(OCRBasic):
@@ -71,7 +73,8 @@ class OCRInterface(OCRBasic):
             return resultText
 
         except Exception as e:
-            raise e
+            curTime = Tools.GetTime()
+            logging.error(f"[{curTime}]Module:[Doc]" + str(e))
 
 
     @staticmethod
@@ -84,7 +87,8 @@ class OCRInterface(OCRBasic):
             return resultText
 
         except Exception as e:
-            raise e
+            curTime = Tools.GetTime()
+            logging.error(f"[{curTime}]Module:[Raw]" + str(e))
 
 
     @staticmethod
@@ -113,4 +117,5 @@ class OCRInterface(OCRBasic):
             return content
 
         except Exception as e:
-            raise e
+            curTime = Tools.GetTime()
+            logging.error(f"[{curTime}]Module:[ProcessRaw]" + str(e))

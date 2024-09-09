@@ -14,7 +14,6 @@ fileSavePath = GLOBAL_FileSavePath
 def GetDocOCR():
     try:
         requestData = request.json
-        logging.info(f"Received request from OCR API,{requestData}")
         fileName = requestData["fileName"]
         filePath = os.path.join(fileSavePath, fileName)
         # 文件不存在
