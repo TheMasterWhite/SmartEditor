@@ -3,7 +3,7 @@ from utils.Config.PMTProcess import *
 import base64, os, pathlib, json, Config
 from pathlib import Path
 from Config import *
-
+from utils import Tools
 
 class OCRBasic:
 

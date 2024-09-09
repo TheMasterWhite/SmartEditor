@@ -21,9 +21,7 @@ def GetDocOCR():
             raise FileNotFoundError(f"File {fileName} does not exist.")
 
         saveFileName, tmp = os.path.splitext(fileName)
-        logging.info("555")
         fileExtension = Tools.GetExtension(FileName = fileName)
-        logging.info("666")
         fileType = "IMG"
         if fileExtension == "pdf":
             fileType = "PDF"
