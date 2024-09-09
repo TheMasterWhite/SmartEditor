@@ -1,8 +1,5 @@
 import copy
 import requests, json, os
-from utils.LModel.ChatBot import BotInterface
-from utils.LModel.Interface import LLMInterface
-from utils.Config.FileProcess import *
 
 
 # 用于单元测试
