@@ -5,7 +5,7 @@ from wsgiref.simple_server import WSGIServer
 from LLMRoute import LLMBlueprint
 from SModelRoute import OCRBlueprint
 from ServerProcess import ServerProcessBlueprint
-import Config
+from Config import *
 from utils import Tools
 
 app = Flask(__name__)

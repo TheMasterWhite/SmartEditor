@@ -82,19 +82,21 @@ def UnitTestGen():
 
 
 if __name__ == "__main__":
-    UnitTest()
-    print("666")
-    UnitTestGen()
+    # UnitTest()
+    # print("666")
+    # UnitTestGen()
+    #
+    # url = 'http://8.148.25.61:8888/Server/UploadFile'
+    # files = {"file": open("E:/Code/CodeLibrary/Python/SmartEditor/resources/Poster.jpg", "rb")}
+    # response = requests.post(url, files = files)
+    # print(response.json())
 
-    url = 'http://8.148.25.61:8888/Server/UploadFile'
-    files = {"file": open("E:/Code/CodeLibrary/Python/SmartEditor/resources/Poster.jpg", "rb")}
-    response = requests.post(url, files = files)
-    print(response.json())
-
-    url = 'http://8.148.25.61:8888/OCRInterface/Doc'
-    data = {
-        "fileName": "Poster.jpg",
-    }
-    headers = {'Content-Type': 'application/json'}
-    response = requests.post(url, data = json.dumps(data), headers = headers)
-    print(response.json())
+    # url = 'http://8.148.25.61:8888/OCRInterface/Doc'
+    # data = {
+    #     "fileName": "Poster.jpg",
+    # }
+    # headers = {'Content-Type': 'application/json'}
+    # response = requests.post(url, data = json.dumps(data), headers = headers)
+    # print(response.json())
+    Config.ReadConfigFile()
+    print(GLOBAL_ERNIETOKEN)

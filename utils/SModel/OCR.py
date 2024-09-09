@@ -1,6 +1,6 @@
 from utils.LModel.Interface import *
 from utils.Config.PMTProcess import *
-import base64, os, pathlib, json
+import base64, os, pathlib, json, Config
 from pathlib import Path
 
 
@@ -113,3 +113,5 @@ class OCRInterface(OCRBasic):
 
         except Exception as e:
             raise e
+
+print(GLOBAL_ERNIETOKEN)

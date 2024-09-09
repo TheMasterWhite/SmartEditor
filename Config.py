@@ -31,3 +31,5 @@ def InitToken():  # 初始化环境变量
 
 ReadConfigFile()
 InitToken()
+
+print(GLOBAL_ERNIETOKEN)
