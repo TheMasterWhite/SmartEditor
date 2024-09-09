@@ -18,8 +18,8 @@ def UploadFile():
         # 获取文件并保存
         file = request.files["file"]
         fileName = file.filename
-        #savePath = "E:\Code\CodeLibrary\Python\SmartEditor\Saves"
-        savePath = GLOBAL_UploadFileFolder
+        # savePath = "E:\Code\CodeLibrary\Python\SmartEditor\Saves"
+        savePath = "/Server/UserFiles"
         file.save(os.path.join(savePath, fileName))
 
         retObj = {
