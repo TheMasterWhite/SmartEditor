@@ -20,7 +20,7 @@ def GetDocOCR():
         if not os.path.exists(filePath):
             raise FileNotFoundError(f"File {fileName} does not exist.")
 
-        fileExtension = Tools.GetExtension(fileName)
+        saveFileName, fileExtension = os.path.splitext(fileName)
         fileType = "IMG"
         if fileExtension == "pdf":
             fileType = "PDF"
@@ -39,7 +39,7 @@ def GetDocOCR():
         logging.info(f"[{curTime}]Get OCR result successfully.")
 
         # 写入OCR识别结果
-        saveFileName = Tools.GetFileName(fileName) + ".txt"
+        saveFileName += ".txt"
         savePath = os.path.join(fileSavePath, saveFileName)
         with open(savePath, "w") as f:
             f.write(OCR_ResultString)

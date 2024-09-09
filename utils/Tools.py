@@ -14,8 +14,3 @@ def GetExtension(FileName):
     fileName, extension = os.path.splitext(FileName)
     return extension[1:] if extension.startswith('.') else extension
 
-
-# 获取文件名
-def GetFileName(FileName):
-    fileName, extension = os.path.splitext(FileName)
-    return fileName
