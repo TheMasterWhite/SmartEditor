@@ -4,6 +4,7 @@ from flask_cors import CORS
 from wsgiref.simple_server import WSGIServer
 from LLMRoute import LLMBlueprint
 from SModelRoute import OCRBlueprint
+from ServerProcess import ServerProcessBlueprint
 from utils import Tools
 
 app = Flask(__name__)
@@ -16,6 +17,8 @@ logging.basicConfig(filename = "Server/Log.log",
 app.register_blueprint(LLMBlueprint)
 # OCR注册蓝图
 app.register_blueprint(OCRBlueprint)
+# 服务业务注册蓝图
+app.register_blueprint(ServerProcessBlueprint)
 
 
 def StartServer():

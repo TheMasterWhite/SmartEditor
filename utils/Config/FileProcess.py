@@ -1,5 +1,4 @@
 import os
-
 from utils.Config.HeadFiles import *
 
 
@@ -112,11 +111,9 @@ class JsonOperator:
 
 
 def test():
-    a = GetPrompt().Data()["FunctionPrompt"]["Translate"]
+    a = GetPrompt().Data()["ScenePrompt_General"]["Translate"]
     print(a)
 
 
 if __name__ == '__main__':
     test()
-    print(a)
-    print(b)

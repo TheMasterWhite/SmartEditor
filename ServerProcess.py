@@ -3,7 +3,7 @@ from utils import Tools
 from werkzeug.utils import secure_filename
 import os
 
-ServerProcessBlueprint = Blueprint("ServerProcessBlueprint", __name__, url_prefix = "/ServerProcess")
+ServerProcessBlueprint = Blueprint("ServerProcessBlueprint", __name__, url_prefix = "/Server")
 
 
 # 从前端接收文件接口
@@ -17,8 +17,10 @@ def UploadFile():
 
         # 获取文件并保存
         file = request.files["file"]
-        fileName = secure_filename(file.filename)
-        file.save(os.path.join(GLOBAL_UploadFileFolder, fileName))
+        fileName = file.filename
+        #savePath = "E:\Code\CodeLibrary\Python\SmartEditor\Saves"
+        savePath = GLOBAL_UploadFileFolder
+        file.save(os.path.join(savePath, fileName))
 
         retObj = {
             "status": "success",
