@@ -115,7 +115,7 @@ class OSSProcess:  # OSS云服务处理类
                 bucket.put_object(key = FileName, data = fileobj)
 
             # 字符串处理获取OSS文件外链
-            ossPath = endPoint[:8] + BucketName + "." + endPoint[8:] + "/" + fileName
+            ossPath = endPoint[:8] + BucketName + "." + endPoint[8:] + "/" + fullFileName
             return ossPath
 
         except Exception as e:
