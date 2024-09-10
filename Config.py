@@ -4,8 +4,12 @@ import asyncio
 import base64
 import pathlib
 import json
-import requests
+import requests, logging
 from pathlib import Path
+
+logging.basicConfig(filename = "Server/Log.log",
+                    filemode = 'a',
+                    level = logging.INFO)
 
 
 def ReadConfigFile():

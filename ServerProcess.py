@@ -10,11 +10,10 @@ logging.basicConfig(filename = "Server/Log.log",
                     filemode = 'a',
                     level = logging.INFO)
 
-QuerySTTThread = TaskThread()
-QuerySTTThread.start()
-
 ServerProcessBlueprint = Blueprint("ServerProcessBlueprint", __name__, url_prefix = "/Server")
 fileSavePath = GLOBAL_FileSavePath
+QuerySTTThread = TaskThread()
+QuerySTTThread.start()
 
 
 # 从前端接收文件接口

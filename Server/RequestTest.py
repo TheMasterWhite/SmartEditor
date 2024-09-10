@@ -94,7 +94,7 @@ def UploadFileOCR():
 
 
 if __name__ == "__main__":
-    # UnitTest()
-    # print("666")
-    # UnitTestGen()
-    UploadFileOCR()
+    UnitTest()
+    print("666")
+    #UnitTestGen()
+    #UploadFileOCR()
