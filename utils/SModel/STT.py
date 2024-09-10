@@ -59,7 +59,7 @@ class TaskThread(threading.Thread):
                 FileProcess.SaveTxt(fileName, content)
                 curTime = Tools.GetTime()
                 logging.info(f"[{curTime}]Receive STT result successfully.")
-                del self.fileIdList[TaskId]
+                del self.fileIdList[taskId]
 
             elif (status == "Failed"):
                 curTime = Tools.GetTime()
