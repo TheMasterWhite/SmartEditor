@@ -28,9 +28,7 @@ def GetDocOCR():
         fileType = "IMG"
         if fileExtension == "pdf":
             fileType = "PDF"
-        elif (fileExtension == "jpg" or
-              fileExtension == "jpeg" or
-              fileExtension == "png"):
+        elif fileExtension in ["jpg", "jpeg", "png"]:
             fileType = "IMG"
         else:
             raise ValueError("Unsupported file type.")
@@ -56,6 +54,7 @@ def GetDocOCR():
         logging.info(f"[{curTime}]Write OCR result successfully.")
         return jsonify(retObj)
 
+    # 没找到本地文件
     except FileNotFoundError as e:
         curTime = Tools.GetTime()
         logging.error(f"[{curTime}]Module:[GetDocOCR]" + str(e))
@@ -65,6 +64,17 @@ def GetDocOCR():
             "response": str(e)
         }
         return jsonify(retObj), 404
+
+    # AI Studio服务未启动
+    except TypeError as e:
+        curTime = Tools.GetTime()
+        logging.info(f"[{curTime}]" + str(e))
+        retObj = {
+            "statusCode": 0,
+            "requestTime": curTime,
+            "response": "AI Studio service did not started."
+        }
+        return jsonify(retObj), 503
 
     except Exception as e:
         curTime = Tools.GetTime()
@@ -81,12 +91,22 @@ def GetDocOCR():
 def GetSTTResult():
     try:
         requestData = request.json
-        fileName = requestData["fileName"]
-        filePath = os.path.join(fileSavePath, fileName)
+        fullFileName = requestData["fileName"]
+        language = requestData.get("language", "Chinese")
+        filePath = os.path.join(fileSavePath, fullFileName)
         # 文件不存在
         if not os.path.exists(filePath):
-            raise FileNotFoundError(f"File {fileName} does not exist.")
+            raise FileNotFoundError(f"File {fullFileName} does not exist.")
 
+        STTInterface.MainProcess(FullFileName = fullFileName,
+                                 Language = language)
+        curTime = Tools.GetTime()
+        retObj = {
+            "statusCode": 1,
+            "requestTime": curTime,
+            "response": "Send STT result successfully."
+        }
+        return jsonify(retObj)
 
     except FileNotFoundError as e:
         curTime = Tools.GetTime()

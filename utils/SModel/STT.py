@@ -74,6 +74,8 @@ class TaskThread(threading.Thread):
         self.taskQueue.put(TaskId)
         self.fileIdList[TaskId] = FileName
 
+QuerySTTThread = TaskThread()
+QuerySTTThread.start()
 
 class STTInterface:  # 小模型应用接口类
 
@@ -112,3 +114,43 @@ class STTInterface:  # 小模型应用接口类
         except Exception as e:
             curTime = Tools.GetTime()
             logging.error(f"[{curTime}]Module:[CreateTask]" + str(e))
+
+
+    @staticmethod
+    def MainProcess(FullFileName, Language = "Chinese"):
+        try:
+            fileExtension = Tools.GetExtension(FullFileName)
+            fileName = Tools.GetFileName(FullFileName)
+
+            # 视频文件转wav再STT处理
+            if FileExtension in ["mp4"]:
+                FileProcess.ConvertToWav(FileName = FullFileName,
+                                         FileExtension = fileExtension)
+                # 发起STT服务调用
+                fileName_Wav = fileName + ".wav"
+                taskId = STTInterface.CreateTask(FileName = fileName_Wav)
+                # 加入轮询队列
+                QuerySTTThread.PutTaskId(FileName = fileName_Wav,
+                                         TaskId = taskId,
+                                         Language = Language)
+
+            # 音频文件，直接转文字处理
+            elif fileExtension in ["wav", "mp3", "pcm", "m4a", "amr"]:
+                # 发起STT服务调用
+                taskId = STTInterface.CreateTask(FileName = FullFileName)
+                # 加入轮询队列
+                QuerySTTThread.PutTaskId(FileName = FullFileName,
+                                         TaskId = taskId,
+                                         Language = Language)
+
+        except TypeError as e:
+            curTime = Tools.GetTime()
+            logging.error(f"[{curTime}]Module:[STT_MainProcess] AI Studio service did not started.")
+            raise e
+
+        except Exception as e:
+            curTime = Tools.GetTime()
+            logging.error(f"[{curTime}]Module:[STT_MainProcess]" + str(e))
+
+
+

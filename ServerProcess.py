@@ -11,8 +11,6 @@ logging.basicConfig(filename = "Server/Log.log",
 
 ServerProcessBlueprint = Blueprint("ServerProcessBlueprint", __name__, url_prefix = "/Server")
 fileSavePath = GLOBAL_FileSavePath
-QuerySTTThread = TaskThread()
-QuerySTTThread.start()
 
 
 # 从前端接收文件接口
@@ -27,29 +25,15 @@ def UploadFile():
         file = request.files["file"]
         fullFileName = file.filename
         file.save(os.path.join(fileSavePath, fullFileName))
-
         fileExtension = Tools.GetExtension(fullFileName)
         fileName = Tools.GetFileName(fullFileName)
 
-        # 视频文件转wav再STT处理
-        if fileExtension in ["mp4"]:
-            FileProcess.ConvertToWav(FileName = fullFileName,
+        # 预处理音视频
+        if fileExtension in ["mp4", "wav", "mp3", "pcm", "m4a", "amr"]:
+            STTInterface.MainProcess(FullFileName = fullFileName,
                                      FileExtension = fileExtension)
-            # 发起STT服务调用
-            fileName_Wav = Tools.GetFileName(fullFileName) + ".wav"
-            taskId = STTInterface.CreateTask(FileName = fileName_Wav)
-            # 加入轮询队列
-            QuerySTTThread.PutTaskId(FileName = fullFileName,
-                                     TaskId = taskId)
-        # 音频文件，直接转文字处理
-        elif fileExtension in ["wav", "mp3", "pcm", "m4a", "amr"]:
-            # 发起STT服务调用
-            taskId = STTInterface.CreateTask(FileName = fullFileName)
-            # 加入轮询队列
-            QuerySTTThread.PutTaskId(FileName = fullFileName,
-                                     TaskId = taskId)
 
-        # 图片，OCR处理
+        # 预处理图片
         elif fileExtension in ["pdf", "jpg", "jpeg", "png"]:
             if fileExtension == "pdf":
                 filePath = os.path.join(fileSavePath, fullFileName)
@@ -67,7 +51,9 @@ def UploadFile():
         elif fileExtension in ["txt"]:
             pass
         else:
+            # 上传文件格式不支持
             raise ValueError("Unsupported file type.")
+
         curTime = Tools.GetTime()
         retObj = {
             "statusCode": 1,
