@@ -7,7 +7,6 @@ from pathlib import Path
 from pydub import AudioSegment
 from utils import Tools
 from Config import *
-from app import QuerySTTThread
 
 fileSavePath = GLOBAL_FileSavePath
 
