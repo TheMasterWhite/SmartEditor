@@ -78,7 +78,8 @@ class STTInterface:  # 小模型应用接口类
             fileExtension = Tools.GetExtension(FileName)
             fileName = Tools.GetFileName(FileName)
             # 将文件上传到阿里云并获取外链
-            ossPath = OSSProcess.UploadFile(fileName, fileExtension)
+            ossPath = OSSProcess.UploadFile(FileName = fileName,
+                                            FileExtension = fileExtension)
             creatUrl = "https://aip.baidubce.com/rpc/2.0/aasr/v1/create?access_token=" + GetAccessToken()
             code = {"Chinese": 80006, "English": 1737}
             # 请求头

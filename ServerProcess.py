@@ -23,8 +23,8 @@ def UploadFile():
 
         # 获取文件并保存
         file = request.files["file"]
-        fileName = file.filename
-        file.save(os.path.join(fileSavePath, fileName))
+        fullFileName = file.filename
+        file.save(os.path.join(fileSavePath, fullFileName))
         curTime = Tools.GetTime()
 
         retObj = {
@@ -34,14 +34,14 @@ def UploadFile():
         }
 
         # 如果是音视频文件那就预处理成wav
-        fileExtension = Tools.GetExtension(fileName)
+        fileExtension = Tools.GetExtension(fullFileName)
         if fileExtension in ["mp3", "mp4"]:
-            FileProcess.ConvertToWav(FileName = fileName,
+            FileProcess.ConvertToWav(FileName = fullFileName,
                                      FileExtension = fileExtension)
             # 发起STT服务调用
-            taskId = STTInterface.CreateTask(FileName = fileName)
+            taskId = STTInterface.CreateTask(FileName = fullFileName)
             # 加入轮询队列
-            QuerySTTThread.PutTaskId(FileName = fileName,
+            QuerySTTThread.PutTaskId(FileName = fullFileName,
                                      TaskId = taskId)
 
     except Exception as e:

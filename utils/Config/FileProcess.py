@@ -107,8 +107,8 @@ class OSSProcess:  # OSS云服务处理类
             # 设置Bucket信息
             bucket = oss2.Bucket(auth = auth, endpoint = endPoint,
                                  bucket_name = BucketName)
-
-            filePath = os.path.join(fileSavePath, FileName)
+            fullFileName = FileName + '.' + fileSavePath
+            filePath = os.path.join(fileSavePath, fullFileName)
             with open(filePath, 'rb') as fileobj:
                 # Tell方法用于返回当前位置。
                 current = fileobj.tell()
