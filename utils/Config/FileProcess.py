@@ -7,6 +7,7 @@ from pathlib import Path
 from pydub import AudioSegment
 from utils import Tools
 from Config import *
+from app import QuerySTTThread
 
 fileSavePath = GLOBAL_FileSavePath
 
@@ -21,6 +22,17 @@ class FileProcess:  # 文件处理类
             Content = file.read()
             file.close()
             return Content
+        except Exception as e:
+            raise e
+
+
+    # 将字符串文本保存到txt中
+    @staticmethod
+    def SaveTxt(FileName, Content):
+        try:
+            filePath = os.path.join(fileSavePath, FileName)
+            with open(FileName, 'w', encoding = 'utf-8') as f:
+                f.write(Content)
         except Exception as e:
             raise e
 
@@ -50,11 +62,10 @@ class FileProcess:  # 文件处理类
         # 传入文件名，保存路径，文件扩展名
 
         try:
-            folderPath = FileProcess.AbsPath(TarPath)
             Time = datetime.datetime.now()
             FileName += "_"
             saveFileName = FileName + Time.strftime("%Y_%m_%d_%H_%M_%S") + "." + FileExtension
-            savePath = os.path.join(folderPath, saveFileName)
+            savePath = os.path.join(fileSavePath, saveFileName)
             return savePath
 
         except Exception as e:
@@ -85,7 +96,8 @@ class FileProcess:  # 文件处理类
 class OSSProcess:  # OSS云服务处理类
 
     @staticmethod
-    def UploadFile(FilePath, FileExtension, BucketName = "smart-editor"):  # 上传文件到阿里云，传入相对路径和文件扩展名,返回OSS文件路径
+    def UploadFile(FileName, FileExtension, BucketName = "smart-editor"):
+        # 上传文件到阿里云，传入文件名和文件扩展名,返回OSS文件路径
 
         try:
             # 获取鉴权
@@ -96,8 +108,7 @@ class OSSProcess:  # OSS云服务处理类
                                  bucket_name = BucketName)
 
             fileName = os.path.basename(FilePath)
-            absPath = FileProcess.AbsPath(FilePath)
-            with open(absPath, 'rb') as fileobj:
+            with open(FilePath, 'rb') as fileobj:
                 # Tell方法用于返回当前位置。
                 current = fileobj.tell()
                 bucket.put_object(key = fileName, data = fileobj)
@@ -107,7 +118,8 @@ class OSSProcess:  # OSS云服务处理类
             return ossPath
 
         except Exception as e:
-            raise e
+            curTime = Tools.GetTime()
+            logging.error(f"[{curTime}]Module:[OSS_UploadFile]" + str(e))
 
 
 class JsonOperator:

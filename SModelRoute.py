@@ -6,11 +6,11 @@ from utils.SModel.OCR import *
 from utils.SModel.TarDetect import *
 from utils.SModel.STT import *
 
-OCRBlueprint = Blueprint("OCRBlueprint", __name__, url_prefix = "/OCRInterface")
+SModelBlueprint = Blueprint("SModelBlueprint", __name__, url_prefix = "/SModelInterface")
 fileSavePath = GLOBAL_FileSavePath
 
 
-@OCRBlueprint.route("/Doc", methods = ["POST"])
+@SModelBlueprint.route("/Doc", methods = ["POST"])
 def GetDocOCR():
     try:
         requestData = request.json
@@ -66,6 +66,38 @@ def GetDocOCR():
     except Exception as e:
         curTime = Tools.GetTime()
         logging.error(f"[{curTime}]Module:[GetDocOCR]" + str(e))
+        retObj = {
+            "statusCode": 0,
+            "requestTime": curTime,
+            "response": str(e)
+        }
+        return jsonify(retObj), 500
+
+
+@SModelBlueprint.route("/STT", methods = ["POST"])
+def GetSTTResult():
+    try:
+        requestData = request.json
+        fileName = requestData["fileName"]
+        filePath = os.path.join(fileSavePath, fileName)
+        # 文件不存在
+        if not os.path.exists(filePath):
+            raise FileNotFoundError(f"File {fileName} does not exist.")
+
+
+    except FileNotFoundError as e:
+        curTime = Tools.GetTime()
+        logging.error(f"[{curTime}]Module:[GetSTTResult]" + str(e))
+        retObj = {
+            "statusCode": 0,
+            "requestTime": curTime,
+            "response": str(e)
+        }
+        return jsonify(retObj), 404
+
+    except Exception as e:
+        curTime = Tools.GetTime()
+        logging.error(f"[{curTime}]Module:[GetSTTResult]" + str(e))
         retObj = {
             "statusCode": 0,
             "requestTime": curTime,

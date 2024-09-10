@@ -1,7 +1,9 @@
+import logging
+
 from flask import Flask, Blueprint, request, jsonify, send_file
 from utils import Tools
-from werkzeug.utils import secure_filename
 from utils.Config.FileProcess import *
+from utils.SModel.STT import *
 import os
 
 ServerProcessBlueprint = Blueprint("ServerProcessBlueprint", __name__, url_prefix = "/Server")
@@ -33,6 +35,11 @@ def UploadFile():
         if fileExtension in ["mp3", "mp4"]:
             FileProcess.ConvertToWav(FileName = fileName,
                                      FileExtension = fileExtension)
+            # 发起STT服务调用
+            taskId = STTInterface.CreateTask(FileName = fileName)
+            # 加入轮询队列
+            QuerySTTThread.PutTaskId(FileName = fileName,
+                                     TaskId = taskId)
 
     except Exception as e:
         curTime = Tools.GetTime()
