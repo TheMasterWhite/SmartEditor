@@ -19,11 +19,6 @@ QuerySTTThread.start()
 @ServerProcessBlueprint.route("/UploadFile", methods = ["POST"])
 def UploadFile():
     try:
-        retObj = {
-            "statusCode": 1,
-            "requestTime": curTime,
-            "response": "File uploaded successfully."
-        }
         # 请求中不存在文件
         if "file" not in request.files:
             raise Exception("No file in the request.")
@@ -32,7 +27,6 @@ def UploadFile():
         file = request.files["file"]
         fullFileName = file.filename
         file.save(os.path.join(fileSavePath, fullFileName))
-        curTime = Tools.GetTime()
 
         fileExtension = Tools.GetExtension(fullFileName)
         fileName = Tools.GetFileName(fullFileName)
@@ -74,7 +68,12 @@ def UploadFile():
             pass
         else:
             raise ValueError("Unsupported file type.")
-
+        curTime = Tools.GetTime()
+        retObj = {
+            "statusCode": 1,
+            "requestTime": curTime,
+            "response": "File uploaded successfully."
+        }
         return jsonify(retObj)
 
     except ValueError as e:
