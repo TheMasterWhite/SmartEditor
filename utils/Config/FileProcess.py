@@ -31,7 +31,8 @@ class FileProcess:  # 文件处理类
     @staticmethod
     def SaveTxt(FileName, Content):
         try:
-            filePath = os.path.join(fileSavePath, FileName)
+            fullFileName = FileName + ".txt"
+            filePath = os.path.join(fileSavePath, fullFileName)
             with open(FileName, 'w', encoding = 'utf-8') as f:
                 f.write(Content)
         except Exception as e:
