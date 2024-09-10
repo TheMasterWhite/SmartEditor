@@ -76,6 +76,7 @@ def UploadFile():
         }
         return jsonify(retObj)
 
+    # 文件不符合格式规范
     except ValueError as e:
         curTime = Tools.GetTime()
         logging.info(f"[{curTime}]" + str(e))
@@ -83,6 +84,17 @@ def UploadFile():
             "statusCode": 0,
             "requestTime": curTime,
             "response": str(e)
+        }
+        return jsonify(retObj)
+
+    # AI Studio服务未启动
+    except TypeError as e:
+        curTime = Tools.GetTime()
+        logging.info(f"[{curTime}]" + str(e))
+        retObj = {
+            "statusCode": 0,
+            "requestTime": curTime,
+            "response": "AI Studio service did not started."
         }
         return jsonify(retObj)
 
