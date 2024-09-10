@@ -2,7 +2,7 @@ from utils.Config.PMTProcess import *
 from Config import *
 from utils import Tools
 import queue, threading, time, logging
-
+from threading import Thread
 fileSavePath = GLOBAL_FileSavePath
 logging.basicConfig(filename = "Server/Log.log",
                     filemode = 'a',
@@ -42,7 +42,7 @@ class TaskThread(threading.Thread):
 
 
     # 轮询任务列表
-    def PollTaskIdList(self):
+    def run(self):
         while True:
             if self.taskQueue.empty():
                 time.sleep(1)

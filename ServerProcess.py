@@ -42,7 +42,8 @@ def UploadFile():
             FileProcess.ConvertToWav(FileName = fullFileName,
                                      FileExtension = fileExtension)
             # 发起STT服务调用
-            taskId = STTInterface.CreateTask(FileName = fullFileName)
+            fileName_Wav = Tools.GetFileName(fullFileName) + ".wav"
+            taskId = STTInterface.CreateTask(FileName = fileName_Wav)
             # 加入轮询队列
             QuerySTTThread.PutTaskId(FileName = fullFileName,
                                      TaskId = taskId)
