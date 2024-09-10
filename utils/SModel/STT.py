@@ -49,6 +49,7 @@ class TaskThread(threading.Thread):
                 continue
 
             taskId = self.taskQueue.get()
+            logging.info("Checking.....")
             status = self.QueryTask(taskId)
 
             if (status == "Success"):
@@ -104,7 +105,7 @@ class STTInterface:  # 小模型应用接口类
             taskID = createResponseData["task_id"]
 
             curTime = Tools.GetTime()
-            logging.info(f"[{curTime}]Created STT Task successfully.")
+            logging.info(f"[{curTime}]Created STT Task successfully, ID = {taskID}.")
             return taskID
 
         except Exception as e:
