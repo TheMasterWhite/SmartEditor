@@ -1,7 +1,7 @@
 from utils.Config.PMTProcess import *
 from Config import *
 from utils import Tools
-import queue, threading, time
+import queue, threading, time, logging
 
 fileSavePath = GLOBAL_FileSavePath
 

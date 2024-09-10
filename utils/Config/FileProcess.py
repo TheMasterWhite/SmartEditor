@@ -7,6 +7,7 @@ from pathlib import Path
 from pydub import AudioSegment
 from utils import Tools
 from Config import *
+import oss2
 
 fileSavePath = GLOBAL_FileSavePath
 

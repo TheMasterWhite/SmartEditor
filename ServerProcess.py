@@ -1,5 +1,4 @@
 import logging
-
 from flask import Flask, Blueprint, request, jsonify, send_file
 from utils import Tools
 from utils.Config.FileProcess import *
