@@ -6,6 +6,10 @@ from utils.SModel.STT import *
 import os
 from utils.SModel.STT import TaskThread
 
+logging.basicConfig(filename = "Server/Log.log",
+                    filemode = 'a',
+                    level = logging.INFO)
+
 QuerySTTThread = TaskThread()
 QuerySTTThread.start()
 
