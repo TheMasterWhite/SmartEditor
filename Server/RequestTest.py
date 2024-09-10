@@ -84,6 +84,16 @@ def UploadFileOCR():
     response = requests.post(url, files = files)
     print(response.json())
 
+    files = {"file": open("E:/Code/CodeLibrary/Python/SmartEditor/resources/沁园春雪.mp3", "rb")}
+    response = requests.post(url, files = files)
+    print(response.json())
+
+    files = {"file": open("E:/Code/CodeLibrary/Python/SmartEditor/resources/沁园春长沙.mp4", "rb")}
+    response = requests.post(url, files = files)
+    print(response.json())
+
+
+
     # url = 'http://8.148.25.61:8888/OCRInterface/Doc'
     # data = {
     #     "fileName": "作文.pdf",
