@@ -36,7 +36,7 @@ class FileProcess:  # 文件处理类
         try:
             fullFileName = FileName + ".txt"
             filePath = os.path.join(fileSavePath, fullFileName)
-            with open(FileName, 'w', encoding = 'utf-8') as f:
+            with open(filePath, 'w', encoding = 'utf-8') as f:
                 f.write(Content)
         except Exception as e:
             raise e
