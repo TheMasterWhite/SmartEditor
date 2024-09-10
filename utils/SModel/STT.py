@@ -54,8 +54,7 @@ class TaskThread(threading.Thread):
             if (status == "Success"):
                 fullFileName = self.fileIdList[taskId]
                 fileName = Tools.GetFileName(fullFileName)
-                content = responseData["tasks_info"][0]["task_result"]["result"]
-
+                content = responseData["tasks_info"][0]["task_result"]["result"][0]
                 # 保存结果到txt
                 FileProcess.SaveTxt(fileName, content)
                 curTime = Tools.GetTime()
