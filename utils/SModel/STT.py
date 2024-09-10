@@ -37,8 +37,7 @@ class TaskThread(threading.Thread):
         queryResponse = requests.request("POST", queryUrl, headers = headers, data = json.dumps(data))
         queryData = queryResponse.json()
         # 获取状态
-        status = queryData["tasks_info"][0]["task_status"]
-        return status
+        return queryData
 
 
     # 轮询任务列表
@@ -49,13 +48,18 @@ class TaskThread(threading.Thread):
                 continue
 
             taskId = self.taskQueue.get()
-            status = self.QueryTask(taskId)
+            responseData = self.QueryTask(taskId)
+            status = responseData["tasks_info"][0]["task_status"]
+
             if (status == "Success"):
                 fullFileName = self.fileIdList[taskId]
                 fileName = Tools.GetFileName(fullFileName)
+                content = responseData["tasks_info"][0]["task_result"]["result"]
+
+                # 保存结果到txt
                 FileProcess.SaveTxt(fileName, content)
                 curTime = Tools.GetTime()
-                logging.info(f"[{curTime}]Receive STT task successfully.")
+                logging.info(f"[{curTime}]Receive STT result successfully.")
                 del self.fileIdList[TaskId]
 
             elif (status == "Failed"):
