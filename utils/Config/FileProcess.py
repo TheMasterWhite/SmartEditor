@@ -116,7 +116,7 @@ class OSSProcess:  # OSS云服务处理类
             with open(filePath, 'rb') as fileobj:
                 # Tell方法用于返回当前位置。
                 current = fileobj.tell()
-                bucket.put_object(key = FileName, data = fileobj)
+                bucket.put_object(key = fullFileName, data = fileobj)
 
             # 字符串处理获取OSS文件外链
             ossPath = endPoint[:8] + BucketName + "." + endPoint[8:] + "/" + fullFileName
