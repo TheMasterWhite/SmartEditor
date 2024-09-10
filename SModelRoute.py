@@ -13,7 +13,7 @@ logging.basicConfig(filename = "Server/Log.log",
                     level = logging.INFO)
 
 
-@SModelBlueprint.route("/Doc", methods = ["POST"])
+@SModelBlueprint.route("/OCR", methods = ["POST"])
 def GetDocOCR():
     try:
         requestData = request.json
@@ -113,7 +113,7 @@ def GetSTTResult():
         retObj = {
             "statusCode": 1,
             "requestTime": curTime,
-            "response": "Send STT result successfully."
+            "response": "Send STT request successfully."
         }
         return jsonify(retObj)
 

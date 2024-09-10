@@ -9,7 +9,7 @@ logging.basicConfig(filename = "Server/Log.log",
                     filemode = 'a',
                     level = logging.INFO)
 
-ServerProcessBlueprint = Blueprint("ServerProcessBlueprint", __name__, url_prefix = "/Server")
+ServerProcessBlueprint = Blueprint("ServerProcessBlueprint", __name__, url_prefix = "/Service")
 fileSavePath = GLOBAL_FileSavePath
 
 
