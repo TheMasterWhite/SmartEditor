@@ -78,21 +78,19 @@ def UnitTestGen():
     print()
 
 
-def UploadFileOCR():
+def UploadFileSTT():
     url = 'http://8.148.25.61:8888/Server/UploadFile'
     # files = {"file": open("E:/Code/CodeLibrary/Python/SmartEditor/resources/Poster.jpg", "rb")}
     # response = requests.post(url, files = files)
     # print(response.json())
 
-    files = {"file": open("E:/Code/CodeLibrary/Python/SmartEditor/resources/沁园春雪.mp3", "rb")}
-    response = requests.post(url, files = files)
-    print(response.json())
-
-    files = {"file": open("E:/Code/CodeLibrary/Python/SmartEditor/resources/沁园春长沙.mp4", "rb")}
-    response = requests.post(url, files = files)
-    print(response.json())
-
-
+    # files = {"file": open("E:/Code/CodeLibrary/Python/SmartEditor/resources/沁园春雪.mp3", "rb")}
+    # response = requests.post(url, files = files)
+    # print(response.json())
+    #
+    # files = {"file": open("E:/Code/CodeLibrary/Python/SmartEditor/resources/沁园春长沙.mp4", "rb")}
+    # response = requests.post(url, files = files)
+    # print(response.json())
 
     # url = 'http://8.148.25.61:8888/OCRInterface/Doc'
     # data = {
@@ -103,8 +101,25 @@ def UploadFileOCR():
     # print(response.json())
 
 
+def SModelTest():
+    url = "http://8.148.25.61:8888/Server/STT"
+    headers = {'Content-Type': 'application/json'}
+    data = {
+        "fileName": ["作文.pdf"]
+    }
+    response = requests.post(url, files = files)
+    print(response.json())
+
+    data = {
+        "fileData": [{"name": "沁园春雪.mp3", "language": "Chinese"},
+                     {"name": "沁园春长沙.mp4", "language": "Chinese"}]
+    }
+    response = requests.post(url, files = files)
+    print(response.json())
+
+
 if __name__ == "__main__":
     # UnitTest()
     # print("666")
-    #UnitTestGen()
+    # UnitTestGen()
     UploadFileOCR()

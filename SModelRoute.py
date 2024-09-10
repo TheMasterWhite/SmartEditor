@@ -17,41 +17,44 @@ logging.basicConfig(filename = "Server/Log.log",
 def GetDocOCR():
     try:
         requestData = request.json
-        fileName = requestData["fileName"]
-        filePath = os.path.join(fileSavePath, fileName)
-        # 文件不存在
-        if not os.path.exists(filePath):
-            raise FileNotFoundError(f"File {fileName} does not exist.")
+        fileNameList = requestData["fileName"]
 
-        saveFileName = Tools.GetFileName(FileName = fileName)
-        fileExtension = Tools.GetExtension(FileName = fileName)
-        fileType = "IMG"
-        if fileExtension == "pdf":
-            fileType = "PDF"
-        elif fileExtension in ["jpg", "jpeg", "png"]:
+        for fileName in fileNameList:
+
+            filePath = os.path.join(fileSavePath, fileName)
+            # 文件不存在
+            if not os.path.exists(filePath):
+                raise FileNotFoundError(f"File {fileName} does not exist.")
+
+            saveFileName = Tools.GetFileName(FileName = fileName)
+            fileExtension = Tools.GetExtension(FileName = fileName)
             fileType = "IMG"
-        else:
-            raise ValueError("Unsupported file type.")
+            if fileExtension == "pdf":
+                fileType = "PDF"
+            elif fileExtension in ["jpg", "jpeg", "png"]:
+                fileType = "IMG"
+            else:
+                raise ValueError("Unsupported file type.")
 
-        # 发起OCR调用
-        OCR_ResultString = OCRInterface.Doc(FilePath = filePath,
-                                            FileType = fileType)
-        curTime = Tools.GetTime()
-        logging.info(f"[{curTime}]Get OCR result successfully.")
+            # 发起OCR调用
+            OCR_ResultString = OCRInterface.Doc(FilePath = filePath,
+                                                FileType = fileType)
+            curTime = Tools.GetTime()
+            logging.info(f"[{curTime}]Get OCR result successfully.")
 
-        # 写入OCR识别结果
-        saveFileName += ".txt"
-        savePath = os.path.join(fileSavePath, saveFileName)
-        with open(savePath, "w") as f:
-            f.write(OCR_ResultString)
+            # 写入OCR识别结果
+            saveFileName += ".txt"
+            savePath = os.path.join(fileSavePath, saveFileName)
+            with open(savePath, "w") as f:
+                f.write(OCR_ResultString)
 
         retObj = {
             "statusCode": 1,
             "requestTime": curTime,
-            "response": "OCR result saved successfully."
+            "response": "OCR results saved successfully."
         }
         curTime = Tools.GetTime()
-        logging.info(f"[{curTime}]Write OCR result successfully.")
+        logging.info(f"[{curTime}]Write OCR results successfully.")
         return jsonify(retObj)
 
     # 没找到本地文件
@@ -91,15 +94,21 @@ def GetDocOCR():
 def GetSTTResult():
     try:
         requestData = request.json
-        fullFileName = requestData["fileName"]
-        language = requestData.get("language", "Chinese")
-        filePath = os.path.join(fileSavePath, fullFileName)
-        # 文件不存在
-        if not os.path.exists(filePath):
-            raise FileNotFoundError(f"File {fullFileName} does not exist.")
+        fileData = requestData["fileData"]
 
-        STTInterface.MainProcess(FullFileName = fullFileName,
-                                 Language = language)
+        # 处理数据列表
+        for file in fileData:
+            fullFileName = file["name"]
+            language = file.get("language", "Chinese")
+
+            filePath = os.path.join(fileSavePath, fullFileName)
+            # 文件不存在
+            if not os.path.exists(filePath):
+                raise FileNotFoundError(f"File {fullFileName} does not exist.")
+
+            STTInterface.MainProcess(FullFileName = fullFileName,
+                                     Language = language)
+
         curTime = Tools.GetTime()
         retObj = {
             "statusCode": 1,
