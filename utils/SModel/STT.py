@@ -27,7 +27,7 @@ class TaskThread(threading.Thread):
 
 
     # 获取音频转写任务结果
-    def QueryTask(self, TaskId) -> bool:
+    def QueryTask(self, TaskId):
         queryUrl = "https://aip.baidubce.com/rpc/2.0/aasr/v1/query?access_token=" + GetAccessToken()
         headers = {
             'Content-Type': 'application/json',
