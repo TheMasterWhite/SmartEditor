@@ -6,7 +6,7 @@ from Config import *
 from LLMRoute import LLMBlueprint
 from SModelRoute import SModelBlueprint
 from ServerProcess import ServerProcessBlueprint
-from utils.SModel.STT import TaskThread
+from utils.SModel.STT import TaskThread, SModelBuleprint
 from utils import Tools
 
 app = Flask(__name__)
