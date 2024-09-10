@@ -50,11 +50,13 @@ class TaskThread(threading.Thread):
                 content = queryData["tasks_info"][0]["task_result"]["result"]
                 fileName = self.fileIdList[TaskId]
                 FileProcess.SaveTxt(fileName, content)
+                curTime = Tools.GetTime()
+                logging.info(f"[{curTime}]Receive STT task successfully.")
                 del self.fileIdList[TaskId]
 
             elif (status == "Failed"):
                 curTime = Tools.GetTime()
-                logging.info(f"[{curTime}]STT task failed")
+                logging.info(f"[{curTime}]STT task failed.")
 
             elif (status == "Running"):
                 self.taskQueue.put(taskId)
@@ -82,7 +84,7 @@ class STTInterface:  # 小模型应用接口类
             # 请求头
             payload = json.dumps({
                 "speech_url": ossPath,
-                "format": FileExtension,
+                "format": "wav",
                 "pid": code[Language],
                 "rate": 16000,
             })
