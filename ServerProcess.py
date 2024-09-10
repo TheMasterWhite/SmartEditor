@@ -4,6 +4,7 @@ from utils import Tools
 from utils.Config.FileProcess import *
 from utils.SModel.STT import *
 import os
+from app import QuerySTTThread
 
 ServerProcessBlueprint = Blueprint("ServerProcessBlueprint", __name__, url_prefix = "/Server")
 fileSavePath = GLOBAL_FileSavePath
