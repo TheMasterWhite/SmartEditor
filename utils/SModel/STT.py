@@ -18,6 +18,8 @@ class TaskThread(threading.Thread):
         super().__init__()
         self.taskQueue = queue.Queue()
         self.fileIdList = {}
+        curTime = Tools.GetTime()
+        logging.info(f"[{curTime}]TaskThread Started.")
 
 
     # 获取音频转写任务结果
