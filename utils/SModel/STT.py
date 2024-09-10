@@ -130,25 +130,20 @@ class STTInterface:  # 小模型应用接口类
                                          FileExtension = fileExtension)
                 # 发起STT服务调用
                 fileName_Wav = fileName + ".wav"
-                taskId = STTInterface.CreateTask(FullFileName = fileName_Wav)
+                taskId = STTInterface.CreateTask(FullFileName = fileName_Wav,
+                                                 Language = Language)
                 # 加入轮询队列
                 QuerySTTThread.PutTaskId(FileName = fileName_Wav,
-                                         TaskId = taskId,
-                                         Language = Language)
+                                         TaskId = taskId)
 
             # 音频文件，直接转文字处理
             elif fileExtension in ["wav", "mp3", "pcm", "m4a", "amr"]:
                 # 发起STT服务调用
-                taskId = STTInterface.CreateTask(FullFileName = FullFileName)
+                taskId = STTInterface.CreateTask(FullFileName = FullFileName,
+                                                 Language = Language)
                 # 加入轮询队列
                 QuerySTTThread.PutTaskId(FileName = FullFileName,
-                                         TaskId = taskId,
-                                         Language = Language)
-
-        except TypeError as e:
-            curTime = Tools.GetTime()
-            logging.error(f"[{curTime}]Module:[STT_MainProcess] AI Studio service did not started.")
-            raise e
+                                         TaskId = taskId)
 
         except Exception as e:
             curTime = Tools.GetTime()

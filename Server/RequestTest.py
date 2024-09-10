@@ -80,9 +80,9 @@ def UnitTestGen():
 
 def UploadFileOCR():
     url = 'http://8.148.25.61:8888/Server/UploadFile'
-    files = {"file": open("E:/Code/CodeLibrary/Python/SmartEditor/resources/Poster.jpg", "rb")}
-    response = requests.post(url, files = files)
-    print(response.json())
+    # files = {"file": open("E:/Code/CodeLibrary/Python/SmartEditor/resources/Poster.jpg", "rb")}
+    # response = requests.post(url, files = files)
+    # print(response.json())
 
     files = {"file": open("E:/Code/CodeLibrary/Python/SmartEditor/resources/沁园春雪.mp3", "rb")}
     response = requests.post(url, files = files)
