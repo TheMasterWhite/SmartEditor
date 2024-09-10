@@ -49,10 +49,9 @@ class TaskThread(threading.Thread):
                 continue
 
             taskId = self.taskQueue.get()
-            logging.info("Checking.....")
             status = self.QueryTask(taskId)
             if (status == "Success"):
-                fullFileName = self.fileIdList[TaskId]
+                fullFileName = self.fileIdList[taskId]
                 fileName = Tools.GetFileName(fullFileName)
                 FileProcess.SaveTxt(fileName, content)
                 curTime = Tools.GetTime()
