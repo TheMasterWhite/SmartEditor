@@ -2,7 +2,7 @@ from utils.Config.PMTProcess import *
 from Config import *
 from utils import Tools
 import queue, threading, time, logging
-from TaskThread import *
+from utils.SModel.TaskThread import *
 
 fileSavePath = GLOBAL_FileSavePath
 logging.basicConfig(filename = "Server/Log.log",
