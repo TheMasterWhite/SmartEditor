@@ -3,6 +3,7 @@ from Config import *
 from utils import Tools
 import queue, threading, time, logging
 from threading import Thread
+
 fileSavePath = GLOBAL_FileSavePath
 logging.basicConfig(filename = "Server/Log.log",
                     filemode = 'a',
@@ -32,9 +33,8 @@ class TaskThread(threading.Thread):
             'Content-Type': 'application/json',
             'Accept': 'application/json'
         }
-        data = json.dumps({"task_ids": [TaskId]})
-
-        queryResponse = requests.request("POST", queryUrl, headers = headers, data = quertPayload)
+        data = {"task_ids": [TaskId]}
+        queryResponse = requests.request("POST", queryUrl, headers = headers, data = json.dumps(data))
         queryData = queryResponse.json()
         # 获取状态
         status = queryData["tasks_info"][0]["task_status"]
@@ -51,10 +51,9 @@ class TaskThread(threading.Thread):
             taskId = self.taskQueue.get()
             logging.info("Checking.....")
             status = self.QueryTask(taskId)
-
             if (status == "Success"):
-                content = queryData["tasks_info"][0]["task_result"]["result"]
-                fileName = self.fileIdList[TaskId]
+                fullFileName = self.fileIdList[TaskId]
+                fileName = Tools.GetFileName(fullFileName)
                 FileProcess.SaveTxt(fileName, content)
                 curTime = Tools.GetTime()
                 logging.info(f"[{curTime}]Receive STT task successfully.")
