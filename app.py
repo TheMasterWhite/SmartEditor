@@ -10,8 +10,6 @@ from utils.SModel.STT import TaskThread
 from utils import Tools
 
 app = Flask(__name__)
-QuerySTTThread = TaskThread()
-QuerySTTThread.start()
 CORS(app, resources = {r"/*": {"origins": "*"}})
 
 logging.basicConfig(filename = "Server/Log.log",
