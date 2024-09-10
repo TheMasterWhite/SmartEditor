@@ -6,6 +6,8 @@ from pathlib import Path
 from Config import *
 from utils import Tools
 
+fileSavePath = GLOBAL_FileSavePath
+
 
 class OCRBasic:
 

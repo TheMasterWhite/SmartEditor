@@ -59,7 +59,7 @@ def UploadFile():
                                     Content = OCRResult)
             else:
                 filePath = os.path.join(fileSavePath, fullFileName)
-                OCRResult = OCRInterface.Doc(FileName = filePath,
+                OCRResult = OCRInterface.Doc(FilePath = filePath,
                                              FileType = "IMG")
                 FileProcess.SaveTxt(FileName = fileName,
                                     Content = OCRResult)
