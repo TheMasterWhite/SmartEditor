@@ -108,11 +108,11 @@ class OSSProcess:  # OSS云服务处理类
             bucket = oss2.Bucket(auth = auth, endpoint = endPoint,
                                  bucket_name = BucketName)
 
-            fileName = os.path.basename(FilePath)
-            with open(FilePath, 'rb') as fileobj:
+            filePath = os.path.join(fileSavePath, FileName)
+            with open(filePath, 'rb') as fileobj:
                 # Tell方法用于返回当前位置。
                 current = fileobj.tell()
-                bucket.put_object(key = fileName, data = fileobj)
+                bucket.put_object(key = FileName, data = fileobj)
 
             # 字符串处理获取OSS文件外链
             ossPath = endPoint[:8] + BucketName + "." + endPoint[8:] + "/" + fileName
