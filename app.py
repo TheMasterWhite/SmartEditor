@@ -11,8 +11,9 @@ from utils import Tools
 
 app = Flask(__name__)
 CORS(app, resources = {r"/*": {"origins": "*"}})
-
-
+logging.basicConfig(filename = "Server/Log.log",
+                    filemode = 'a',
+                    level = logging.INFO)
 
 # 大模型注册蓝图
 app.register_blueprint(LLMBlueprint)

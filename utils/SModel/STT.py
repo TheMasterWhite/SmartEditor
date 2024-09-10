@@ -4,6 +4,9 @@ from utils import Tools
 import queue, threading, time, logging
 
 fileSavePath = GLOBAL_FileSavePath
+logging.basicConfig(filename = "Server/Log.log",
+                    filemode = 'a',
+                    level = logging.INFO)
 
 
 def GetAccessToken():  # 百度智能云获取access_token
