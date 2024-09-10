@@ -6,7 +6,7 @@ from Config import *
 from LLMRoute import LLMBlueprint
 from SModelRoute import SModelBlueprint
 from ServerProcess import ServerProcessBlueprint
-from utils.SModel.STT import TaskThread, SModelBuleprint
+from utils.SModel.STT import TaskThread, SModelBlueprint
 from utils import Tools
 
 app = Flask(__name__)
@@ -21,7 +21,7 @@ logging.basicConfig(filename = "Server/Log.log",
 # 大模型注册蓝图
 app.register_blueprint(LLMBlueprint)
 # OCR注册蓝图
-app.register_blueprint(SModelBuleprint)
+app.register_blueprint(SModelBlueprint)
 # 服务业务注册蓝图
 app.register_blueprint(ServerProcessBlueprint)
 
