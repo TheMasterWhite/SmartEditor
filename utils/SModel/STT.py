@@ -15,6 +15,7 @@ def GetAccessToken():  # 百度智能云获取access_token
 
 class TaskThread(threading.Thread):
     def __init__(self):
+        super().__init__()
         self.taskQueue = queue.Queue()
         self.fileIdList = {}
 
