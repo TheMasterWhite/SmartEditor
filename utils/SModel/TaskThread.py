@@ -30,6 +30,7 @@ class TaskThread(threading.Thread):
         data = {"task_ids": [TaskId]}
         queryResponse = requests.request("POST", queryUrl, headers = headers, data = json.dumps(data))
         queryData = queryResponse.json()
+        logging.info(queryData)
         # 获取状态
         return queryData
 
