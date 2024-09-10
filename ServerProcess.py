@@ -75,6 +75,8 @@ def UploadFile():
         else:
             raise ValueError("Unsupported file type.")
 
+        return jsonify(retObj)
+
     except ValueError as e:
         curTime = Tools.GetTime()
         logging.info(f"[{curTime}]" + str(e))
