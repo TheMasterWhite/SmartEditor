@@ -338,7 +338,7 @@ def ChatBot():
                     tmpContent = FileProcess.ReadTxt(FilePath = filePath)
                     knowledgeContent += tmpContent + "\n"
 
-                bot.LoadKnowledgeLib_String(Knowledge = knowledgeContent,
+                bot.LoadKnowledgeLib_String(KnowledgeText = knowledgeContent,
                                             UserId = userId)
 
                 response = bot.GetResponse(content, userId)
