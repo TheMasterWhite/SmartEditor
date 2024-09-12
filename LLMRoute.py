@@ -319,6 +319,7 @@ def ChatBot():
                 if len(userFileList) > 5:
                     raise ValueError("The number of files could not be more than 5.")
 
+                logging.info("666")
                 knowledgeContent = ""
                 # 获取知识库中txt
                 for fileName in userFileList:
@@ -334,6 +335,7 @@ def ChatBot():
 
                 bot.LoadKnowledgeLib_String(Knowledge = knowledgeContent,
                                             UserId = userId)
+
                 response = bot.GetResponse(content, userId)
                 curTime = Tools.GetTime()
                 retObj = {
