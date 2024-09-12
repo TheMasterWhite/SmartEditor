@@ -293,7 +293,7 @@ def ChatBotStream():
 def Check():
     try:
         requestData = request.json
-        userContent = requestData["userContent"]
+        userContent = requestData["content"]
         userFileList = requestData["fileName"]
         if len(userFileList) > 5:
             curTime = Tools.GetTime()
@@ -310,7 +310,7 @@ def Check():
         for fileName in userFileList:
             rawName = Tools.GetFileName(fileName)
             TarName = rawName + '.txt'
-            filePath = os.path.join(fileName, TarName)
+            filePath = os.path.join(fileSavePath, TarName)
             tmpContent = FileProcess.ReadTxt(FilePath = filePath)
             knowledgeContent += tmpContent + "\n"
 
