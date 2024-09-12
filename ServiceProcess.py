@@ -48,7 +48,10 @@ def UploadFile():
                                     Content = OCRResult)
 
         elif fileExtension in ["txt"]:
-            pass
+            filePath = os.path.join(fileSavePath, fullFileName)
+            FileProcess.SaveTxt(FileName = fileName,
+                                Content = OCRResult)
+
         else:
             # 上传文件格式不支持
             raise ValueError("Unsupported file type.")
