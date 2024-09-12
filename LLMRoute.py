@@ -427,7 +427,7 @@ def ClearBotHistory():
     try:
         requestData = request.json
         userId = requestData.get("userId", "user")
-        bot.ClearBotHistory(userId)
+        bot.ClearHistory(userId)
         curTime = Tools.GetTime()
         retObj = {
             "statusCode": 1,
