@@ -283,6 +283,51 @@ def Check():
         return jsonify(retObj)
 
 
+# 知识库检查，返回迭代器
+@LLMBlueprint.route("/CheckStream", methods = ["POST"])
+def CheckStream():
+    try:
+        requestData = request.json
+        userContent = requestData["content"]
+        userFileList = requestData.get("fileName", None)
+
+        # 没传文件
+        if userFileList is None:
+            raise FileExistsError("Which file do you want to check?")
+
+        # 限制文件数量
+        if len(userFileList) > 5:
+            raise FileNotFoundError("The number of files could not be more than 5.")
+
+        knowledgeContent = ""
+        # 获取知识库中txt
+        for fileName in userFileList:
+            rawName = Tools.GetFileName(fileName)
+            TarName = rawName + '.txt'
+            filePath = os.path.join(fileSavePath, TarName)
+            # 文件不存在
+            if not os.path.exists(filePath):
+                raise FileNotFoundError(f"File {fileName} does not exist.")
+
+            tmpContent = FileProcess.ReadTxt(FilePath = filePath)
+            knowledgeContent += tmpContent + "\n"
+
+        responseStream = LLMInterface.CheckStream_String(Tartext = userContent,
+                                                         KnowledgeContent = knowledgeContent)
+        logging.info(f"[{curTime}]Check_Stream successed.")
+        return Response(stream_with_context(responseStream))
+
+    except Exception as e:
+        curTime = Tools.GetTime()
+        logging.error(f"[{curTime}]Module:[CheckStream]" + str(e))
+        retObj = {
+            "statusCode": 0,
+            "requestTime": curTime,
+            "response": str(e)
+        }
+        return jsonify(retObj)
+
+
 # 对话机器人功能接口
 @LLMBlueprint.route("/ChatBot", methods = ["POST"])
 def ChatBot():
@@ -432,7 +477,7 @@ def ClearBotHistory():
         retObj = {
             "statusCode": 1,
             "requestTime": curTime,
-            "response": "Clear Bot history successfully."
+            "response": "Successfully clear Bot history."
         }
         return jsonify(retObj)
 
