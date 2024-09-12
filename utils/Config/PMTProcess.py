@@ -15,7 +15,7 @@ class GetPrompt:  # 获取Prompt的单例类
     def __new__(cls, *args, **kwargs):  # 创建实例
         if not cls.instance:
             cls.instance = super(GetPrompt, cls).__new__(cls, *args, **kwargs)
-            with open(absPath, "promptsLibPath", encoding = "utf-8") as f:
+            with open(promptsLibPath , "r", encoding = "utf-8") as f:
                 cls.data = json.load(f)
         return cls.instance
 
