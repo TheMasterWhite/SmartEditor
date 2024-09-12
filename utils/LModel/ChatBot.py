@@ -87,9 +87,8 @@ class BotInterface(BotBasic):
     # 载入知识库，传入知识库文本
     def LoadKnowledgeLib_String(self, KnowledgeText, UserId):
         try:
-            initedUserId = "Lib" + UserId
             InitedList = KnowledgeLib.InitList_String(KnowledgeText)
-            self.Parameter[initedUserId] = InitedList
+            self.Parameter[UserId] = InitedList
         except Exception as e:
             raise e
 
@@ -109,11 +108,5 @@ class BotInterface(BotBasic):
         self.Parameter[UserId] = []
 
 
-    # 清除知识库检查对话历史记录
-    def ClearLibHistory(self, UserId):
-        libUserId = "Lib" + UserId
-        self.Parameter[libUserId] = []
-
-
-if __name__ == '__main__':
-    bot = BotInterface()
+# 实例化一个全局对象
+bot = BotInterface()

@@ -1,7 +1,7 @@
 import logging, json, os, sys, requests
 from flask import Flask, request, jsonify, Response, stream_with_context, Blueprint
 from utils.LModel.Interface import LLMInterface
-from utils.LModel.ChatBot import BotInterface
+from utils.LModel.ChatBot import BotInterface, bot
 from utils.Config.FileProcess import *
 from utils import Tools
 
@@ -233,77 +233,16 @@ def CorrectStream():
         return jsonify(retObj)
 
 
-# 对话机器人功能接口
-@LLMBlueprint.route("/ChatBot", methods = ["POST"])
-def ChatBot():
-    try:
-        bot = BotInterface()
-        requestData = request.json
-        content = requestData["content"]
-        userId = requestData.get("userId", "user")
-
-        response = bot.GetResponse(content, userId)
-        curTime = Tools.GetTime()
-        retObj = {
-            "statusCode": 1,
-            "requestTime": curTime,
-            "response": response
-        }
-        logging.info(f"[{curTime}]Chatbot request successed.")
-        return jsonify(retObj)
-
-    except Exception as e:
-        curTime = Tools.GetTime()
-        logging.error(f"[{curTime}]Module:[ChatBot]" + str(e))
-        retObj = {
-            "status": "failed",
-            "requestTime": curTime,
-            "response": str(e)
-        }
-        return jsonify(retObj)
-
-
-# 对话机器人功能接口，返回迭代器
-@LLMBlueprint.route("/ChatBotStream", methods = ["POST"])
-def ChatBotStream():
-    try:
-        bot = BotInterface()
-        requestData = request.json
-        content = requestData["content"]
-        userId = requestData.get("userId", "user")
-
-        responseStream = bot.GetResponseStream(content, userId)
-        curTime = Tools.GetTime()
-        logging.info(f"[{curTime}]ChatbotStream request successed.")
-        return Response(stream_with_context(responseStream))
-
-    except Exception as e:
-        curTime = Tools.GetTime()
-        logging.error(f"[{curTime}]Module:[ChatBotStream]" + str(e))
-        retObj = {
-            "statusCode": 0,
-            "requestTime": curTime,
-            "response": str(e)
-        }
-        return jsonify(retObj)
-
-
-# 知识库检查功能接口
+# 知识库检查文本内容接口
 @LLMBlueprint.route("/Check", methods = ["POST"])
 def Check():
     try:
         requestData = request.json
         userContent = requestData["content"]
         userFileList = requestData["fileName"]
+        # 限制文件数量
         if len(userFileList) > 5:
-            curTime = Tools.GetTime()
-            logging.info(f"[{curTime}]")
-            retObj = {
-                "statusCode": 0,
-                "requestTime": curTime,
-                "response": "The number of files could not be more than 5."
-            }
-            return jsonify(retObj)
+            raise FileNotFoundError(f"The number of files could not be more than 5.")
 
         knowledgeContent = ""
         # 获取知识库中txt
@@ -311,6 +250,10 @@ def Check():
             rawName = Tools.GetFileName(fileName)
             TarName = rawName + '.txt'
             filePath = os.path.join(fileSavePath, TarName)
+            # 文件不存在
+            if not os.path.exists(filePath):
+                raise FileNotFoundError(f"File {fileName} does not exist.")
+
             tmpContent = FileProcess.ReadTxt(FilePath = filePath)
             knowledgeContent += tmpContent + "\n"
 
@@ -334,3 +277,128 @@ def Check():
         }
         return jsonify(retObj)
 
+
+# 对话机器人功能接口
+@LLMBlueprint.route("/ChatBot", methods = ["POST"])
+def ChatBot():
+    try:
+        requestData = request.json
+        content = requestData["content"]
+        userId = requestData.get("userId", "user")
+        userFileList = requestData.get("fileList", None)
+
+        # 不传入文件情况下调用聊天机器人
+        if userFileList is None:
+            response = bot.GetResponse(content, userId)
+            curTime = Tools.GetTime()
+            retObj = {
+                "statusCode": 1,
+                "requestTime": curTime,
+                "response": response
+            }
+            logging.info(f"[{curTime}]Chatbot request successed.")
+            return jsonify(retObj)
+
+        # 传入文件情况下调用机器人
+        else:
+            # 存在历史记录，不进行文件操作
+            if userId in bot.Parameter:
+                response = bot.GetResponse(content, userId)
+                curTime = Tools.GetTime()
+                retObj = {
+                    "statusCode": 1,
+                    "requestTime": curTime,
+                    "response": response
+                }
+                logging.info(f"[{curTime}]Chatbot request successed.")
+                return jsonify(retObj)
+
+            # 传入文件且ChatBot没有历史记录
+            else:
+                # 限制文件数量
+                if len(userFileList) > 5:
+                    raise ValueError("The number of files could not be more than 5.")
+
+                knowledgeContent = ""
+                # 获取知识库中txt
+                for fileName in userFileList:
+                    rawName = Tools.GetFileName(fileName)
+                    TarName = rawName + '.txt'
+                    filePath = os.path.join(fileSavePath, TarName)
+                    # 文件不存在
+                    if not os.path.exists(filePath):
+                        raise FileNotFoundError(f"File {fileName} does not exist.")
+
+                    tmpContent = FileProcess.ReadTxt(FilePath = filePath)
+                    knowledgeContent += tmpContent + "\n"
+
+                bot.LoadKnowledgeLib_String(Knowledge = knowledgeContent,
+                                            UserId = userId)
+                response = bot.GetResponse(content, userId)
+                curTime = Tools.GetTime()
+                retObj = {
+                    "statusCode": 1,
+                    "requestTime": curTime,
+                    "response": response
+                }
+                return jsonify(retObj)
+
+    except Exception as e:
+        curTime = Tools.GetTime()
+        logging.error(f"[{curTime}]Module:[ChatBot]" + str(e))
+        retObj = {
+            "status": "failed",
+            "requestTime": curTime,
+            "response": str(e)
+        }
+        return jsonify(retObj)
+
+
+# 对话机器人功能接口，返回迭代器
+@LLMBlueprint.route("/ChatBotStream", methods = ["POST"])
+def ChatBotStream():
+    try:
+        requestData = request.json
+        content = requestData["content"]
+        userId = requestData.get("userId", "user")
+
+        responseStream = bot.GetResponseStream(content, userId)
+        curTime = Tools.GetTime()
+        logging.info(f"[{curTime}]ChatbotStream request successed.")
+        return Response(stream_with_context(responseStream))
+
+    except Exception as e:
+        curTime = Tools.GetTime()
+        logging.error(f"[{curTime}]Module:[ChatBotStream]" + str(e))
+        retObj = {
+            "statusCode": 0,
+            "requestTime": curTime,
+            "response": str(e)
+        }
+        return jsonify(retObj)
+
+
+# 清除机器人对话历史记录
+@LLMBlueprint.route("/ClearBotHistory", methods = ["POST"])
+def ClearBotHistory():
+    try:
+        requestData = request.json
+        userId = requestData.get("userId", "user")
+        bot.ClearBotHistory(userId)
+        curTime = Tools.GetTime()
+        retObj = {
+            "statusCode": 1,
+            "requestTime": curTime,
+            "response": "Clear Bot history successfully."
+        }
+        return jsonify(retObj)
+
+    except Exception as e:
+        curTime = Tools.GetTime()
+        logging.error(f"[{curTime}]Module:[ClearBotHistory]" + str(e))
+        retObj = {
+            "statusCode": 0,
+            "requestTime": curTime,
+            "response": str(e)
+        }
+        return jsonify(retObj)
