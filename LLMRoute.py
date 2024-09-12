@@ -324,7 +324,6 @@ def ChatBot():
                 if len(userFileList) > 5:
                     raise ValueError("The number of files could not be more than 5.")
 
-                logging.info("666")
                 knowledgeContent = ""
                 # 获取知识库中txt
                 for fileName in userFileList:
@@ -368,11 +367,48 @@ def ChatBotStream():
         requestData = request.json
         content = requestData["content"]
         userId = requestData.get("userId", "user")
+        userFileList = requestData.get("fileName", None)
 
-        responseStream = bot.GetResponseStream(content, userId)
-        curTime = Tools.GetTime()
-        logging.info(f"[{curTime}]ChatbotStream request successed.")
-        return Response(stream_with_context(responseStream))
+        # 不传入文件情况下调用聊天机器人
+        if userFileList is None:
+            responseStream = bot.GetResponseStream(content, userId)
+            curTime = Tools.GetTime()
+            logging.info(f"[{curTime}]ChatbotStream request successed.")
+            return Response(stream_with_context(responseStream))
+
+        # 传入文件情况下调用机器人
+        else:
+            # 存在历史记录，不进行文件操作
+            if userId in bot.Parameter:
+                responseStream = bot.GetResponseStream(content, userId)
+                curTime = Tools.GetTime()
+                logging.info(f"[{curTime}]ChatbotStream request successed.")
+
+            # 传入文件且ChatBot没有历史记录
+            else:
+                # 限制文件数量
+                if len(userFileList) > 5:
+                    raise ValueError("The number of files could not be more than 5.")
+
+                knowledgeContent = ""
+                # 获取知识库中txt
+                for fileName in userFileList:
+                    rawName = Tools.GetFileName(fileName)
+                    TarName = rawName + '.txt'
+                    filePath = os.path.join(fileSavePath, TarName)
+                    # 文件不存在
+                    if not os.path.exists(filePath):
+                        raise FileNotFoundError(f"File {fileName} does not exist.")
+
+                    tmpContent = FileProcess.ReadTxt(FilePath = filePath)
+                    knowledgeContent += tmpContent + "\n"
+
+                bot.LoadKnowledgeLib_String(KnowledgeText = knowledgeContent,
+                                            UserId = userId)
+                responseStream = bot.GetResponseStream(content, userId)
+                curTime = Tools.GetTime()
+                logging.info(f"[{curTime}]ChatbotStream request successed.")
+                return Response(stream_with_context(responseStream))
 
     except Exception as e:
         curTime = Tools.GetTime()
