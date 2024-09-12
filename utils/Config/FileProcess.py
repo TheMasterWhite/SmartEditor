@@ -16,10 +16,12 @@ logging.basicConfig(filename = "Server/Log.log",
                     level = logging.INFO)
 
 
-class FileProcess:  # 文件处理类
+# 文件处理类
+class FileProcess:
 
+    # 打开txt文件并返回内容，传参为文件地址
     @staticmethod
-    def ReadTxt(FilePath):  # 打开txt文件并返回内容，传参为文件地址
+    def ReadTxt(FilePath):
 
         try:
             file = open(FilePath, 'r', encoding = 'utf-8')
@@ -42,8 +44,9 @@ class FileProcess:  # 文件处理类
             raise e
 
 
+    # 对文件进行Base64编码，返回编码内容文件，传入文件路径
     @staticmethod
-    def Base64(FilePath):  # 对文件进行Base64编码，返回编码内容文件，传入文件路径
+    def Base64(FilePath):
 
         try:
             fileBytes = pathlib.Path(FilePath).read_bytes()
@@ -53,19 +56,10 @@ class FileProcess:  # 文件处理类
             raise e
 
 
+    # 将文件名赋予时间并返回绝对路径
     @staticmethod
-    def AbsPath(PackageName, RelativePath):  # 获取绝对路径
-        # PackageName: 包名
-        # RelativePath: 相对于包目录的文件或目录路径
-
-        packagePath = os.path.dirname(os.path.abspath(__import__(PackageName).__file__))
-        return os.path.join(packagePath, RelativePath)
-
-
-    @staticmethod
-    def GetFileTimePath(FileName, TarPath, FileExtension):  # 将文件名赋予时间并返回绝对路径
+    def GetFileTimePath(FileName, TarPath, FileExtension):
         # 传入文件名，保存路径，文件扩展名
-
         try:
             Time = datetime.datetime.now()
             FileName += "_"
@@ -129,8 +123,9 @@ class OSSProcess:  # OSS云服务处理类
 
 class JsonOperator:
 
+    # 保存Json文件至指定目录，传入Json对象、保存路径与文件名
     @staticmethod
-    def Save(JsonObject, Path, FileName):  # 保存Json文件至指定目录，传入Json对象、保存路径与文件名
+    def Save(JsonObject, Path, FileName):
 
         try:
             saveData = json.dumps(JsonObject, ensure_ascii = False, indent = 4)
@@ -140,18 +135,6 @@ class JsonOperator:
             with open(savePath, "w", encoding = 'utf-8') as f:
                 f.write(saveData)
             pass
-
-        except Exception as e:
-            raise e
-
-
-    @staticmethod
-    def Load(FilePath, FileName):  # 加载Json文件
-
-        try:
-            absPath = FileProcess.AbsPath(FilePath)
-            jsonObject = json.loads(absPath)
-            return jsonObject
 
         except Exception as e:
             raise e

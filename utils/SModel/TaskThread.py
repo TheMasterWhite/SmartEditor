@@ -38,10 +38,10 @@ class TaskThread(threading.Thread):
     def run(self):
         while True:
             if self.taskQueue.empty():
-                time.sleep(1)
+                time.sleep(2)
                 continue
             else:
-                time.sleep(2)
+                time.sleep(1)
 
             taskId = self.taskQueue.get()
             responseData = self.QueryTask(taskId)
@@ -59,7 +59,8 @@ class TaskThread(threading.Thread):
 
             elif (status == "Failed"):
                 curTime = Tools.GetTime()
-                logging.info(f"[{curTime}]STT task failed.")
+                errorMsg = responseData["tasks_info"][0]["task_result"]["err_msg"]
+                logging.info(f"[{curTime}]STT task failed : {errorMsg}.")
 
             elif (status == "Running"):
                 self.taskQueue.put(taskId)

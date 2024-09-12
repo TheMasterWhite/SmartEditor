@@ -43,8 +43,7 @@ class OCRBasic:
     def GetRawJson(FilePath):  # 获取RawOCR识别结果，传入文件地址返回Json对象
 
         try:
-            absPath = FileProcess.AbsPath(FilePath)
-            base64File = FileProcess.Base64(absPath)
+            base64File = FileProcess.Base64(FilePath)
             headers = {
                 "Authorization": f"token {GLOBAL_ERNIETOKEN}",
                 "Content-Type": "application/json"

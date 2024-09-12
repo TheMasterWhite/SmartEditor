@@ -20,6 +20,7 @@ class BotBasic():  # 聊天机器人基本接口
 
         def GetResponseOrAdd():  # 判断添加聊天记录还是发送请求函数
             if Role == "user":
+                # 控制对话轮数在25轮内
                 if len(self.Parameter[UserId]) >= 50:
                     del self.Parameter[UserId][2]
                     del self.Parameter[UserId][3]
@@ -52,13 +53,15 @@ class BotBasic():  # 聊天机器人基本接口
         return GetResponseOrAdd()
 
 
-class BotInterface(BotBasic):  # 聊天机器人功能接口类
+# 聊天机器人功能接口类
+class BotInterface(BotBasic):
 
     def __init__(self):
         super().__init__()
 
 
-    def GetResponse(self, Content, UserId):  # 获取机器人问答结果，传入内容
+    # 获取机器人问答结果，传入内容
+    def GetResponse(self, Content, UserId):
         try:
             result = self.AddMessage("user", Content, UserId)
             self.AddMessage("assistant", result, UserId)
@@ -67,9 +70,10 @@ class BotInterface(BotBasic):  # 聊天机器人功能接口类
             raise e
 
 
+    # 流式获取机器人回复内容，传入输入内容返回迭代器
     def GetResponseStream(self, Content, UserId):
         try:
-            # 流式获取机器人回复内容，传入输入内容返回迭代器
+
             tmp = ""
             result = self.AddMessageStream("user", Content, UserId)
             for i in result:
@@ -80,24 +84,35 @@ class BotInterface(BotBasic):  # 聊天机器人功能接口类
             raise e
 
 
-    def LoadKnowledgeLib_String(self, KnowledgeText):  # 载入知识库，传入知识库文本
+    # 载入知识库，传入知识库文本
+    def LoadKnowledgeLib_String(self, KnowledgeText, UserId):
         try:
+            initedUserId = "Lib" + UserId
             InitedList = KnowledgeLib.InitList_String(KnowledgeText)
-            self.Parameter += InitedList
+            self.Parameter[initedUserId] = InitedList
         except Exception as e:
             raise e
 
 
-    def LoadKnowledgeLib_Path(self, KnowledgePath):  # 载入知识库，传入知识库路径
+    # 载入知识库，传入知识库路径
+    def LoadKnowledgeLib_Path(self, KnowledgePath, UserId):
         try:
+            initedUserId = "Lib" + UserId
             InitedList = KnowledgeLib.InitList_Path(KnowledgePath)
-            self.Parameter += InitedList
+            self.Parameter[initedUserId] = InitedList
         except Exception as e:
             raise e
 
 
-    def ClearHistory(self):  # 清除历史记录
-        self.Parameter = []
+    # 清除对话历史记录
+    def ClearHistory(self, UserId):
+        self.Parameter[UserId] = []
+
+
+    # 清除知识库检查对话历史记录
+    def ClearLibHistory(self, UserId):
+        libUserId = "Lib" + UserId
+        self.Parameter[libUserId] = []
 
 
 if __name__ == '__main__':

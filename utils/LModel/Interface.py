@@ -1,12 +1,13 @@
 from utils.Config.PMTProcess import GetPrompt, KnowledgeLib
-import erniebot
 from utils.Config.FileProcess import FileProcess, OSSProcess, JsonOperator
+import erniebot
 
 
 class LLMBasic:  # 大模型基本通信接口类
 
+    # 获取推理结果，传入字符串，返回String
     @staticmethod
-    def GetResponse_String(Prompt):  # 获取推理结果，传入字符串，返回String
+    def GetResponse_String(Prompt):
 
         try:
             Parameter = [{"role": "user", "content": Prompt}]
@@ -20,8 +21,9 @@ class LLMBasic:  # 大模型基本通信接口类
             raise e
 
 
+    # 流式获取推理结果，传入字符串，返回迭代器
     @staticmethod
-    def GetResponseStream_String(Prompt):  # 流式获取推理结果，传入字符串，返回迭代器
+    def GetResponseStream_String(Prompt):
 
         try:
             Parameter = [{"role": "user", "content": Prompt}]
@@ -37,8 +39,9 @@ class LLMBasic:  # 大模型基本通信接口类
             raise e
 
 
+    # 获取推理结果，传入List，返回String
     @staticmethod
-    def GetResponse_List(ListPrompt):  # 获取推理结果，传入List，返回String
+    def GetResponse_List(ListPrompt):
 
         try:
             Response = erniebot.ChatCompletion.create(
@@ -51,8 +54,9 @@ class LLMBasic:  # 大模型基本通信接口类
             raise e
 
 
+    # 流式获取推理结果，传入List，返回迭代器
     @staticmethod
-    def GetResponseStream_List(ListPrompt):  # 流式获取推理结果，传入List，返回迭代器
+    def GetResponseStream_List(ListPrompt):
 
         try:
             Response = erniebot.ChatCompletion.create(
@@ -69,9 +73,10 @@ class LLMBasic:  # 大模型基本通信接口类
 
 class LLMInterface(LLMBasic):  # 大模型高级功能接口类
 
+    # 翻译，Tartext传入翻译目标字符串，TarLanguage传入目标语言,返回String
     @staticmethod
     def Translate(Tartext, Tarlanguage = "英语",
-                  Scene = "General"):  # 翻译，Tartext传入翻译目标字符串，TarLanguage传入目标语言,返回String
+                  Scene = "General"):
 
         try:
             sceneLocation = "ScenePrompt_" + Scene
@@ -84,9 +89,10 @@ class LLMInterface(LLMBasic):  # 大模型高级功能接口类
             raise e
 
 
+    # 翻译，Tartext传入翻译目标字符串，TarLanguage传入目标语言,返回迭代器
     @staticmethod
     def TranslateStream(Tartext, Tarlanguage = "英语",
-                        Scene = "General"):  # 翻译，Tartext传入翻译目标字符串，TarLanguage传入目标语言,返回迭代器
+                        Scene = "General"):
 
         try:
             sceneLocation = "ScenePrompt_" + Scene
@@ -100,8 +106,9 @@ class LLMInterface(LLMBasic):  # 大模型高级功能接口类
             raise e
 
 
+    # 精炼语言，，Tartext传入目标字符串,返回String
     @staticmethod
-    def Summary(Tartext, Scene = "General"):  # 精炼语言，，Tartext传入目标字符串,返回String
+    def Summary(Tartext, Scene = "General"):
 
         try:
             sceneLocation = "ScenePrompt_" + Scene
@@ -113,8 +120,9 @@ class LLMInterface(LLMBasic):  # 大模型高级功能接口类
             raise e
 
 
+    # 精炼语言，，Tartext传入目标字符串,返回迭代器
     @staticmethod
-    def SummaryStream(Tartext, Scene = "General"):  # 精炼语言，，Tartext传入目标字符串,返回迭代器
+    def SummaryStream(Tartext, Scene = "General"):
 
         try:
             sceneLocation = "ScenePrompt_" + Scene
@@ -127,8 +135,9 @@ class LLMInterface(LLMBasic):  # 大模型高级功能接口类
             raise e
 
 
+    # 句子纠错，Tartext传入目标字符串,返回String
     @staticmethod
-    def Correct(Tartext, Scene = "General"):  # 句子纠错，Tartext传入目标字符串,返回String
+    def Correct(Tartext, Scene = "General"):
 
         try:
             sceneLocation = "ScenePrompt_" + Scene
@@ -140,8 +149,9 @@ class LLMInterface(LLMBasic):  # 大模型高级功能接口类
             raise e
 
 
+    # 句子纠错，Tartext传入目标字符串,返回迭代器
     @staticmethod
-    def CorrectStream(Tartext, Scene = "General"):  # 句子纠错，Tartext传入目标字符串,返回迭代器
+    def CorrectStream(Tartext, Scene = "General"):
 
         try:
             sceneLocation = "ScenePrompt_" + Scene
@@ -154,8 +164,9 @@ class LLMInterface(LLMBasic):  # 大模型高级功能接口类
             raise e
 
 
+    # 文章润色，Tartext传入目标字符串,返回String
     @staticmethod
-    def Polish(Tartext, Scene = "General"):  # 文章润色，Tartext传入目标字符串,返回String
+    def Polish(Tartext, Scene = "General"):
 
         try:
             sceneLocation = "ScenePrompt_" + Scene
@@ -167,8 +178,9 @@ class LLMInterface(LLMBasic):  # 大模型高级功能接口类
             raise e
 
 
+    # 文章润色，Tartext传入目标字符串,返回迭代器
     @staticmethod
-    def PolishStream(Tartext, Scene = "General"):  # 文章润色，Tartext传入目标字符串,返回迭代器
+    def PolishStream(Tartext, Scene = "General"):
 
         try:
             sceneLocation = "ScenePrompt_" + Scene
@@ -181,37 +193,39 @@ class LLMInterface(LLMBasic):  # 大模型高级功能接口类
             raise e
 
 
+    # 检查输入内容与知识库的差异，传入目标文本和用户知识库字符串
     @staticmethod
-    def Check_String(Tartext, KnowledgeContent):  # 检查输入内容与知识库的差异，传入目标文本和用户知识库字符串
+    def Check_String(Tartext, KnowledgeContent):
 
         try:
             promptText = GetPrompt().Data()["FunctionPrompt"]["Check"]
-            promptText += Tartext
-            initedList = KnowledgeLib.InitList_String(KnowledgeContent)
-            initedList.append({"role": "user", "content": promptText})
-            return LLMBasic.GetResponse_List(initedList)
+            sepLib = "###知识库内容###\n"
+            sepContent = "###用户输入文本###\n"
+            promptText += sepLib + KnowledgeContent + sepContent + Tartext
+            return LLMBasic.GetResponse_String(promptText)
 
         except Exception as e:
             raise e
 
 
+    # 检查输入内容与知识库的差异，传入目标文本和用户知识库文本，返回迭代器
     @staticmethod
-    def CheckStream_String(Tartext, KnowledgeContent):  # 检查输入内容与知识库的差异，传入目标文本和用户知识库文本，返回迭代器
-
+    def CheckStream_String(Tartext, KnowledgeContent):
         try:
             promptText = GetPrompt().Data()["FunctionPrompt"]["Check"]
-            promptText += Tartext
-            initedList = KnowledgeLib.InitList_String(KnowledgeContent)
-            initedList.append({"role": "user", "content": promptText})
-            for i in LLMBasic.GetResponseStream_List(initedList):
+            sepLib = "###知识库内容###\n"
+            sepContent = "###用户输入文本###\n"
+            promptText += sepLib + KnowledgeContent + sepContent + Tartext
+            for i in LLMBasic.GetResponseStream_String(promptText):
                 yield i
 
         except Exception as e:
             raise e
 
 
+    # 检查输入内容与知识库的差异，传入目标文本和初始化之后的列表
     @staticmethod
-    def Check_List(Tartext, KnowledgeList):  # 检查输入内容与知识库的差异，传入目标文本和初始化之后的列表
+    def Check_List(Tartext, KnowledgeList):
 
         try:
             promptText = GetPrompt().Data()["FunctionPrompt"]["Check"]
@@ -223,8 +237,9 @@ class LLMInterface(LLMBasic):  # 大模型高级功能接口类
             raise e
 
 
+    # 检查输入内容与知识库的差异，传入目标文本和初始化之后的列表，返回迭代器
     @staticmethod
-    def CheckStream_List(Tartext, KnowledgeList):  # 检查输入内容与知识库的差异，传入目标文本和初始化之后的列表，返回迭代器
+    def CheckStream_List(Tartext, KnowledgeList):
 
         try:
             promptText = GetPrompt().Data()["FunctionPrompt"]["Check"]
@@ -235,11 +250,3 @@ class LLMInterface(LLMBasic):  # 大模型高级功能接口类
 
         except Exception as e:
             raise e
-
-
-def UnitTest():
-    a = LLMBasic.GetResponse_String("我是雪狐！快夸我可爱！")
-
-
-if __name__ == '__main__':
-    pass

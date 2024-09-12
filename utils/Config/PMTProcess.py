@@ -4,7 +4,9 @@ import pathlib
 import json
 from pathlib import Path
 
-class GetPrompt:  # 获取Prompt的单例模式类
+promptsLibPath = "/Server/SmartEditor/Config/Prompts.json"
+
+class GetPrompt:  # 获取Prompt的单例类
 
     instance = None  # 存储实例
     data = None  # 存储数据
@@ -13,8 +15,7 @@ class GetPrompt:  # 获取Prompt的单例模式类
     def __new__(cls, *args, **kwargs):  # 创建实例
         if not cls.instance:
             cls.instance = super(GetPrompt, cls).__new__(cls, *args, **kwargs)
-            absPath = FileProcess.AbsPath("utils","Config/Prompts.json")
-            with open(absPath, "r", encoding = "utf-8") as f:
+            with open(absPath, "promptsLibPath", encoding = "utf-8") as f:
                 cls.data = json.load(f)
         return cls.instance
 

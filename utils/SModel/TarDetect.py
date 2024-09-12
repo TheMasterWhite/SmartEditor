@@ -12,8 +12,7 @@ class TarDetectBasic:
         }
         try:
             # 获取文件对路径并转码
-            absPath = FileProcess.AbsPath(FilePath)
-            base64File = FileProcess.Base64(absPath)
+            base64File = FileProcess.Base64(FilePath)
 
             payload = {
                 "image": base64File

@@ -2,9 +2,11 @@ import logging, json, os, sys, requests
 from flask import Flask, request, jsonify, Response, stream_with_context, Blueprint
 from utils.LModel.Interface import LLMInterface
 from utils.LModel.ChatBot import BotInterface
+from utils.Config.FileProcess import *
 from utils import Tools
 
 LLMBlueprint = Blueprint("LLMBlueprint", __name__, url_prefix = '/LLMInterface')
+fileSavePath = GLOBAL_FileSavePath
 
 
 # 翻译功能接口
@@ -26,6 +28,7 @@ def Translate():
             "response": response
         }
         logging.info(f"[{curTime}]Translate successed.")
+        return jsonify(retObj)
 
     except Exception as e:
         curTime = Tools.GetTime()
@@ -35,8 +38,6 @@ def Translate():
             "requestTime": curTime,
             "response": str(e)
         }
-
-    finally:
         return jsonify(retObj)
 
 
@@ -84,6 +85,7 @@ def Summary():
             "response": response
         }
         logging.info(f"[{curTime}]Summary successed.")
+        return jsonify(retObj)
 
     except Exception as e:
         curTime = Tools.GetTime()
@@ -93,8 +95,6 @@ def Summary():
             "requestTime": curTime,
             "response": str(e)
         }
-
-    finally:
         return jsonify(retObj)
 
 
@@ -140,6 +140,7 @@ def Polish():
             "response": response
         }
         logging.info(f"[{curTime}]Polish successed.")
+        return jsonify(retObj)
 
     except Exception as e:
         curTime = Tools.GetTime()
@@ -149,9 +150,7 @@ def Polish():
             "requestTime": curTime,
             "response": str(e)
         }
-
-    finally:
-        return jsonify(retObj)
+    return jsonify(retObj)
 
 
 # 润色功能接口，返回迭代器
@@ -196,6 +195,7 @@ def Correct():
             "response": response
         }
         logging.info(f"[{curTime}]Correct successed.")
+        return jsonify(retObj)
 
     except Exception as e:
         curTime = Tools.GetTime()
@@ -205,8 +205,6 @@ def Correct():
             "requestTime": curTime,
             "response": str(e)
         }
-
-    finally:
         return jsonify(retObj)
 
 
@@ -252,6 +250,7 @@ def ChatBot():
             "response": response
         }
         logging.info(f"[{curTime}]Chatbot request successed.")
+        return jsonify(retObj)
 
     except Exception as e:
         curTime = Tools.GetTime()
@@ -261,8 +260,6 @@ def ChatBot():
             "requestTime": curTime,
             "response": str(e)
         }
-
-    finally:
         return jsonify(retObj)
 
 
@@ -289,3 +286,50 @@ def ChatBotStream():
             "response": str(e)
         }
         return jsonify(retObj)
+
+
+# 知识库检查功能接口
+@LLMBlueprint.route("/Check", methods = ["POST"])
+def Check():
+    try:
+        requestData = request.json
+        userContent = requestData["userContent"]
+        userFileList = requestData["fileName"]
+        if len(userFileList) > 5:
+            curTime = Tools.GetTime()
+            logging.info(f"[{curTime}]")
+            retObj = {
+                "statusCode": 0,
+                "requestTime": curTime,
+                "response": "The number of files could not be more than 5."
+            }
+            return jsonify(retObj)
+
+        knowledgeContent = ""
+        # 获取知识库中txt
+        for fileName in userFileList:
+            rawName = Tools.GetFileName(fileName)
+            TarName = rawName + '.txt'
+            filePath = os.path.join(fileName, TarName)
+            tmpContent = FileProcess.ReadTxt(FilePath = filePath)
+            knowledgeContent += tmpContent + "\n"
+
+        response = LLMInterface.Check_String(Tartext = userContent,
+                                             KnowledgeContent = knowledgeContent)
+        retObj = {
+            "statusCode": 1,
+            "requestTime": curTime,
+            "response": response
+        }
+        return jsonify(retObj)
+
+    except Exception as e:
+        curTime = Tools.GetTime()
+        logging.error(f"[{curTime}]Module:[Check]" + str(e))
+        retObj = {
+            "statusCode": 0,
+            "requestTime": curTime,
+            "response": str(e)
+        }
+        return jsonify(retObj)
+
