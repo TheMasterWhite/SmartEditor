@@ -54,7 +54,7 @@ def UploadFile():
         retObj = {
             "statusCode": 1,
             "requestTime": curTime,
-            "response": f"File {fullFileName} uploaded successfully."
+            "response": f"File [{fullFileName}] uploaded successfully."
         }
         return jsonify(retObj)
 
@@ -98,7 +98,7 @@ def DownloadFile(fileName):
         filePath = os.path.join(fileSavePath, fileName)
         # 文件不存在
         if not os.path.exists(filePath):
-            raise FileNotFoundError(f"File {fileName} does not exist.")
+            raise FileNotFoundError(f"File [{fileName}] does not exist.")
 
         return send_file(filePath, as_attachment = True)
 
