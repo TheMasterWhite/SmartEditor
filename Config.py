@@ -7,7 +7,8 @@ import json
 import requests, logging
 from pathlib import Path
 
-logging.basicConfig(filename = "Server/Log.log",
+curTime = Tools.GetTime()
+logging.basicConfig(filename = f"Server/[{curTime}]Log.log",
                     filemode = 'a',
                     level = logging.INFO)
 

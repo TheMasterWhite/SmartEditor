@@ -5,9 +5,6 @@ import queue, threading, time, logging
 from utils.SModel.TaskThread import *
 
 fileSavePath = GLOBAL_FileSavePath
-logging.basicConfig(filename = "Server/Log.log",
-                    filemode = 'a',
-                    level = logging.INFO)
 
 QuerySTTThread = TaskThread()
 QuerySTTThread.start()

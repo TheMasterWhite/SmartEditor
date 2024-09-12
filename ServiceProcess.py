@@ -5,10 +5,6 @@ from utils.Config.FileProcess import *
 from utils.SModel.OCR import OCRInterface
 from utils.SModel.STT import *
 
-logging.basicConfig(filename = "Server/Log.log",
-                    filemode = 'a',
-                    level = logging.INFO)
-
 ServerProcessBlueprint = Blueprint("ServerProcessBlueprint", __name__, url_prefix = "/Service")
 fileSavePath = GLOBAL_FileSavePath
 

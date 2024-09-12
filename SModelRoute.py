@@ -8,9 +8,6 @@ from utils.SModel.STT import *
 
 SModelBlueprint = Blueprint("SModelBlueprint", __name__, url_prefix = "/SModelInterface")
 fileSavePath = GLOBAL_FileSavePath
-logging.basicConfig(filename = "Server/Log.log",
-                    filemode = 'a',
-                    level = logging.INFO)
 
 
 @SModelBlueprint.route("/OCR", methods = ["POST"])

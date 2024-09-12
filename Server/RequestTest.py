@@ -79,7 +79,7 @@ def UnitTestGen():
 
 
 def UploadFile():
-    url = 'http://8.148.25.61:8888/Server/UploadFile'
+    url = 'http://8.148.25.61:8888/Service/UploadFile'
     files = {"file": open("E:/Code/CodeLibrary/Python/SmartEditor/resources/亚托莉.txt", "rb")}
     response = requests.post(url, files = files)
     print(response.json())
@@ -112,9 +112,29 @@ def SModelTest():
     print(response.json())
 
 
+def LibTest():
+    url = "http://8.148.25.61:8888/LLMInterface/Check"
+    data = {
+        "content": "亚托莉不是机器人。是一名男性人类",
+        "fileName": ["亚托莉.txt"],
+        "userId": "Test"
+    }
+    headers = {'Content-Type': 'application/json'}
+    response = requests.post(url, data = json.dumps(data), headers = headers)
+    print(response.json()["response"])
+
+    data2 = {
+        "content": "亚托莉需要刷牙吗",
+        "userId": "Test"
+    }
+    resp = requests.post(url, data = json.dumps(data2), headers = headers)
+    print(resp.json()["response"])
+
+
 if __name__ == "__main__":
     # UnitTest()
     # print("666")
     # UnitTestGen()
     # SModelTest()
-    UploadFile()
+    # UploadFile()
+    LibTest()

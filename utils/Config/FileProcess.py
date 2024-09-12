@@ -11,9 +11,6 @@ import oss2
 from oss2.credentials import EnvironmentVariableCredentialsProvider
 
 fileSavePath = GLOBAL_FileSavePath
-logging.basicConfig(filename = "Server/Log.log",
-                    filemode = 'a',
-                    level = logging.INFO)
 
 
 # 文件处理类
