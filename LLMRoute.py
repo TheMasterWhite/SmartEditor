@@ -478,7 +478,7 @@ def ClearBotHistory():
         retObj = {
             "statusCode": 1,
             "requestTime": curTime,
-            "response": "Successfully clear Bot history."
+            "response": f"Successfully clear Bot history, userId = {userId}."
         }
         return jsonify(retObj)
 
