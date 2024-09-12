@@ -285,10 +285,10 @@ def ChatBot():
         requestData = request.json
         content = requestData["content"]
         userId = requestData.get("userId", "user")
-        userFileList = requestData.get("fileName", None)
+        userFileList = requestData.get("fileName", "None")
 
         # 不传入文件情况下调用聊天机器人
-        if userFileList is None:
+        if userFileList is "None":
             response = bot.GetResponse(content, userId)
             curTime = Tools.GetTime()
             retObj = {
