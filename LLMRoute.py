@@ -288,7 +288,7 @@ def ChatBot():
         userFileList = requestData.get("fileName", "None")
 
         # 不传入文件情况下调用聊天机器人
-        if userFileList is "None":
+        if userFileList == "None":
             response = bot.GetResponse(content, userId)
             curTime = Tools.GetTime()
             retObj = {
