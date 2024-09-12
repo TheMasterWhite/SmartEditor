@@ -105,7 +105,7 @@ class BotInterface(BotBasic):
 
     # 清除对话历史记录
     def ClearHistory(self, UserId):
-        self.Parameter[UserId] = []
+        del self.Parameter[UserId]
 
 
 # 实例化一个全局对象

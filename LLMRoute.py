@@ -247,7 +247,7 @@ def Check():
 
         # 限制文件数量
         if len(userFileList) > 5:
-            raise FileNotFoundError(f"The number of files could not be more than 5.")
+            raise FileNotFoundError("The number of files could not be more than 5.")
 
         knowledgeContent = ""
         # 获取知识库中txt
