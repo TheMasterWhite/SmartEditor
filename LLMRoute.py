@@ -314,6 +314,7 @@ def CheckStream():
 
         responseStream = LLMInterface.CheckStream_String(Tartext = userContent,
                                                          KnowledgeContent = knowledgeContent)
+        curTime = Tools.GetTime()
         logging.info(f"[{curTime}]Check_Stream successed.")
         return Response(stream_with_context(responseStream))
 
