@@ -239,7 +239,12 @@ def Check():
     try:
         requestData = request.json
         userContent = requestData["content"]
-        userFileList = requestData["fileName"]
+        userFileList = requestData.get("fileName", None)
+
+        # 没传文件
+        if userFileList is not None:
+            raise FileExistsError("Which file do you want to check?")
+
         # 限制文件数量
         if len(userFileList) > 5:
             raise FileNotFoundError(f"The number of files could not be more than 5.")
@@ -285,10 +290,10 @@ def ChatBot():
         requestData = request.json
         content = requestData["content"]
         userId = requestData.get("userId", "user")
-        userFileList = requestData.get("fileName", "None")
+        userFileList = requestData.get("fileName", None)
 
         # 不传入文件情况下调用聊天机器人
-        if userFileList == "None":
+        if userFileList is None:
             response = bot.GetResponse(content, userId)
             curTime = Tools.GetTime()
             retObj = {
