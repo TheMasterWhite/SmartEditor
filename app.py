@@ -12,10 +12,6 @@ from utils import Tools
 app = Flask(__name__)
 CORS(app, resources = {r"/*": {"origins": "*"}})
 
-curTime = Tools.GetTime()
-logging.basicConfig(filename = f"Server/[{curTime}]Log.log",
-                    filemode = 'w',
-                    level = logging.INFO)
 
 # 大模型注册蓝图
 app.register_blueprint(LLMBlueprint)
