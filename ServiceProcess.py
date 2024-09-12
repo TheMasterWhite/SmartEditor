@@ -54,7 +54,7 @@ def UploadFile():
         retObj = {
             "statusCode": 1,
             "requestTime": curTime,
-            "response": "File uploaded successfully."
+            "response": f"File {fullFileName} uploaded successfully."
         }
         return jsonify(retObj)
 
