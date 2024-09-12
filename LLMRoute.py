@@ -242,7 +242,7 @@ def Check():
         userFileList = requestData.get("fileName", None)
 
         # 没传文件
-        if userFileList is not None:
+        if userFileList is None:
             raise FileExistsError("Which file do you want to check?")
 
         # 限制文件数量
