@@ -316,6 +316,7 @@ def Check():
 
         response = LLMInterface.Check_String(Tartext = userContent,
                                              KnowledgeContent = knowledgeContent)
+        curTime = Tools.GetTime()
         retObj = {
             "statusCode": 1,
             "requestTime": curTime,
