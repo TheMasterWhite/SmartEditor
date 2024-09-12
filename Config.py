@@ -7,11 +7,6 @@ import json
 import requests, logging
 from pathlib import Path
 
-curTime = Tools.GetTime()
-logging.basicConfig(filename = f"Server/[{curTime}]Log.log",
-                    filemode = 'a',
-                    level = logging.INFO)
-
 
 def ReadConfigFile():
     # 读取配置文件
