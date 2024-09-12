@@ -6,6 +6,12 @@ import pathlib
 import json
 import requests, logging
 from pathlib import Path
+from utils.Tools import *
+
+curTime = Tools.GetTime()
+logging.basicConfig(filename = f"Server/[{curTime}]Log.log",
+                    filemode = 'w',
+                    level = logging.INFO)
 
 
 def ReadConfigFile():
