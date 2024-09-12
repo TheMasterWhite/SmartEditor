@@ -9,25 +9,25 @@ def UnitTest():
     # url2 = 'http://localhost:8888/LLMInterface/'
     data = {
         "content": "生活就像海洋，只有意志坚强的人才能到达彼岸",
-        "userId": "666"
+        "userId": "Test"
     }
     headers = {'Content-Type': 'application/json'}
 
-    url = url2 + "Translate"
-    response = requests.post(url, data = json.dumps(data), headers = headers)
-    print(response.json()["response"])
-
-    url = url2 + "Summary"
-    response = requests.post(url, data = json.dumps(data), headers = headers)
-    print(response.json()["response"])
-
-    url = url2 + "Correct"
-    response = requests.post(url, data = json.dumps(data), headers = headers)
-    print(response.json()["response"])
-
-    url = url2 + "Polish"
-    response = requests.post(url, data = json.dumps(data), headers = headers)
-    print(response.json()["response"])
+    # url = url2 + "Translate"
+    # response = requests.post(url, data = json.dumps(data), headers = headers)
+    # print(response.json()["response"])
+    #
+    # url = url2 + "Summary"
+    # response = requests.post(url, data = json.dumps(data), headers = headers)
+    # print(response.json()["response"])
+    #
+    # url = url2 + "Correct"
+    # response = requests.post(url, data = json.dumps(data), headers = headers)
+    # print(response.json()["response"])
+    #
+    # url = url2 + "Polish"
+    # response = requests.post(url, data = json.dumps(data), headers = headers)
+    # print(response.json()["response"])
 
     url = url2 + "ChatBot"
     data2 = data.copy()
@@ -80,7 +80,7 @@ def UnitTestGen():
 
 def UploadFile():
     url = 'http://8.148.25.61:8888/Service/UploadFile'
-    files = {"file": open("E:/Code/CodeLibrary/Python/SmartEditor/resources/亚托莉.txt", "rb")}
+    files = {"file": open("E:/Code/CodeLibrary/Python/SmartEditor/resources/作文.pdf", "rb")}
     response = requests.post(url, files = files)
     print(response.json())
 
@@ -115,7 +115,7 @@ def SModelTest():
 def LibTest():
     url = "http://8.148.25.61:8888/LLMInterface/Check"
     data = {
-        "content": "亚托莉不是机器人。是一名男性人类",
+        "content": "亚托莉是一个人类。男性",
         "fileName": ["亚托莉.txt"],
         "userId": "Test"
     }
@@ -123,18 +123,27 @@ def LibTest():
     response = requests.post(url, data = json.dumps(data), headers = headers)
     print(response.json()["response"])
 
-    data2 = {
+
+def ChatBotLib():
+    url = "http://8.148.25.61:8888/LLMInterface/ChatBot"
+    headers = {'Content-Type': 'application/json'}
+
+    data = {
+        "content": "亚托莉是谁",
+        "fileName": ["作文.txt"],
+        "userId": "Test"
+    }
+    response = requests.post(url, data = json.dumps(data), headers = headers)
+    print(response.json()["response"])
+
+    data = {
         "content": "亚托莉需要刷牙吗",
         "userId": "Test"
     }
-    resp = requests.post(url, data = json.dumps(data2), headers = headers)
-    print(resp.json()["response"])
+    response = requests.post(url, data = json.dumps(data), headers = headers)
+    print(response.json()["response"])
 
 
 if __name__ == "__main__":
-    # UnitTest()
-    # print("666")
-    # UnitTestGen()
-    # SModelTest()
-    # UploadFile()
-    LibTest()
+    UploadFile()
+    #ChatBotLib()
