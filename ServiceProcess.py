@@ -178,8 +178,10 @@ def DeleteFile():
                 filePath = os.path.join(fileSavePath, fullFileName)
                 fileName = Tools.GetFileName(fullFileName)
                 fileExtension = Tools.GetExtension(fileName)
+                # 判断文件是否存在
                 if not os.path.exists(filePath):
                     unknownFileList.append(fullFileName)
+                    continue
 
                 else:
                     # 目标文件是txt
