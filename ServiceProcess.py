@@ -175,7 +175,7 @@ def DeleteFile():
             deletedFileList = []
             unknownFileList = []
             for fullFileName in fullFileNameList:
-                filePath = os.path.join(fileSavePath, fileName)
+                filePath = os.path.join(fileSavePath, fullFileName)
                 fileName = Tools.GetFileName(fullFileName)
                 fileExtension = Tools.GetExtension(fileName)
                 if not os.path.exists(filePath):
@@ -192,9 +192,9 @@ def DeleteFile():
                     else:
                         curTime = Tools.GetTime()
                         os.remove(filePath)
-                        txtFilePath = os.path.join(fileSavePath, rawFileName)
+                        txtFilePath = os.path.join(fileSavePath, fileName) + ".txt"
                         os.remove(txtFilePath)
-                        logging.info(f"[{curTime}]\"{fileName}\" deleted successfully.")
+                        logging.info(f"[{curTime}]\"{fullFileName}\" deleted successfully.")
                         deletedFileList.append(fullFileName)
 
             curtime = Tools.GetTime()
@@ -207,32 +207,32 @@ def DeleteFile():
 
         # fileName不是列表
         else:
-            fileName = Tools.GetFileName(fullFileNameList)
+            fullFileName = fullFileNameList
             retObj = {
                 "statusCode": 1,
                 "requestTime": curTime,
-                "response": f"File \"{fileName}\" were successfully deleted"
+                "response": f"File \"{fullFileName}\" were successfully deleted"
             }
-            fileExtension = Tools.GetExtension(fullFileNameList)
-            rawFileName = Tools.GetFileName(fullFileNameList)
-            filePath = os.path.join(fileSavePath, fileName)
+            fileExtension = Tools.GetExtension(fullFileName)
+            rawFileName = Tools.GetFileName(fullFileName)
+            filePath = os.path.join(fileSavePath, fullFileName)
 
             # 判断文件存不存在
             if not os.path.exists(filePath):
-                raise FileNotFoundError(f"File [{fileName}] does not exist.")
+                raise FileNotFoundError(f"File [{fullFileName}] does not exist.")
             else:
                 # 目标文件是txt
                 if fileExtension == ".txt":
                     os.remove(filePath)
-                    logging.info(f"[{curTime}]\"{fileName}\" deleted successfully.")
+                    logging.info(f"[{curTime}]\"{fullFileName}\" deleted successfully.")
                     os.remove(filePath)
 
                 # 目标文件是多媒体文件
                 else:
                     os.remove(filePath)
-                    txtFilePath = os.path.join(fileSavePath, rawFileName)
+                    txtFilePath = os.path.join(fileSavePath, rawFileName) + ".txt"
                     os.remove(txtFilePath)
-                    logging.info(f"[{curTime}]\"{fileName}\" deleted successfully.")
+                    logging.info(f"[{curTime}]\"{fullFileName}\" deleted successfully.")
 
             return jsonify(retObj)
 
