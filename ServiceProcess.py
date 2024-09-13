@@ -133,9 +133,9 @@ def ReadFile():
         if fullFileName is None:
             raise ValueError("Parameter cannot be empty.")
 
-        filePath = os.path.join(fileSavePath, fileName)
+        filePath = os.path.join(fileSavePath, fullFileName)
         if not os.path.exists(filePath):
-            raise FileNotFoundError(f"File [{fileName}] does not exist.")
+            raise FileNotFoundError(f"File [{fullFileName}] does not exist.")
 
         fileName = Tools.GetFileName(fullFileName) + ".txt"
         filePath = os.path.join(fileSavePath, fileName)
