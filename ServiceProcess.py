@@ -158,7 +158,7 @@ def ReadFile():
 
 
 # 删除用户知识库文件
-@ServerProcessBlueprint.route("/DeleteFile", methods = ["GET"])
+@ServerProcessBlueprint.route("/DeleteFile", methods = ["POST"])
 def DeleteFile():
     try:
         requestData = request.json
