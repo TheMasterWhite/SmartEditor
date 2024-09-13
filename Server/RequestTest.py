@@ -101,9 +101,9 @@ def UploadFile():
     # response = requests.post(url, files = files)
     # print(response.json())
     #
-    # files = {"file": open("E:/Code/CodeLibrary/Python/SmartEditor/resources/亚托莉.txt", "rb")}
-    # response = requests.post(url, files = files)
-    # print(response.json())
+    files = {"file": open("E:/Code/CodeLibrary/Python/SmartEditor/resources/文心一言wrong.txt", "rb")}
+    response = requests.post(url, files = files)
+    print(response.json())
 
     # files = {"file": open("E:/Code/CodeLibrary/Python/SmartEditor/resources/Poster.jpg", "rb")}
     # response = requests.post(url, files = files)
@@ -190,9 +190,27 @@ def ChatBotStream():
     print()
 
 
+def CheckFile():
+    url = "http://8.148.25.61:8888/Service/CheckFile"
+    data = {
+        "fileName": "文心一言wrong.txt"
+    }
+    response = requests.post(url, data = json.dumps(data), headers = headers)
+    print(response.json())
+
+
+def Delete():
+    url = "http://8.148.25.61:8888/Service/DeleteFile"
+    data = {
+        "fileName": ["文心一言wrong.txt"]
+    }
+    response = requests.post(url, data = json.dumps(data), headers = headers)
+    print(response.json())
+
+
 def main():
     # print("-UploadFile-")
-    # UploadFile()
+
     # print()
     # print("-LLMTest-")
     # LLMTest()
@@ -203,14 +221,13 @@ def main():
     # print("-SModelTest-")
     # SModelTest()
     # print()
-    print("-ChatBot-")
-    ChatBot()
-    print()
-    print("-ChatBotStream-")
-    ChatBotStream()
+    # print("-ChatBot-")
+    # ChatBot()
+    # print()
+    # print("-ChatBotStream-")
+    # ChatBotStream()
+    pass
 
 
 if __name__ == "__main__":
-    #main()
-    a = ["1","2"]
-    print(a)
+    Delete()
