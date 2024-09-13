@@ -178,7 +178,7 @@ def DeleteFile():
             for fullFileName in fullFileNameList:
                 filePath = os.path.join(fileSavePath, fullFileName)
                 fileName = Tools.GetFileName(fullFileName)
-                fileExtension = Tools.GetExtension(fileName)
+                fileExtension = Tools.GetExtension(fullFileName)
                 # 判断文件是否存在
                 if not os.path.exists(filePath):
                     unknownFileList.append(fullFileName)
