@@ -6,7 +6,7 @@ from utils.SModel.OCR import OCRInterface
 from utils.SModel.STT import *
 
 ServerProcessBlueprint = Blueprint("ServerProcessBlueprint", __name__, url_prefix = "/Service")
-fileSavePath = GLOBAL_FileSavePath
+fileSavePath = copy.deepcopy(GLOBAL_FileSavePath)
 
 
 # 从前端接收文件接口
@@ -121,3 +121,76 @@ def DownloadFile(fileName):
             "response": str(e)
         }
         return jsonify(retObj), 500
+
+
+# 读取用户文本内容
+@ServerProcessBlueprint.route("/ReadFile", methods = ["POST"])
+def ReadFile():
+    try:
+        requestData = request.json
+        fullFileName = requestData["fileName"]
+        filePath = os.path.join(fileSavePath, fileName)
+        if not os.path.exists(filePath):
+            raise FileNotFoundError(f"File [{fileName}] does not exist.")
+
+        fileName = Tools.GetFileName(fullFileName) + ".txt"
+        filePath = os.path.join(fileSavePath, fileName)
+        fileContent = FileProcess.ReadTxt(FilePath = filePath)
+
+        curTime = Tools.GetTime()
+        retObj = {
+            "statusCode": 1,
+            "requestTime": curTime,
+            "response": fileContent
+        }
+        return jsonify(retObj)
+
+    except Exception as e:
+        curTime = Tools.GetTime()
+        logging.error(f"[{curTime}]Module:[ReadFile]" + str(e))
+        retObj = {
+            "statusCode": 0,
+            "requestTime": curTime,
+            "response": str(e)
+        }
+        return jsonify(retObj)
+
+
+# 删除文件
+@ServerProcessBlueprint.route("/DeleteFile", methods = ["GET"])
+def DeleteFile():
+    try:
+        requestData = request.json
+        fullFileNameList = requestData["fileName"]
+
+        deletedFileList = []
+        unknownFileList = []
+        for fullfileName in fullFileNameList:
+            filePath = os.path.join(fileSavePath, fileName)
+            fileName = Tools.GetFileName(fullfileName)
+            if not os.path.exists(filePath):
+                unknownFileList.append(fullfileName)
+            else:
+                os.remove(filePath)
+                curTime = Tools.GetTime()
+                logging.info(f"[{curTime}]\"{fileName}\" deleted successfully.")
+                txtFilePath = os.path.join(fileSavePath, fileName)
+                os.remove(txtFilePath)
+                deletedFileList.append(fullfileName)
+
+        curtime = Tools.GetTime()
+        retObj = {
+            "statusCode": 1,
+            "requestTime": curTime,
+            "response": f"{deletedFileList} were successfully deleted, but {unknownFileList} were not found."
+        }
+
+    except Exception as e:
+        curTime = Tools.GetTime()
+        logging.error(f"[{curTime}]Module:[DeleteFile]" + str(e))
+        retObj = {
+            "statusCode": 0,
+            "requestTime": curTime,
+            "response": str(e)
+        }
+        return jsonify(retObj)

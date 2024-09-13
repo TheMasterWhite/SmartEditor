@@ -1,3 +1,4 @@
+import copy
 import logging, json, os, sys, requests
 from flask import Flask, request, jsonify, Response, stream_with_context, Blueprint
 from utils.LModel.Interface import LLMInterface
@@ -6,7 +7,7 @@ from utils.Config.FileProcess import *
 from utils import Tools
 
 LLMBlueprint = Blueprint("LLMBlueprint", __name__, url_prefix = '/LLMInterface')
-fileSavePath = GLOBAL_FileSavePath
+fileSavePath = copy.deepcopy(GLOBAL_FileSavePath)
 
 
 # 翻译功能接口

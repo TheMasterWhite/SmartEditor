@@ -7,7 +7,7 @@ from utils.SModel.TarDetect import *
 from utils.SModel.STT import *
 
 SModelBlueprint = Blueprint("SModelBlueprint", __name__, url_prefix = "/SModelInterface")
-fileSavePath = GLOBAL_FileSavePath
+fileSavePath = copy.deepcopy(GLOBAL_FileSavePath)
 
 
 @SModelBlueprint.route("/OCR", methods = ["POST"])

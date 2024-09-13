@@ -4,7 +4,7 @@ from utils import Tools
 import queue, threading, time, logging
 from utils.SModel.TaskThread import *
 
-fileSavePath = GLOBAL_FileSavePath
+fileSavePath = copy.deepcopy(GLOBAL_FileSavePath)
 
 QuerySTTThread = TaskThread()
 QuerySTTThread.start()
