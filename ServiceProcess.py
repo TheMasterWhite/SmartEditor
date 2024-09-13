@@ -163,6 +163,8 @@ def DeleteFile():
     try:
         requestData = request.json
         fullFileNameList = requestData["fileName"]
+        if fullFileNameList is not list:
+            raise ValueError(f"Parameter \"fileName\" must be a list.")
 
         deletedFileList = []
         unknownFileList = []
