@@ -185,6 +185,7 @@ def DeleteFile():
             "requestTime": curTime,
             "response": f"{deletedFileList} were successfully deleted, but {unknownFileList} were not found."
         }
+        return jsonify(retObj)
 
     except Exception as e:
         curTime = Tools.GetTime()
