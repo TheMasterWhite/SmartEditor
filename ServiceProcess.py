@@ -129,7 +129,10 @@ def DownloadFile(fileName):
 def ReadFile():
     try:
         requestData = request.json
-        fullFileName = requestData["fileName"]
+        fullFileName = requestData.get("fileName", None)
+        if fullFileName is None:
+            raise ValueError("Parameter cannot be empty.")
+
         filePath = os.path.join(fileSavePath, fileName)
         if not os.path.exists(filePath):
             raise FileNotFoundError(f"File [{fileName}] does not exist.")
@@ -162,32 +165,76 @@ def ReadFile():
 def DeleteFile():
     try:
         requestData = request.json
-        fullFileNameList = requestData["fileName"]
-        if fullFileNameList is not list:
-            raise ValueError(f"Parameter \"fileName\" must be a list.")
+        fullFileNameList = requestData.get("fileName", None)
+        if fullFileNameList is None:
+            raise ValueError("Parameter cannot be empty.")
 
-        deletedFileList = []
-        unknownFileList = []
-        for fullfileName in fullFileNameList:
+        # fileName是列表
+        if isinstance(fullFileNameList, list):
+
+            deletedFileList = []
+            unknownFileList = []
+            for fullFileName in fullFileNameList:
+                filePath = os.path.join(fileSavePath, fileName)
+                fileName = Tools.GetFileName(fullFileName)
+                fileExtension = Tools.GetExtension(fileName)
+                if not os.path.exists(filePath):
+                    unknownFileList.append(fullFileName)
+
+                else:
+                    # 目标文件是txt
+                    if fileExtension == ".txt":
+                        os.remove(filePath)
+                        logging.info(f"[{curTime}]\"{fileName}\" deleted successfully.")
+                        deletedFileList.append(fullFileName)
+
+                    # 目标文件是多媒体
+                    else:
+                        curTime = Tools.GetTime()
+                        os.remove(filePath)
+                        txtFilePath = os.path.join(fileSavePath, rawFileName)
+                        os.remove(txtFilePath)
+                        logging.info(f"[{curTime}]\"{fileName}\" deleted successfully.")
+                        deletedFileList.append(fullFileName)
+
+            curtime = Tools.GetTime()
+            retObj = {
+                "statusCode": 1,
+                "requestTime": curTime,
+                "response": f"{deletedFileList} were successfully deleted, but {unknownFileList} were not found."
+            }
+            return jsonify(retObj)
+
+        # fileName不是列表
+        else:
+            fileName = Tools.GetFileName(fullFileNameList)
+            retObj = {
+                "statusCode": 1,
+                "requestTime": curTime,
+                "response": f"File \"{fileName}\" were successfully deleted"
+            }
+            fileExtension = Tools.GetExtension(fullFileNameList)
+            rawFileName = Tools.GetFileName(fullFileNameList)
             filePath = os.path.join(fileSavePath, fileName)
-            fileName = Tools.GetFileName(fullfileName)
-            if not os.path.exists(filePath):
-                unknownFileList.append(fullfileName)
-            else:
-                os.remove(filePath)
-                curTime = Tools.GetTime()
-                logging.info(f"[{curTime}]\"{fileName}\" deleted successfully.")
-                txtFilePath = os.path.join(fileSavePath, fileName)
-                os.remove(txtFilePath)
-                deletedFileList.append(fullfileName)
 
-        curtime = Tools.GetTime()
-        retObj = {
-            "statusCode": 1,
-            "requestTime": curTime,
-            "response": f"{deletedFileList} were successfully deleted, but {unknownFileList} were not found."
-        }
-        return jsonify(retObj)
+            # 判断文件存不存在
+            if not os.path.exists(filePath):
+                raise FileNotFoundError(f"File [{fileName}] does not exist.")
+            else:
+                # 目标文件是txt
+                if fileExtension == ".txt":
+                    os.remove(filePath)
+                    logging.info(f"[{curTime}]\"{fileName}\" deleted successfully.")
+                    os.remove(filePath)
+
+                # 目标文件是多媒体文件
+                else:
+                    os.remove(filePath)
+                    txtFilePath = os.path.join(fileSavePath, rawFileName)
+                    os.remove(txtFilePath)
+                    logging.info(f"[{curTime}]\"{fileName}\" deleted successfully.")
+
+            return jsonify(retObj)
 
     except Exception as e:
         curTime = Tools.GetTime()
