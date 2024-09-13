@@ -5,6 +5,7 @@ import base64
 import pathlib
 import json
 import requests, logging
+import copy
 from pathlib import Path
 from utils import Tools
 
