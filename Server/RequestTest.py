@@ -11,6 +11,7 @@ def ClearBotHistory(UserId):
         "userId": UserId
     }
     response = requests.post(url2, data = json.dumps(data), headers = headers)
+    print(response.json())
 
 
 def LLMTest():
@@ -88,21 +89,25 @@ def LLMTestStream():
 
 def UploadFile():
     url = "http://8.148.25.61:8888/Service/UploadFile"
-    files = {"file": open("E:/Code/CodeLibrary/Python/SmartEditor/resources/作文.pdf", "rb")}
-    response = requests.post(url, files = files)
-    print(response.json())
+    # files = {"file": open("E:/Code/CodeLibrary/Python/SmartEditor/resources/作文.pdf", "rb")}
+    # response = requests.post(url, files = files)
+    # print(response.json())
+    #
+    # files = {"file": open("E:/Code/CodeLibrary/Python/SmartEditor/resources/沁园春雪.mp3", "rb")}
+    # response = requests.post(url, files = files)
+    # print(response.json())
+    #
+    # files = {"file": open("E:/Code/CodeLibrary/Python/SmartEditor/resources/沁园春长沙.mp4", "rb")}
+    # response = requests.post(url, files = files)
+    # print(response.json())
+    #
+    # files = {"file": open("E:/Code/CodeLibrary/Python/SmartEditor/resources/亚托莉.txt", "rb")}
+    # response = requests.post(url, files = files)
+    # print(response.json())
 
-    files = {"file": open("E:/Code/CodeLibrary/Python/SmartEditor/resources/沁园春雪.mp3", "rb")}
-    response = requests.post(url, files = files)
-    print(response.json())
-
-    files = {"file": open("E:/Code/CodeLibrary/Python/SmartEditor/resources/沁园春长沙.mp4", "rb")}
-    response = requests.post(url, files = files)
-    print(response.json())
-
-    files = {"file": open("E:/Code/CodeLibrary/Python/SmartEditor/resources/亚托莉.txt", "rb")}
-    response = requests.post(url, files = files)
-    print(response.json())
+    # files = {"file": open("E:/Code/CodeLibrary/Python/SmartEditor/resources/Poster.jpg", "rb")}
+    # response = requests.post(url, files = files)
+    # print(response.json())
 
 
 def SModelTest():
@@ -118,17 +123,16 @@ def SModelTest():
         "fileData": [{"name": "沁园春雪.mp3", "language": "Chinese"},
                      {"name": "沁园春长沙.mp4", "language": "Chinese"}]
     }
-    headers = {'Content-Type': 'application/json'}
     response = requests.post(url2, data = json.dumps(data), headers = headers)
     print(response.json())
 
 
 def ChatBot():
-    ClearBotHistory()
+    ClearBotHistory("Test")
 
     url = "http://8.148.25.61:8888/LLMInterface/ChatBot"
     data = {
-        "content": "亚托莉喜欢吃东西吗",
+        "content": "亚托莉需要刷牙吗",
         "fileName": ["亚托莉.txt"],
         "userId": "Test"
     }
@@ -136,35 +140,37 @@ def ChatBot():
     print(response.json()["response"])
 
     data2 = {
-        "content": "亚托莉喜欢吃东西吗",
-        "fileName": ["亚托莉.txt"],
+        "content": "亚托莉需要刷牙吗",
         "userId": "Test2"
     }
     response = requests.post(url, data = json.dumps(data2), headers = headers)
     print(response.json()["response"])
 
-    ClearBotHistory()
+    ClearBotHistory("Test")
 
-    data["content"] = "亚托莉需要刷牙吗"
+    data = {
+        "content": "亚托莉喜欢吃东西吗",
+        "userId": "Test"
+    }
     response = requests.post(url, data = json.dumps(data), headers = headers)
     print(response.json()["response"])
 
 
 def ChatBotStream():
     url = "http://8.148.25.61:8888/LLMInterface/ChatBotStream"
-    ClearBotHistory()
+    ClearBotHistory("Test")
     data = {
-        "content": "亚托莉喜欢吃东西吗",
-        "fileName": ["亚托莉.txt", "a.mp4"],
+        "content": "亚托莉需要刷牙吗",
+        "fileName": ["亚托莉.txt"],
         "userId": "Test"
     }
-    response = requests.post(url, data = json.dumps(data2), headers = headers, stream = True)
+    response = requests.post(url, data = json.dumps(data), headers = headers, stream = True)
     for i in response.iter_content(chunk_size = 1024):
         print(i.decode('utf-8'), end = "")
     print()
 
     data2 = {
-        "content": "亚托莉喜欢吃东西吗",
+        "content": "亚托莉需要刷牙吗",
         "userId": "Test2"
     }
     response = requests.post(url, data = json.dumps(data2), headers = headers)
@@ -172,30 +178,39 @@ def ChatBotStream():
         print(i.decode('utf-8'), end = "")
     print()
 
-    ClearBotHistory()
+    ClearBotHistory("Test")
 
-    data["content"] = "亚托莉需要刷牙吗"
+    data = {
+        "content": "亚托莉喜欢吃东西吗",
+        "userId": "Test"
+    }
     response = requests.post(url, data = json.dumps(data), headers = headers, stream = True)
     for i in response.iter_content(chunk_size = 1024):
         print(i.decode('utf-8'), end = "")
     print()
 
 
-if __name__ == "__main__":
-    print("LLMTest")
-    LLMTest()
-    print()
-    print("LLMTestStream")
-    LLMTestStream()
-    print()
-    print("UploadFile")
-    UploadFile()
-    print()
-    print("SModelTest")
-    SModelTest()
-    print()
-    print("ChatBot")
+def main():
+    # print("-UploadFile-")
+    # UploadFile()
+    # print()
+    # print("-LLMTest-")
+    # LLMTest()
+    # print()
+    # print("-LLMTestStream-")
+    # LLMTestStream()
+    # print()
+    # print("-SModelTest-")
+    # SModelTest()
+    # print()
+    print("-ChatBot-")
     ChatBot()
     print()
-    print("ChatBotStream")
+    print("-ChatBotStream-")
     ChatBotStream()
+
+
+if __name__ == "__main__":
+    #main()
+    a = ["1","2"]
+    print(a)

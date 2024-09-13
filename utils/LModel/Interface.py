@@ -250,3 +250,12 @@ class LLMInterface(LLMBasic):  # 大模型高级功能接口类
 
         except Exception as e:
             raise e
+
+
+    @staticmethod
+    def CheckFile(Tartext):
+        try:
+            promptText = GetPrompt().Data()["FunctionPrompt"]["CheckFile"] + Tartext
+            return LLMBasic.GetResponse_String(promptText)
+        except Exception as e:
+            raise e

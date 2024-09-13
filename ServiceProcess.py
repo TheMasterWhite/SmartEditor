@@ -4,6 +4,7 @@ from utils import Tools
 from utils.Config.FileProcess import *
 from utils.SModel.OCR import OCRInterface
 from utils.SModel.STT import *
+from utils.LModel.Interface import *
 
 ServerProcessBlueprint = Blueprint("ServerProcessBlueprint", __name__, url_prefix = "/Service")
 fileSavePath = copy.deepcopy(GLOBAL_FileSavePath)
@@ -123,7 +124,7 @@ def DownloadFile(fileName):
         return jsonify(retObj), 500
 
 
-# 读取用户文本内容
+# 读取用户知识库文本
 @ServerProcessBlueprint.route("/ReadFile", methods = ["POST"])
 def ReadFile():
     try:
@@ -156,7 +157,7 @@ def ReadFile():
         return jsonify(retObj)
 
 
-# 删除文件
+# 删除用户知识库文件
 @ServerProcessBlueprint.route("/DeleteFile", methods = ["GET"])
 def DeleteFile():
     try:
@@ -188,6 +189,74 @@ def DeleteFile():
     except Exception as e:
         curTime = Tools.GetTime()
         logging.error(f"[{curTime}]Module:[DeleteFile]" + str(e))
+        retObj = {
+            "statusCode": 0,
+            "requestTime": curTime,
+            "response": str(e)
+        }
+        return jsonify(retObj)
+
+
+# 将用户编辑器内容保存到文件中
+@ServerProcessBlueprint.route("/Save", methods = ["POST"])
+def Save():
+    try:
+        requestData = request.json
+        fileName = requestData["fileName"]
+        content = requestData["content"]
+
+        rawFileName = Tools.GetFileName(fileName)
+        txtFileName = rawFileName + ".txt"
+        savePath = os.path.join(fileSavePath, txtFileName)
+        with open(savePath, "w") as f:
+            f.write(content)
+
+        curTime = Tools.GetTime()
+        retObj = {
+            "statusCode": 1,
+            "requestTime": curTime,
+            "response": f"Document content saved successfully."
+        }
+        return jsonify(retObj)
+
+    except Exception as e:
+        curTime = Tools.GetTime()
+        logging.error(f"[{curTime}]Module:[Save]" + str(e))
+        retObj = {
+            "statusCode": 0,
+            "requestTime": curTime,
+            "response": str(e)
+        }
+        return jsonify(retObj)
+
+
+# 大模型联网纠错
+@ServerProcessBlueprint.route("/CheckFile", methods = ["POST"])
+def CheckFile():
+    try:
+        requestData = request.json
+        fullfileName = requestData["fileName"]
+        filePath = os.path.join(fileSavePath, fullfileName)
+        if not os.path.exists(filePath):
+            raise FileNotFoundError(f"File [{fullfileName}] does not exist.")
+
+        fileName = Tools.GetFileName(fullfileName)
+        txtfileName = fileName + ".txt"
+        filePath = os.path.join(fileSavePath, txtfileName)
+        fileContent = FileProcess.ReadTxt(FilePath = filePath)
+
+        checkResult = LLMInterface.CheckFile(Tartext = fileContent)
+        curTime = Tools.GetTime()
+        retObj = {
+            "statusCode": 1,
+            "requestTime": curTime,
+            "response": checkResult
+        }
+        return jsonify(retObj)
+
+    except Exception as e:
+        curTime = Tools.GetTime()
+        logging.error(f"[{curTime}]Module:[Save]" + str(e))
         retObj = {
             "statusCode": 0,
             "requestTime": curTime,
