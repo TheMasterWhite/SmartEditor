@@ -166,6 +166,7 @@ def DeleteFile():
     try:
         requestData = request.json
         fullFileNameList = requestData.get("fileName", None)
+        curTime = Tools.GetTime()
         if fullFileNameList is None:
             raise ValueError("Parameter cannot be empty.")
 
@@ -192,14 +193,12 @@ def DeleteFile():
 
                     # 目标文件是多媒体
                     else:
-                        curTime = Tools.GetTime()
                         os.remove(filePath)
                         txtFilePath = os.path.join(fileSavePath, fileName) + ".txt"
                         os.remove(txtFilePath)
                         logging.info(f"[{curTime}]\"{fullFileName}\" deleted successfully.")
                         deletedFileList.append(fullFileName)
 
-            curtime = Tools.GetTime()
             retObj = {
                 "statusCode": 1,
                 "requestTime": curTime,
