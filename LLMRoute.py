@@ -506,7 +506,7 @@ def TextGen():
         materialFileList = requestData.get("materialFiles", None)
         sepLib = "####知识库内容####\n"
         sepContent = "####用户输入文本####\n"
-        knowledgeText = ""
+        knowledgeContent = ""
 
         # 传入素材文件
         if materialFileList is not None:
@@ -564,7 +564,7 @@ def TextGenStream():
         materialFileList = requestData.get("materialFiles", None)
         sepLib = "####知识库内容####\n"
         sepContent = "####用户输入文本####\n"
-        knowledgeText = ""
+        knowledgeContent = ""
 
         # 传入素材文件
         if materialFileList is not None:
