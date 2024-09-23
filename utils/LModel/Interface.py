@@ -5,7 +5,6 @@ from Config import *
 import erniebot, copy
 
 fileSavePath = copy.deepcopy(GLOBAL_FileSavePath)
-resourceSavePath = copy.deepcopy(GLOBAL_ResourcesSavePath)
 
 
 class LLMBasic:  # 大模型基本通信接口类
@@ -263,64 +262,5 @@ class LLMInterface(LLMBasic):  # 大模型高级功能接口类
         try:
             promptText = GetPrompt().Data()["FunctionPrompt"]["CheckFile"] + Tartext
             return LLMBasic.GetResponse_String(promptText)
-        except Exception as e:
-            raise e
-
-
-    # 文本生成工具
-    @staticmethod
-    def TextGen(UserContent, PromptFile, KnowledgeFileList):
-        try:
-            sepLib = "###知识库内容###\n"
-            sepContent = "###用户输入文本###\n"
-            knowledgeText = ""
-            # 获取知识库文本
-            for file in KnowledgeFileList:
-                fileName = Tools.GetFileName(file)
-                txtFileName = fileName + ".txt"
-                filePath = os.path.join(fileSavePath, txtFileName)
-                if not os.path.exists(filePath):
-                    raise FileNotFoundError(f"File [{file}] dose not exist.")
-                knowledgeText += FileProcess.ReadTxt(filePath)
-
-            # 获取文本生成提示词
-            fileName = Tools.GetFileName(PromptFile)
-            txtFileName = fileName + ".txt"
-            filePath = os.path.join(resourceSavePath, txtFileName)
-            prompt = FileProcess.ReadTxt(filePath)
-            prompt += sepLib + knowledgeText + sepContent + UserContent
-
-            return LLMBasic.GetResponse_String(prompt)
-
-        except Exception as e:
-            raise e
-
-
-    # 文本生成工具，返回迭代器
-    @staticmethod
-    def TextGenStream(UserContent, PromptFile, KnowledgeFileList):
-        try:
-            sepLib = "###知识库内容###\n"
-            sepContent = "###用户输入文本###\n"
-            knowledgeText = ""
-            # 获取知识库文本
-            for file in KnowledgeFileList:
-                fileName = Tools.GetFileName(file)
-                txtFileName = fileName + ".txt"
-                filePath = os.path.join(fileSavePath, txtFileName)
-                if not os.path.exists(filePath):
-                    raise FileNotFoundError(f"File [{file}] dose not exist.")
-                knowledgeText += FileProcess.ReadTxt(filePath)
-
-            # 获取文本生成提示词
-            fileName = Tools.GetFileName(PromptFile)
-            txtFileName = fileName + ".txt"
-            filePath = os.path.join(resourceSavePath, txtFileName)
-            prompt = FileProcess.ReadTxt(filePath)
-            prompt += sepLib + knowledgeText + sepContent + UserContent
-
-            for i in LLMBasic.GetResponseStream_String(prompt):
-                yield i
-
         except Exception as e:
             raise e

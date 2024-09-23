@@ -8,6 +8,7 @@ from utils import Tools
 
 LLMBlueprint = Blueprint("LLMBlueprint", __name__, url_prefix = '/LLMInterface')
 fileSavePath = copy.deepcopy(GLOBAL_FileSavePath)
+resourceSavePath = copy.deepcopy(GLOBAL_ResourcesSavePath)
 
 
 # 翻译功能接口
@@ -353,7 +354,7 @@ def ChatBot():
 
         # 传入文件情况下调用机器人
         else:
-            # 存在历史记录，不进行文件操作
+            # 存在历史记录，所以不进行文件操作
             if userId in bot.Parameter:
                 response = bot.GetResponse(content, userId)
                 curTime = Tools.GetTime()
@@ -365,18 +366,18 @@ def ChatBot():
                 logging.info(f"[{curTime}]Chatbot request successed.")
                 return jsonify(retObj)
 
-            # 传入文件且ChatBot没有历史记录
+            # 不存在历史记录
             else:
                 # 限制文件数量
                 if len(userFileList) > 5:
                     raise ValueError("The number of files could not be more than 5.")
 
-                knowledgeContent = ""
                 # 获取知识库中txt
+                knowledgeContent = ""
                 for fileName in userFileList:
                     rawName = Tools.GetFileName(fileName)
-                    TarName = rawName + '.txt'
-                    filePath = os.path.join(fileSavePath, TarName)
+                    tarName = rawName + '.txt'
+                    filePath = os.path.join(fileSavePath, tarName)
                     # 文件不存在
                     if not os.path.exists(filePath):
                         raise FileNotFoundError(f"File {fileName} does not exist.")
@@ -425,13 +426,13 @@ def ChatBotStream():
 
         # 传入文件情况下调用机器人
         else:
-            # 存在历史记录，不进行文件操作
+            # 存在历史记录，所以不进行文件操作
             if userId in bot.Parameter:
                 responseStream = bot.GetResponseStream(content, userId)
                 curTime = Tools.GetTime()
                 logging.info(f"[{curTime}]ChatbotStream request successed.")
 
-            # 传入文件且ChatBot没有历史记录
+            # 不存在历史记录
             else:
                 # 限制文件数量
                 if len(userFileList) > 5:
@@ -498,13 +499,39 @@ def ClearBotHistory():
 @LLMBlueprint.route("/TextGen", methods = ["POST"])
 def TextGen():
     try:
+        # 获取请求数据
         requestData = request.json
         userContent = requestData["content"]
-        template = requestData["template"]
+        PromptFile = requestData["template"]
         materialFileList = requestData["materialFiles"]
-        response = LLMInterface.TextGen(UserContent = userContent,
-                                        PromptFile = template,
-                                        KnowledgeFileList = materialFileList)
+        sepLib = "###知识库内容###\n"
+        sepContent = "###用户输入文本###\n"
+        knowledgeText = ""
+
+        # 限制文件数量
+        if len(materialFileList) > 5:
+            raise ValueError("The number of files could not be more than 5.")
+
+        # 获取知识库文本
+        knowledgeContent = ""
+        for fileName in materialFileList:
+            rawName = Tools.GetFileName(file)
+            txtName = fileName + ".txt"
+            filePath = os.path.join(resourceSavePath, txtName)
+            # 文件不存在
+            if not os.path.exists(filePath):
+                raise FileNotFoundError(f"File [{file}] dose not exist.")
+
+            knowledgeContent += FileProcess.ReadTxt(filePath) + "\n"
+
+        # 获取文本生成提示词
+        fileName = Tools.GetFileName(PromptFile)
+        txtFileName = fileName + ".txt"
+        filePath = os.path.join(resourceSavePath, txtFileName)
+        prompt = FileProcess.ReadTxt(filePath)
+        prompt += sepLib + knowledgeText + sepContent + userContent
+
+        response = LLMInterface.GetResponse_String(prompt)
 
         curTime = Tools.GetTime()
         logging.info(f"[{curTime}]TextGen request successed.")
@@ -530,13 +557,40 @@ def TextGen():
 @LLMBlueprint.route("/TextGenStream", methods = ["POST"])
 def TextGenStream():
     try:
+        # 获取请求数据
         requestData = request.json
         userContent = requestData["content"]
-        template = requestData["template"]
+        PromptFile = requestData["template"]
         materialFileList = requestData["materialFiles"]
-        responseStream = LLMInterface.TextGenStream(UserContent = userContent,
-                                                    PromptFile = template,
-                                                    KnowledgeFileList = materialFileList)
+        sepLib = "###知识库内容###\n"
+        sepContent = "###用户输入文本###\n"
+        knowledgeText = ""
+
+        # 限制文件数量
+        if len(materialFileList) > 5:
+            raise ValueError("The number of files could not be more than 5.")
+
+        # 获取知识库文本
+        knowledgeContent = ""
+        for fileName in materialFileList:
+            rawName = Tools.GetFileName(file)
+            txtName = fileName + ".txt"
+            filePath = os.path.join(resourceSavePath, txtName)
+            # 文件不存在
+            if not os.path.exists(filePath):
+                raise FileNotFoundError(f"File [{file}] dose not exist.")
+
+            knowledgeContent += FileProcess.ReadTxt(filePath) + "\n"
+
+        # 获取文本生成提示词
+        fileName = Tools.GetFileName(PromptFile)
+        txtFileName = fileName + ".txt"
+        filePath = os.path.join(resourceSavePath, txtFileName)
+        prompt = FileProcess.ReadTxt(filePath)
+        prompt += sepLib + knowledgeText + sepContent + userContent
+
+        responseStream = LLMInterface.GetResponseStream_String(prompt)
+
         curTime = Tools.GetTime()
         logging.info(f"[{curTime}]TextGen_Stream request successed.")
         return Response(stream_with_context(responseStream))
