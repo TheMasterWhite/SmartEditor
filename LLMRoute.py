@@ -528,6 +528,8 @@ def TextGen():
         rawName = Tools.GetFileName(PromptFile)
         txtFileName = rawName + ".txt"
         filePath = os.path.join(resourceSavePath, txtFileName)
+        if not os.path.exists(filePath):
+            raise FileNotFoundError(f"Template [{rawName}] dose not exist.")
         prompt = FileProcess.ReadTxt(filePath)
         prompt += sepLib + knowledgeContent + sepContent + userContent
 
@@ -586,6 +588,8 @@ def TextGenStream():
         rawName = Tools.GetFileName(PromptFile)
         txtFileName = rawName + ".txt"
         filePath = os.path.join(resourceSavePath, txtFileName)
+        if not os.path.exists(filePath):
+            raise FileNotFoundError(f"Template [{rawName}] dose not exist.")
         prompt = FileProcess.ReadTxt(filePath)
         prompt += sepLib + knowledgeContent + sepContent + userContent
 
