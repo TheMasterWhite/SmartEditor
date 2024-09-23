@@ -505,6 +505,8 @@ def TextGen():
         response = LLMInterface.TextGen(UserContent = userContent,
                                         PromptFile = template,
                                         KnowledgeFileList = materialFileList)
+        curTime = Tools.GetTime()
+        logging.info(f"[{curTime}]TextGen request successed.")
         retObj = {
             "statusCode": 1,
             "requestTime": curTime,
@@ -534,6 +536,8 @@ def TextGenStream():
         responseStream = LLMInterface.TextGenStream(UserContent = userContent,
                                                     PromptFile = template,
                                                     KnowledgeFileList = materialFileList)
+        curTime = Tools.GetTime()
+        logging.info(f"[{curTime}]TextGen_Stream request successed.")
         return Response(stream_with_context(responseStream))
 
     except Exception as e:
