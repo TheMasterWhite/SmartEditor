@@ -1,3 +1,4 @@
+import copy
 import logging, os
 from flask import Flask, Blueprint, request, jsonify, send_file
 from utils import Tools
@@ -6,12 +7,13 @@ from utils.SModel.OCR import OCRInterface
 from utils.SModel.STT import *
 from utils.LModel.Interface import *
 
-ServerProcessBlueprint = Blueprint("ServerProcessBlueprint", __name__, url_prefix = "/Service")
+ServiceProcessBlueprint = Blueprint("ServiceProcessBlueprint", __name__, url_prefix = "/Service")
 fileSavePath = copy.deepcopy(GLOBAL_FileSavePath)
+resourceSavePath = copy.deepcopy(GLOBAL_ResourcesSavePath)
 
 
 # 从前端接收文件接口
-@ServerProcessBlueprint.route("/UploadFile", methods = ["POST"])
+@ServiceProcessBlueprint.route("/UploadFile", methods = ["POST"])
 def UploadFile():
     try:
         # 请求中不存在文件
@@ -93,7 +95,7 @@ def UploadFile():
 
 
 # 文件下载接口
-@ServerProcessBlueprint.route("/DownloadFile/<fileName>", methods = ["GET"])
+@ServiceProcessBlueprint.route("/DownloadFile/<fileName>", methods = ["GET"])
 def DownloadFile(fileName):
     try:
         filePath = os.path.join(fileSavePath, fileName)
@@ -125,7 +127,7 @@ def DownloadFile(fileName):
 
 
 # 读取用户知识库文本
-@ServerProcessBlueprint.route("/ReadFile", methods = ["POST"])
+@ServiceProcessBlueprint.route("/ReadFile", methods = ["POST"])
 def ReadFile():
     try:
         requestData = request.json
@@ -161,7 +163,7 @@ def ReadFile():
 
 
 # 删除用户知识库文件
-@ServerProcessBlueprint.route("/DeleteFile", methods = ["POST"])
+@ServiceProcessBlueprint.route("/DeleteFile", methods = ["POST"])
 def DeleteFile():
     try:
         requestData = request.json
@@ -249,7 +251,7 @@ def DeleteFile():
 
 
 # 将用户编辑器内容保存到文件中
-@ServerProcessBlueprint.route("/Save", methods = ["POST"])
+@ServiceProcessBlueprint.route("/Save", methods = ["POST"])
 def Save():
     try:
         requestData = request.json
@@ -282,7 +284,7 @@ def Save():
 
 
 # 大模型联网纠错
-@ServerProcessBlueprint.route("/CheckFile", methods = ["POST"])
+@ServiceProcessBlueprint.route("/CheckFile", methods = ["POST"])
 def CheckFile():
     try:
         requestData = request.json
@@ -308,6 +310,38 @@ def CheckFile():
     except Exception as e:
         curTime = Tools.GetTime()
         logging.error(f"[{curTime}]Module:[Save]" + str(e))
+        retObj = {
+            "statusCode": 0,
+            "requestTime": curTime,
+            "response": str(e)
+        }
+        return jsonify(retObj)
+
+
+# 上传资源文件，开发者接口不对用户开放
+@ServiceProcessBlueprint.route("/UploadResource", methods = ["POST"])
+def UploadResource():
+    try:
+        # 请求中不存在文件
+        if "file" not in request.files:
+            raise Exception("No file in the request.")
+
+        # 获取文件并保存
+        file = request.files["file"]
+        fullFileName = file.filename
+        file.save(os.path.join(resourceSavePath, fullFileName))
+
+        curTime = Tools.GetTime()
+        retObj = {
+            "statusCode": 1,
+            "requestTime": curTime,
+            "response": f"File [{fullFileName}] uploaded successfully."
+        }
+        return jsonify(retObj)
+
+    except Exception as e:
+        curTime = Tools.GetTime()
+        logging.error(f"[{curTime}]Module:[UploadFile]" + str(e))
         retObj = {
             "statusCode": 0,
             "requestTime": curTime,

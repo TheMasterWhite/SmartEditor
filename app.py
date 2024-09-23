@@ -5,20 +5,19 @@ from wsgiref.simple_server import WSGIServer
 from Config import *
 from LLMRoute import LLMBlueprint
 from SModelRoute import SModelBlueprint
-from ServiceProcess import ServerProcessBlueprint
+from ServiceProcess import ServiceProcessBlueprint
 from utils.SModel.STT import TaskThread
 from utils import Tools
 
 app = Flask(__name__)
 CORS(app, resources = {r"/*": {"origins": "*"}})
 
-
 # 大模型注册蓝图
 app.register_blueprint(LLMBlueprint)
-# OCR注册蓝图
+# 小模型注册蓝图
 app.register_blueprint(SModelBlueprint)
 # 服务业务注册蓝图
-app.register_blueprint(ServerProcessBlueprint)
+app.register_blueprint(ServiceProcessBlueprint)
 
 
 def StartServer():

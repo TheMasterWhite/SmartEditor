@@ -1,6 +1,9 @@
+from utils import Tools
 from utils.Config.PMTProcess import GetPrompt, KnowledgeLib
 from utils.Config.FileProcess import FileProcess, OSSProcess, JsonOperator
 import erniebot
+
+resourceSavePath = copy.deepcopy(GLOBAL_ResourcesSavePath)
 
 
 class LLMBasic:  # 大模型基本通信接口类
@@ -252,10 +255,63 @@ class LLMInterface(LLMBasic):  # 大模型高级功能接口类
             raise e
 
 
+    # 文件内容联网检查
     @staticmethod
     def CheckFile(Tartext):
         try:
             promptText = GetPrompt().Data()["FunctionPrompt"]["CheckFile"] + Tartext
             return LLMBasic.GetResponse_String(promptText)
+        except Exception as e:
+            raise e
+
+
+    # 文本生成工具
+    @staticmethod
+    def TextGen(UserContent, PromptFile, KnowledgeFileList):
+        try:
+            sepLib = "###知识库内容###\n"
+            sepContent = "###用户输入文本###\n"
+            knowledgeText = ""
+            # 获取知识库文本
+            for file in KnowledgeFileList:
+                fileName = Tools.GetFileName(file)
+                txtFileName = os.path.join(fileName, ".txt")
+                filePath = os.path.join(resourceSavePath, txtFileName)
+                knowledgeText = FileProcess.ReadTxt(filePath)
+
+            # 获取文本生成提示词
+            fileName = Tools.GetFileName(PromptFile)
+            txtFileName = os.path.join(fileName, ".txt")
+            prompt = FileProcess.ReadTxt(txtFileName)
+
+            prompt += sepLib + knowledgeText + sepContent + UserContent
+            return LLMBasic.GetResponse_String(prompt)
+
+        except Exception as e:
+            raise e
+
+
+    # 文本生成工具，返回迭代器
+    @staticmethod
+    def TextGenStream(UserContent, PromptFile, KnowledgeFileList):
+        try:
+            sepLib = "###知识库内容###\n"
+            sepContent = "###用户输入文本###\n"
+            knowledgeText = ""
+            # 获取知识库文本
+            for file in KnowledgeFileList:
+                fileName = Tools.GetFileName(file)
+                txtFileName = os.path.join(fileName, ".txt")
+                filePath = os.path.join(resourceSavePath, txtFileName)
+                knowledgeText = FileProcess.ReadTxt(filePath)
+
+            # 获取文本生成提示词
+            fileName = Tools.GetFileName(PromptFile)
+            txtFileName = os.path.join(fileName, ".txt")
+            prompt = FileProcess.ReadTxt(txtFileName)
+
+            prompt += sepLib + knowledgeText + sepContent + UserContent
+            return LLMBasic.GetResponseStream_String(prompt)
+
         except Exception as e:
             raise e

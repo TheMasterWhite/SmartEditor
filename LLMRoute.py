@@ -492,3 +492,56 @@ def ClearBotHistory():
             "response": str(e)
         }
         return jsonify(retObj)
+
+
+# 格式化文本生成接口
+@LLMBlueprint.route("TextGen", methods = ["POST"])
+def TextGen():
+    try:
+        requestData = request.json
+        userContent = requestData["content"]
+        template = requestData["template"]
+        materialFileList = requestData["materialFiles"]
+        response = LLMInterface.TextGen(UserContent = userContent,
+                                        PromptFile = template,
+                                        KnowledgeFileList = materialFileList)
+        retObj = {
+            "statusCode": 1,
+            "requestTime": curTime,
+            "response": response
+        }
+        return retObj
+
+    except Exception as e:
+        curTime = Tools.GetTime()
+        logging.error(f"[{curTime}]Module:[Textgen]" + str(e))
+        retObj = {
+            "statusCode": 0,
+            "requestTime": curTime,
+            "response": str(e)
+        }
+        return jsonify(retObj)
+
+
+# 格式化文本生成接口，返回迭代器
+@LLMBlueprint.route("TextGenStream", methods = ["POST"])
+def TextGenStream():
+    try:
+        requestData = request.json
+        userContent = requestData["content"]
+        template = requestData["template"]
+        materialFileList = requestData["materialFiles"]
+        responseStream = LLMInterface.TextGenStream(UserContent = userContent,
+                                                    PromptFile = template,
+                                                    KnowledgeFileList = materialFileList)
+        return Response(stream_with_context(responseStream))
+
+    except Exception as e:
+        curTime = Tools.GetTime()
+        logging.error(f"[{curTime}]Module:[TextgenStream]" + str(e))
+        retObj = {
+            "statusCode": 0,
+            "requestTime": curTime,
+            "response": str(e)
+        }
+        return jsonify(retObj)

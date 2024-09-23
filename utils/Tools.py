@@ -9,6 +9,13 @@ def GetTime():
     return str(formatTime)
 
 
+# 获取格式化日期
+def GetDate():
+    curDate = datetime.now()
+    formatDate = curDate.strftime("%y.%m.%d")
+    return str(formatDate)
+
+
 # 获取文件扩展名
 def GetExtension(FileName):
     fileName, extension = os.path.splitext(FileName)
