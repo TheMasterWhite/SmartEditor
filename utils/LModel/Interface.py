@@ -315,7 +315,9 @@ class LLMInterface(LLMBasic):  # 大模型高级功能接口类
             prompt = FileProcess.ReadTxt(filePath)
 
             prompt += sepLib + knowledgeText + sepContent + UserContent
-            return LLMBasic.GetResponseStream_String(prompt)
+            responseStream = LLMBasic.GetResponseStream_String(prompt)
+            for i in responseStream:
+                yield i
 
         except Exception as e:
             raise e
