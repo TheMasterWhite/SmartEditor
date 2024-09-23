@@ -517,7 +517,7 @@ def TextGen():
         for fileName in materialFileList:
             rawName = Tools.GetFileName(fileName)
             txtName = fileName + ".txt"
-            filePath = os.path.join(resourceSavePath, txtName)
+            filePath = os.path.join(fileSavePath, txtName)
             # 文件不存在
             if not os.path.exists(filePath):
                 raise FileNotFoundError(f"File [{fileName}] dose not exist.")
@@ -575,7 +575,7 @@ def TextGenStream():
         for fileName in materialFileList:
             rawName = Tools.GetFileName(fileName)
             txtName = fileName + ".txt"
-            filePath = os.path.join(resourceSavePath, txtName)
+            filePath = os.path.join(fileSavePath, txtName)
             # 文件不存在
             if not os.path.exists(filePath):
                 raise FileNotFoundError(f"File [{fileName}] dose not exist.")
