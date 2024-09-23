@@ -277,7 +277,7 @@ class LLMInterface(LLMBasic):  # 大模型高级功能接口类
             # 获取知识库文本
             for file in KnowledgeFileList:
                 fileName = Tools.GetFileName(file)
-                txtFileName = os.path.join(fileName, ".txt")
+                txtFileName = fileName + ".txt"
                 filePath = os.path.join(fileSavePath, txtFileName)
                 knowledgeText += FileProcess.ReadTxt(filePath)
 
@@ -303,7 +303,7 @@ class LLMInterface(LLMBasic):  # 大模型高级功能接口类
             # 获取知识库文本
             for file in KnowledgeFileList:
                 fileName = Tools.GetFileName(file)
-                txtFileName = os.path.join(fileName, ".txt")
+                txtFileName = fileName + ".txt"
                 filePath = os.path.join(fileSavePath, txtFileName)
                 knowledgeText += FileProcess.ReadTxt(filePath)
 
