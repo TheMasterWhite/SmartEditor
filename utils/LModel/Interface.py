@@ -285,7 +285,7 @@ class LLMInterface(LLMBasic):  # 大模型高级功能接口类
             fileName = Tools.GetFileName(PromptFile)
             txtFileName = fileName + ".txt"
             filePath = os.path.join(resourceSavePath, txtFileName)
-            prompt = FileProcess.ReadTxt(txtFileName)
+            prompt = FileProcess.ReadTxt(filePath)
 
             prompt += sepLib + knowledgeText + sepContent + UserContent
             return LLMBasic.GetResponse_String(prompt)
@@ -312,7 +312,7 @@ class LLMInterface(LLMBasic):  # 大模型高级功能接口类
             fileName = Tools.GetFileName(PromptFile)
             txtFileName = fileName + ".txt"
             filePath = os.path.join(resourceSavePath, txtFileName)
-            prompt = FileProcess.ReadTxt(txtFileName)
+            prompt = FileProcess.ReadTxt(filePath)
 
             prompt += sepLib + knowledgeText + sepContent + UserContent
             return LLMBasic.GetResponseStream_String(prompt)
