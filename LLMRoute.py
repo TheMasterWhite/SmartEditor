@@ -495,7 +495,7 @@ def ClearBotHistory():
 
 
 # 格式化文本生成接口
-@LLMBlueprint.route("TextGen", methods = ["POST"])
+@LLMBlueprint.route("/TextGen", methods = ["POST"])
 def TextGen():
     try:
         requestData = request.json
@@ -524,7 +524,7 @@ def TextGen():
 
 
 # 格式化文本生成接口，返回迭代器
-@LLMBlueprint.route("TextGenStream", methods = ["POST"])
+@LLMBlueprint.route("/TextGenStream", methods = ["POST"])
 def TextGenStream():
     try:
         requestData = request.json
