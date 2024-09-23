@@ -17,10 +17,9 @@ def ClearBotHistory(UserId):
 def LLMTest():
     url2 = 'http://8.148.25.61:8888/LLMInterface/'
     data = {
-        "content": "生活就像海洋，只有意志坚强的人才能到达彼岸",
-        "userId": "Test"
+        "content": "生活就像海洋，只有意志坚强的人才能到达彼岸"
     }
-
+    # "userId": "Test"
     url = url2 + "Translate"
     response = requests.post(url, data = json.dumps(data), headers = headers)
     print(response.json()["response"])
@@ -87,23 +86,23 @@ def LLMTestStream():
         print(i.decode('utf-8'), end = "")
 
 
-def UploadFile():
+def UploadFile(FileName):
     url = "http://8.148.25.61:8888/Service/UploadFile"
     # files = {"file": open("E:/Code/CodeLibrary/Python/SmartEditor/resources/作文.pdf", "rb")}
     # response = requests.post(url, files = files)
     # print(response.json())
     #
-    # files = {"file": open("E:/Code/CodeLibrary/Python/SmartEditor/resources/沁园春雪.mp3", "rb")}
-    # response = requests.post(url, files = files)
-    # print(response.json())
-    #
+    files = {"file": open(f"E:/Code/CodeLibrary/Python/SmartEditor/resources/{FileName}", "rb")}
+    response = requests.post(url, files = files)
+    print(response.json())
+
     # files = {"file": open("E:/Code/CodeLibrary/Python/SmartEditor/resources/沁园春长沙.mp4", "rb")}
     # response = requests.post(url, files = files)
     # print(response.json())
     #
-    files = {"file": open("E:/Code/CodeLibrary/Python/SmartEditor/resources/文心一言wrong.txt", "rb")}
-    response = requests.post(url, files = files)
-    print(response.json())
+    # files = {"file": open("E:/Code/CodeLibrary/Python/SmartEditor/resources/文心一言wrong.txt", "rb")}
+    # response = requests.post(url, files = files)
+    # print(response.json())
 
     # files = {"file": open("E:/Code/CodeLibrary/Python/SmartEditor/resources/Poster.jpg", "rb")}
     # response = requests.post(url, files = files)
@@ -202,10 +201,38 @@ def CheckFile():
 def Delete():
     url = "http://8.148.25.61:8888/Service/DeleteFile"
     data = {
-        "fileName": ["文心一言wrong.txt"]
+        "fileName": "Poster.jpg"
     }
     response = requests.post(url, data = json.dumps(data), headers = headers)
     print(response.json())
+
+
+def Read():
+    url = "http://8.148.25.61:8888/Service/Save"
+    data = {
+        "fileName": "test.txt",
+        "content": "666"
+    }
+    response = requests.post(url, data = json.dumps(data), headers = headers)
+    print(response.json())
+
+
+def UploadResource(FileName):
+    url = "http://8.148.25.61:8888/Service/UploadResource"
+    files = {"file": open(f"E:/Code/CodeLibrary/Python/SmartEditor/resources/models/{FileName}", "rb")}
+    response = requests.post(url, files = files)
+    print(response.json())
+
+
+def TextGen():
+    url = "http://8.148.25.61:8888/LLMInterface/TextGen"
+    data = {
+        "content": "写一个介绍演讲稿",
+        "template": "演讲稿",
+        "materialFiles": ["亚托莉.txt", "亚托莉剧情.txt"]
+    }
+    response = requests.post(url, data = json.dumps(data), headers = headers)
+    print(response.json()["response"])
 
 
 def main():
@@ -213,7 +240,7 @@ def main():
 
     # print()
     # print("-LLMTest-")
-    # LLMTest()
+    LLMTest()
     # print()
     # print("-LLMTestStream-")
     # LLMTestStream()
@@ -226,8 +253,7 @@ def main():
     # print()
     # print("-ChatBotStream-")
     # ChatBotStream()
-    pass
 
 
 if __name__ == "__main__":
-    Delete()
+    TextGen()
