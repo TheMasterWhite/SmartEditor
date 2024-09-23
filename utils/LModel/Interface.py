@@ -283,7 +283,7 @@ class LLMInterface(LLMBasic):  # 大模型高级功能接口类
 
             # 获取文本生成提示词
             fileName = Tools.GetFileName(PromptFile)
-            txtFileName = os.path.join(fileName, ".txt")
+            txtFileName = fileName + ".txt"
             prompt = FileProcess.ReadTxt(txtFileName)
 
             prompt += sepLib + knowledgeText + sepContent + UserContent
@@ -309,7 +309,7 @@ class LLMInterface(LLMBasic):  # 大模型高级功能接口类
 
             # 获取文本生成提示词
             fileName = Tools.GetFileName(PromptFile)
-            txtFileName = os.path.join(fileName, ".txt")
+            txtFileName = fileName + ".txt"
             prompt = FileProcess.ReadTxt(txtFileName)
 
             prompt += sepLib + knowledgeText + sepContent + UserContent
