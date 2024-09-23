@@ -1,6 +1,7 @@
 from utils import Tools
 from utils.Config.PMTProcess import GetPrompt, KnowledgeLib
 from utils.Config.FileProcess import FileProcess, OSSProcess, JsonOperator
+from Config import *
 import erniebot, copy
 
 resourceSavePath = copy.deepcopy(GLOBAL_ResourcesSavePath)
