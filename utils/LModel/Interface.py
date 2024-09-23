@@ -279,6 +279,8 @@ class LLMInterface(LLMBasic):  # 大模型高级功能接口类
                 fileName = Tools.GetFileName(file)
                 txtFileName = fileName + ".txt"
                 filePath = os.path.join(fileSavePath, txtFileName)
+                if not os.path.exists(filePath):
+                    raise FileNotFoundError(f"File [{file}] dose not exist.")
                 knowledgeText += FileProcess.ReadTxt(filePath)
 
             # 获取文本生成提示词
@@ -286,8 +288,8 @@ class LLMInterface(LLMBasic):  # 大模型高级功能接口类
             txtFileName = fileName + ".txt"
             filePath = os.path.join(resourceSavePath, txtFileName)
             prompt = FileProcess.ReadTxt(filePath)
-
             prompt += sepLib + knowledgeText + sepContent + UserContent
+
             return LLMBasic.GetResponse_String(prompt)
 
         except Exception as e:
@@ -306,6 +308,8 @@ class LLMInterface(LLMBasic):  # 大模型高级功能接口类
                 fileName = Tools.GetFileName(file)
                 txtFileName = fileName + ".txt"
                 filePath = os.path.join(fileSavePath, txtFileName)
+                if not os.path.exists(filePath):
+                    raise FileNotFoundError(f"File [{file}] dose not exist.")
                 knowledgeText += FileProcess.ReadTxt(filePath)
 
             # 获取文本生成提示词
@@ -313,8 +317,8 @@ class LLMInterface(LLMBasic):  # 大模型高级功能接口类
             txtFileName = fileName + ".txt"
             filePath = os.path.join(resourceSavePath, txtFileName)
             prompt = FileProcess.ReadTxt(filePath)
-
             prompt += sepLib + knowledgeText + sepContent + UserContent
+
             for i in LLMBasic.GetResponseStream_String(prompt):
                 yield i
 

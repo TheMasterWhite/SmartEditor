@@ -234,7 +234,7 @@ def CorrectStream():
         return jsonify(retObj)
 
 
-# 知识库检查文本内容接口
+# 知识库检查编辑器文本内容接口
 @LLMBlueprint.route("/Check", methods = ["POST"])
 def Check():
     try:
@@ -284,7 +284,7 @@ def Check():
         return jsonify(retObj)
 
 
-# 知识库检查，返回迭代器
+# 知识库检查编辑器文本，返回迭代器
 @LLMBlueprint.route("/CheckStream", methods = ["POST"])
 def CheckStream():
     try:
@@ -505,6 +505,7 @@ def TextGen():
         response = LLMInterface.TextGen(UserContent = userContent,
                                         PromptFile = template,
                                         KnowledgeFileList = materialFileList)
+
         curTime = Tools.GetTime()
         logging.info(f"[{curTime}]TextGen request successed.")
         retObj = {
