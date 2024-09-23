@@ -516,7 +516,7 @@ def TextGen():
         knowledgeContent = ""
         for fileName in materialFileList:
             rawName = Tools.GetFileName(fileName)
-            txtName = fileName + ".txt"
+            txtName = rawName + ".txt"
             filePath = os.path.join(fileSavePath, txtName)
             # 文件不存在
             if not os.path.exists(filePath):
@@ -525,8 +525,8 @@ def TextGen():
             knowledgeContent += FileProcess.ReadTxt(filePath) + "\n"
 
         # 获取文本生成提示词
-        fileName = Tools.GetFileName(PromptFile)
-        txtFileName = fileName + ".txt"
+        rawName = Tools.GetFileName(PromptFile)
+        txtFileName = rawName + ".txt"
         filePath = os.path.join(resourceSavePath, txtFileName)
         prompt = FileProcess.ReadTxt(filePath)
         prompt += sepLib + knowledgeText + sepContent + userContent
@@ -574,7 +574,7 @@ def TextGenStream():
         knowledgeContent = ""
         for fileName in materialFileList:
             rawName = Tools.GetFileName(fileName)
-            txtName = fileName + ".txt"
+            txtName = rawName + ".txt"
             filePath = os.path.join(fileSavePath, txtName)
             # 文件不存在
             if not os.path.exists(filePath):
@@ -583,8 +583,8 @@ def TextGenStream():
             knowledgeContent += FileProcess.ReadTxt(filePath) + "\n"
 
         # 获取文本生成提示词
-        fileName = Tools.GetFileName(PromptFile)
-        txtFileName = fileName + ".txt"
+        rawName = Tools.GetFileName(PromptFile)
+        txtFileName = rawName + ".txt"
         filePath = os.path.join(resourceSavePath, txtFileName)
         prompt = FileProcess.ReadTxt(filePath)
         prompt += sepLib + knowledgeText + sepContent + userContent
