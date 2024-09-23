@@ -28,7 +28,7 @@ def UploadFile():
         fileName = Tools.GetFileName(fullFileName)
 
         # 预处理音视频
-        if fileExtension in ["mp4", "wav", "mp3", "pcm", "m4a", "amr"]:
+        if fileExtension in ["mp4", "wav", "mp3", "pcm", "m4a", "amr", "aac"]:
             STTInterface.MainProcess(FullFileName = fullFileName)
 
         # 预处理图片

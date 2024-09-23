@@ -56,7 +56,7 @@ class STTInterface:  # 小模型应用接口类
             fileName = Tools.GetFileName(FullFileName)
 
             # 视频文件转wav再STT处理
-            if fileExtension in ["mp4"]:
+            if fileExtension in ["mp4", "aac"]:
                 FileProcess.ConvertToWav(FileName = FullFileName,
                                          FileExtension = fileExtension)
                 # 发起STT服务调用
