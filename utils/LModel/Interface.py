@@ -4,6 +4,7 @@ from utils.Config.FileProcess import FileProcess, OSSProcess, JsonOperator
 from Config import *
 import erniebot, copy
 
+fileSavePath = copy.deepcopy(GLOBAL_FileSavePath)
 resourceSavePath = copy.deepcopy(GLOBAL_ResourcesSavePath)
 
 
@@ -277,8 +278,8 @@ class LLMInterface(LLMBasic):  # 大模型高级功能接口类
             for file in KnowledgeFileList:
                 fileName = Tools.GetFileName(file)
                 txtFileName = os.path.join(fileName, ".txt")
-                filePath = os.path.join(resourceSavePath, txtFileName)
-                knowledgeText = FileProcess.ReadTxt(filePath)
+                filePath = os.path.join(fileSavePath, txtFileName)
+                knowledgeText += FileProcess.ReadTxt(filePath)
 
             # 获取文本生成提示词
             fileName = Tools.GetFileName(PromptFile)
@@ -303,8 +304,8 @@ class LLMInterface(LLMBasic):  # 大模型高级功能接口类
             for file in KnowledgeFileList:
                 fileName = Tools.GetFileName(file)
                 txtFileName = os.path.join(fileName, ".txt")
-                filePath = os.path.join(resourceSavePath, txtFileName)
-                knowledgeText = FileProcess.ReadTxt(filePath)
+                filePath = os.path.join(fileSavePath, txtFileName)
+                knowledgeText += FileProcess.ReadTxt(filePath)
 
             # 获取文本生成提示词
             fileName = Tools.GetFileName(PromptFile)
