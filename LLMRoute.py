@@ -385,6 +385,9 @@ def ChatBot():
                     tmpContent = FileProcess.ReadTxt(FilePath = filePath)
                     knowledgeContent += tmpContent + "\n"
 
+                # 限制Token数
+                if len(knowledgeContent) > 3000:
+                    knowledgeContent = knowledgeContent[:3000]
                 bot.LoadKnowledgeLib_String(KnowledgeText = knowledgeContent,
                                             UserId = userId)
 
@@ -450,6 +453,10 @@ def ChatBotStream():
 
                     tmpContent = FileProcess.ReadTxt(FilePath = filePath)
                     knowledgeContent += tmpContent + "\n"
+
+                # 限制Token数
+                if len(knowledgeContent) > 3000:
+                    knowledgeContent = knowledgeContent[:3000]
 
                 bot.LoadKnowledgeLib_String(KnowledgeText = knowledgeContent,
                                             UserId = userId)
@@ -524,6 +531,10 @@ def TextGen():
                     raise FileNotFoundError(f"File [{fileName}] dose not exist.")
                 knowledgeContent += FileProcess.ReadTxt(filePath) + "\n"
 
+            # 限制Token数
+            if len(knowledgeContent) > 3500:
+                knowledgeContent = knowledgeContent[:3500]
+
         # 获取文本生成提示词
         rawName = Tools.GetFileName(PromptFile)
         txtFileName = rawName + ".txt"
@@ -583,6 +594,10 @@ def TextGenStream():
                 if not os.path.exists(filePath):
                     raise FileNotFoundError(f"File [{fileName}] dose not exist.")
                 knowledgeContent += FileProcess.ReadTxt(filePath) + "\n"
+
+            # 限制Token数
+            if len(knowledgeContent) > 3500:
+                knowledgeContent = knowledgeContent[:3500]
 
         # 获取文本生成提示词
         rawName = Tools.GetFileName(PromptFile)
