@@ -515,12 +515,12 @@ def TextGen():
         # 获取知识库文本
         knowledgeContent = ""
         for fileName in materialFileList:
-            rawName = Tools.GetFileName(file)
+            rawName = Tools.GetFileName(fileName)
             txtName = fileName + ".txt"
             filePath = os.path.join(resourceSavePath, txtName)
             # 文件不存在
             if not os.path.exists(filePath):
-                raise FileNotFoundError(f"File [{file}] dose not exist.")
+                raise FileNotFoundError(f"File [{fileName}] dose not exist.")
 
             knowledgeContent += FileProcess.ReadTxt(filePath) + "\n"
 
@@ -573,12 +573,12 @@ def TextGenStream():
         # 获取知识库文本
         knowledgeContent = ""
         for fileName in materialFileList:
-            rawName = Tools.GetFileName(file)
+            rawName = Tools.GetFileName(fileName)
             txtName = fileName + ".txt"
             filePath = os.path.join(resourceSavePath, txtName)
             # 文件不存在
             if not os.path.exists(filePath):
-                raise FileNotFoundError(f"File [{file}] dose not exist.")
+                raise FileNotFoundError(f"File [{fileName}] dose not exist.")
 
             knowledgeContent += FileProcess.ReadTxt(filePath) + "\n"
 
