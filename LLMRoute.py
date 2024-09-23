@@ -529,7 +529,7 @@ def TextGen():
         txtFileName = rawName + ".txt"
         filePath = os.path.join(resourceSavePath, txtFileName)
         prompt = FileProcess.ReadTxt(filePath)
-        prompt += sepLib + knowledgeText + sepContent + userContent
+        prompt += sepLib + knowledgeContent + sepContent + userContent
 
         response = LLMInterface.GetResponse_String(prompt)
 
@@ -587,7 +587,7 @@ def TextGenStream():
         txtFileName = rawName + ".txt"
         filePath = os.path.join(resourceSavePath, txtFileName)
         prompt = FileProcess.ReadTxt(filePath)
-        prompt += sepLib + knowledgeText + sepContent + userContent
+        prompt += sepLib + knowledgeContent + sepContent + userContent
 
         responseStream = LLMInterface.GetResponseStream_String(prompt)
 
