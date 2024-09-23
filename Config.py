@@ -9,8 +9,8 @@ import copy
 from pathlib import Path
 from utils import Tools
 
-curTime = utils.GetTime()
-curData = utils.GetDate()
+curTime = Tools.GetTime()
+curData = Tools.GetDate()
 logging.basicConfig(filename = f"Server/[{curData}][{curTime}].log",
                     filemode = 'w',
                     level = logging.INFO)
