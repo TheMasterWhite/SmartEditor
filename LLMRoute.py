@@ -503,26 +503,27 @@ def TextGen():
         requestData = request.json
         userContent = requestData["content"]
         PromptFile = requestData["template"]
-        materialFileList = requestData["materialFiles"]
+        materialFileList = requestData.get("materialFiles", None)
         sepLib = "###知识库内容###\n"
         sepContent = "###用户输入文本###\n"
         knowledgeText = ""
 
-        # 限制文件数量
-        if len(materialFileList) > 5:
-            raise ValueError("The number of files could not be more than 5.")
+        # 传入素材文件
+        if materialFileList is not None:
+            # 限制文件数量
+            if len(materialFileList) > 5:
+                raise ValueError("The number of files could not be more than 5.")
 
-        # 获取知识库文本
-        knowledgeContent = ""
-        for fileName in materialFileList:
-            rawName = Tools.GetFileName(fileName)
-            txtName = rawName + ".txt"
-            filePath = os.path.join(fileSavePath, txtName)
-            # 文件不存在
-            if not os.path.exists(filePath):
-                raise FileNotFoundError(f"File [{fileName}] dose not exist.")
-
-            knowledgeContent += FileProcess.ReadTxt(filePath) + "\n"
+            # 获取知识库文本
+            knowledgeContent = ""
+            for fileName in materialFileList:
+                rawName = Tools.GetFileName(fileName)
+                txtName = rawName + ".txt"
+                filePath = os.path.join(fileSavePath, txtName)
+                # 文件不存在
+                if not os.path.exists(filePath):
+                    raise FileNotFoundError(f"File [{fileName}] dose not exist.")
+                knowledgeContent += FileProcess.ReadTxt(filePath) + "\n"
 
         # 获取文本生成提示词
         rawName = Tools.GetFileName(PromptFile)
@@ -561,26 +562,27 @@ def TextGenStream():
         requestData = request.json
         userContent = requestData["content"]
         PromptFile = requestData["template"]
-        materialFileList = requestData["materialFiles"]
+        materialFileList = requestData.get("materialFiles", None)
         sepLib = "###知识库内容###\n"
         sepContent = "###用户输入文本###\n"
         knowledgeText = ""
 
-        # 限制文件数量
-        if len(materialFileList) > 5:
-            raise ValueError("The number of files could not be more than 5.")
+        # 传入素材文件
+        if materialFileList is not None:
+            # 限制文件数量
+            if len(materialFileList) > 5:
+                raise ValueError("The number of files could not be more than 5.")
 
-        # 获取知识库文本
-        knowledgeContent = ""
-        for fileName in materialFileList:
-            rawName = Tools.GetFileName(fileName)
-            txtName = rawName + ".txt"
-            filePath = os.path.join(fileSavePath, txtName)
-            # 文件不存在
-            if not os.path.exists(filePath):
-                raise FileNotFoundError(f"File [{fileName}] dose not exist.")
-
-            knowledgeContent += FileProcess.ReadTxt(filePath) + "\n"
+            # 获取知识库文本
+            knowledgeContent = ""
+            for fileName in materialFileList:
+                rawName = Tools.GetFileName(fileName)
+                txtName = rawName + ".txt"
+                filePath = os.path.join(fileSavePath, txtName)
+                # 文件不存在
+                if not os.path.exists(filePath):
+                    raise FileNotFoundError(f"File [{fileName}] dose not exist.")
+                knowledgeContent += FileProcess.ReadTxt(filePath) + "\n"
 
         # 获取文本生成提示词
         rawName = Tools.GetFileName(PromptFile)
