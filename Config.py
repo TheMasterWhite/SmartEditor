@@ -11,7 +11,7 @@ from utils import Tools
 
 curTime = Tools.GetTime()
 curData = Tools.GetDate()
-logging.basicConfig(filename = f"Server/[{curData}][{curTime}].log",
+logging.basicConfig(filename = f"Logs/[{curData}][{curTime}].log",
                     filemode = 'w',
                     level = logging.INFO)
 
