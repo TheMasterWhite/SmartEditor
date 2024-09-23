@@ -504,8 +504,8 @@ def TextGen():
         userContent = requestData["content"]
         PromptFile = requestData["template"]
         materialFileList = requestData.get("materialFiles", None)
-        sepLib = "###知识库内容###\n"
-        sepContent = "###用户输入文本###\n"
+        sepLib = "####知识库内容####\n"
+        sepContent = "####用户输入文本####\n"
         knowledgeText = ""
 
         # 传入素材文件
@@ -515,7 +515,6 @@ def TextGen():
                 raise ValueError("The number of files could not be more than 5.")
 
             # 获取知识库文本
-            knowledgeContent = ""
             for fileName in materialFileList:
                 rawName = Tools.GetFileName(fileName)
                 txtName = rawName + ".txt"
@@ -563,8 +562,8 @@ def TextGenStream():
         userContent = requestData["content"]
         PromptFile = requestData["template"]
         materialFileList = requestData.get("materialFiles", None)
-        sepLib = "###知识库内容###\n"
-        sepContent = "###用户输入文本###\n"
+        sepLib = "####知识库内容####\n"
+        sepContent = "####用户输入文本####\n"
         knowledgeText = ""
 
         # 传入素材文件
@@ -574,7 +573,6 @@ def TextGenStream():
                 raise ValueError("The number of files could not be more than 5.")
 
             # 获取知识库文本
-            knowledgeContent = ""
             for fileName in materialFileList:
                 rawName = Tools.GetFileName(fileName)
                 txtName = rawName + ".txt"
