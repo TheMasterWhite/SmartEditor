@@ -57,9 +57,10 @@ class TaskThread(threading.Thread):
                 logging.info(f"[{curTime}]Receive STT result successfully.")
                 # 将文件信息保存到数据库中
                 summaryText = LLMInterface.FileSummary(content)
+                summaryText = LLMInterface.FileSummary(text)
                 FileProcess.SaveFileInfo(FileName = fullFileName,
                                          Description = summaryText,
-                                         SaveTime = curTime)
+                                         SaveTime = saveTime)
                 del self.fileIdList[taskId]
 
             elif (status == "Failed"):

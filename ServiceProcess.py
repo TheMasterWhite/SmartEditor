@@ -40,10 +40,11 @@ def UploadFile():
                 FileProcess.SaveTxt(FileName = fileName,
                                     Content = OCRResult)
                 # 将文件信息保存到数据库中
+                saveTime = f"{Tools.GetDate()} {Tools.GetTime()}"
                 summaryText = LLMInterface.FileSummary(text)
                 FileProcess.SaveFileInfo(FileName = fullFileName,
                                          Description = summaryText,
-                                         SaveTime = curTime)
+                                         SaveTime = saveTime)
 
             else:
                 filePath = os.path.join(fileSavePath, fullFileName)
@@ -53,17 +54,19 @@ def UploadFile():
                                     Content = OCRResult)
                 # 将文件信息保存到数据库中
                 summaryText = LLMInterface.FileSummary(text)
+                saveTime = f"{Tools.GetDate()} {Tools.GetTime()}"
                 FileProcess.SaveFileInfo(FileName = fullFileName,
                                          Description = summaryText,
-                                         SaveTime = curTime)
+                                         SaveTime = saveTime)
 
         elif fileExtension in ["txt"]:
             text = FileProcess.ReadTxt(os.path.join(fileSavePath, fullFileName))
             # 将文件信息保存到数据库中
             summaryText = LLMInterface.FileSummary(text)
+            saveTime = f"{Tools.GetDate()} {Tools.GetTime()}"
             FileProcess.SaveFileInfo(FileName = fullFileName,
                                      Description = summaryText,
-                                     SaveTime = curTime)
+                                     SaveTime = saveTime)
 
         else:
             # 上传文件格式不支持
