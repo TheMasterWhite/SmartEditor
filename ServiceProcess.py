@@ -372,7 +372,6 @@ def UploadResource():
 @ServiceProcessBlueprint.route("/GetFileList", methods = ["GET"])
 def GetFileList():
     try:
-        requestData = request.json
         fileList = []
         for fullFileName in os.listdir(fileSavePath):
             fileInfo = FileProcess.GetFileInfo(FileName = fullFileName)
