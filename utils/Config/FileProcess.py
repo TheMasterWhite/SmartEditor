@@ -122,7 +122,7 @@ class FileProcess:
             cursor = conn.cursor()
 
             # 查询文件描述和时间
-            cursor.execute("SELECT description, uploadTime FROM files WHERE filename = ?", (FileName))
+            cursor.execute("SELECT description, saveTime FROM files WHERE filename = ?", (FileName))
             # 获取查询结果
             result = cursor.fetchone()
             # 关闭Cursor和Connection
