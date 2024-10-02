@@ -372,7 +372,7 @@ def UploadResource():
 
 
 # 获取文件列表
-@ServiceProcessBlueprint.route("/GetFileList", methods = ["GET"])
+@ServiceProcessBlueprint.route("/GetFileInfo", methods = ["GET"])
 def GetFileList():
     try:
         fileList = []
