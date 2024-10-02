@@ -11,6 +11,7 @@ from utils import Tools
 
 curTime = Tools.GetTime()
 curData = Tools.GetDate()
+os.makedirs("Logs", exist_ok = True)
 logging.basicConfig(filename = f"Logs/[{curData}][{curTime}].log",
                     filemode = 'w',
                     level = logging.INFO)

@@ -26,7 +26,7 @@ def UploadFile():
         file.save(os.path.join(fileSavePath, fullFileName))
         fileExtension = Tools.GetExtension(fullFileName)
         fileName = Tools.GetFileName(fullFileName)
-
+        curTime = Tools.GetTime()
         # 预处理音视频
         if fileExtension in ["mp4", "wav", "mp3", "pcm", "m4a", "amr"]:
             STTInterface.MainProcess(FullFileName = fullFileName)
@@ -39,21 +39,36 @@ def UploadFile():
                                              FileType = "PDF")
                 FileProcess.SaveTxt(FileName = fileName,
                                     Content = OCRResult)
+                # 将文件信息保存到数据库中
+                summaryText = LLMInterface.FileSummary(text)
+                FileProcess.SaveFileInfo(FileName = fullFileName,
+                                         Description = summaryText,
+                                         SaveTime = curTime)
+
             else:
                 filePath = os.path.join(fileSavePath, fullFileName)
                 OCRResult = OCRInterface.Doc(FilePath = filePath,
                                              FileType = "IMG")
                 FileProcess.SaveTxt(FileName = fileName,
                                     Content = OCRResult)
+                # 将文件信息保存到数据库中
+                summaryText = LLMInterface.FileSummary(text)
+                FileProcess.SaveFileInfo(FileName = fullFileName,
+                                         Description = summaryText,
+                                         SaveTime = curTime)
 
         elif fileExtension in ["txt"]:
-            pass
+            text = FileProcess.ReadTxt(os.path.join(fileSavePath, fullFileName))
+            # 将文件信息保存到数据库中
+            summaryText = LLMInterface.FileSummary(text)
+            FileProcess.SaveFileInfo(FileName = fullFileName,
+                                     Description = summaryText,
+                                     SaveTime = curTime)
 
         else:
             # 上传文件格式不支持
             raise ValueError("Unsupported file type.")
 
-        curTime = Tools.GetTime()
         retObj = {
             "statusCode": 1,
             "requestTime": curTime,
@@ -190,12 +205,14 @@ def DeleteFile():
                     # 目标文件是txt
                     if fileExtension == ".txt":
                         os.remove(filePath)
+                        FileProcess.DeleteFileInfo(fullFileName)
                         logging.info(f"[{curTime}]\"{fileName}\" deleted successfully.")
                         deletedFileList.append(fullFileName)
 
                     # 目标文件是多媒体
                     else:
                         os.remove(filePath)
+                        FileProcess.DeleteFileInfo(fullFileName)
                         txtFilePath = os.path.join(fileSavePath, fileName) + ".txt"
                         os.remove(txtFilePath)
                         logging.info(f"[{curTime}]\"{fullFileName}\" deleted successfully.")
@@ -342,6 +359,43 @@ def UploadResource():
     except Exception as e:
         curTime = Tools.GetTime()
         logging.error(f"[{curTime}]Module:[UploadFile]" + str(e))
+        retObj = {
+            "statusCode": 0,
+            "requestTime": curTime,
+            "response": str(e)
+        }
+        return jsonify(retObj)
+
+
+# 获取文件列表
+@ServiceProcessBlueprint.route("/GetFileList", methods = ["GET"])
+def GetFileList():
+    try:
+        requestData = request.json
+        fileList = []
+        for fullFileName in os.listdir(fileSavePath):
+            fileInfo = FileProcess.GetFileInfo(FileName = fullFileName)
+            if fileInfo is None:
+                continue
+            else:
+                distObj = {
+                    "name": fullFileName,
+                    "description": fileInfo[0],
+                    "time": fileInfo[1],
+                }
+                fileList.append(distObj)
+
+        curTime = Tools.GetTime()
+        retObj = {
+            "statusCode": 1,
+            "requestTime": curTime,
+            "response": fileList,
+        }
+        return jsonify(retObj)
+
+    except Exception as e:
+        curTime = Tools.GetTime()
+        logging.error(f"[{curTime}]Module:[GetFileList]" + str(e))
         retObj = {
             "statusCode": 0,
             "requestTime": curTime,

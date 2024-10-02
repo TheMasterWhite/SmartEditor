@@ -9,6 +9,7 @@ from utils import Tools
 from Config import *
 import oss2
 from oss2.credentials import EnvironmentVariableCredentialsProvider
+import sqlite3
 
 fileSavePath = copy.deepcopy(GLOBAL_FileSavePath)
 
@@ -44,7 +45,6 @@ class FileProcess:
     # 对文件进行Base64编码，返回编码内容文件，传入文件路径
     @staticmethod
     def Base64(FilePath):
-
         try:
             fileBytes = pathlib.Path(FilePath).read_bytes()
             fileBase64 = base64.b64encode(fileBytes).decode('ascii')
@@ -87,6 +87,71 @@ class FileProcess:
         except Exception as e:
             curTime = Tools.GetTime()
             logging.error(f"[{curTime}]Module:[ConvertToWav]" + str(e))
+
+
+    # 保存文件信息到数据库
+    @staticmethod
+    def SaveFileInfo(FileName, SaveTime, Description):
+        try:
+            # 连接到SQLite数据库
+            conn = sqlite3.connect("FileInfo.db")
+            cursor = conn.cursor()
+
+            # 创建表
+            cursor.execute('''
+            CREATE TABLE IF NOT EXISTS files (
+                filename TEXT PRIMARY KEY,
+                saveTime TEXT,
+                description TEXT
+            )
+            ''')
+            cursor.execute("INSERT OR REPLACE INTO files (filename, saveTime, description) VALUES (?, ?, ?)",
+                           (FileName, SaveTime, Description))
+            conn.commit()
+
+        except Exception as e:
+            raise e
+
+
+    # 查询文件上传时间和描述
+    @staticmethod
+    def GetFileInfo(FileName):
+        try:
+            # 连接到SQLite数据库
+            conn = sqlite3.connect("FileInfo.db")
+            cursor = conn.cursor()
+
+            # 查询文件描述和时间
+            cursor.execute("SELECT description, uploadTime FROM files WHERE filename = ?", (FileName))
+            # 获取查询结果
+            result = cursor.fetchone()
+            # 关闭Cursor和Connection
+            cursor.close()
+            conn.close()
+
+            if result:
+                description, uploadTime = result
+                return [description, uploadTime]
+            else:
+                return None
+
+        except Exception as e:
+            raise e
+
+
+    # 删除数据库中的文件信息
+    @staticmethod
+    def DeleteFileInfo(FileName):
+        try:
+            conn = sqlite3.connect("FileInfo.db")
+            cursor = conn.cursor()
+            cursor.execute("DELETE FROM files WHERE filename = ?", (FileName,))
+            conn.commit()
+            cursor.close()
+            conn.close()
+
+        except Exception as e:
+            raise e
 
 
 class OSSProcess:  # OSS云服务处理类
