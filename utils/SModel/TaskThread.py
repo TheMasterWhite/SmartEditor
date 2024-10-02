@@ -3,6 +3,7 @@ from utils import Tools
 import queue, threading, time, logging
 from threading import Thread
 from utils.Config.FileProcess import *
+from utils.LModel.Interface import *
 
 
 def GetAccessToken():  # 百度智能云获取access_token
