@@ -282,6 +282,7 @@ def Save():
             f.write(content)
 
         curTime = Tools.GetTime()
+        logging.info(f"[{curTime}]User txt file [{txtFileName}] saved successfully.")
         retObj = {
             "statusCode": 1,
             "requestTime": curTime,
@@ -386,6 +387,7 @@ def GetFileList():
                 fileList.append(distObj)
 
         curTime = Tools.GetTime()
+        logging.info(f"[{curTime}]Send file list successed.")
         retObj = {
             "statusCode": 1,
             "requestTime": curTime,
