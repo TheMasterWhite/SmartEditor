@@ -40,7 +40,7 @@ def UploadFile():
                 FileProcess.SaveTxt(FileName = fileName,
                                     Content = OCRResult)
                 # 将文件信息保存到数据库中
-                saveTime = f"{Tools.GetDate()} {Tools.GetTime()}"
+                saveTime = Tools.GetSaveTime()
                 summaryText = LLMInterface.FileSummary(OCRResult)
                 FileProcess.SaveFileInfo(FileName = fullFileName,
                                          Description = summaryText,
@@ -54,7 +54,7 @@ def UploadFile():
                                     Content = OCRResult)
                 # 将文件信息保存到数据库中
                 summaryText = LLMInterface.FileSummary(OCRResult)
-                saveTime = f"{Tools.GetDate()} {Tools.GetTime()}"
+                saveTime = Tools.GetSaveTime()
                 FileProcess.SaveFileInfo(FileName = fullFileName,
                                          Description = summaryText,
                                          SaveTime = saveTime)
@@ -63,7 +63,7 @@ def UploadFile():
             text = FileProcess.ReadTxt(os.path.join(fileSavePath, fullFileName))
             # 将文件信息保存到数据库中
             summaryText = LLMInterface.FileSummary(text)
-            saveTime = f"{Tools.GetDate()} {Tools.GetTime()}"
+            saveTime = Tools.GetSaveTime()
             FileProcess.SaveFileInfo(FileName = fullFileName,
                                      Description = summaryText,
                                      SaveTime = saveTime)
@@ -288,11 +288,11 @@ def Save():
             f.write(content)
 
         fileSummary = LLMInterface.FileSummary(content)
-        curTime = Tools.GetTime()
+        saveTime = Tools.GetSaveTime()
         FileProcess.SaveFileInfo(FileName = txtFileName,
-                                 SaveTime = curTime,
+                                 SaveTime = saveTime,
                                  Description = fileSummary)
-
+        curTime = Tools.GetTime()
         logging.info(f"[{curTime}]User txt file [{txtFileName}] saved successfully.")
         retObj = {
             "statusCode": 1,

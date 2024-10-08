@@ -26,3 +26,9 @@ def GetExtension(FileName):
 def GetFileName(FileName):
     fileName, extension = os.path.splitext(FileName)
     return fileName
+
+
+# 获取文件保存时的格式化时间结构
+def GetSaveTime():
+    saveTime = f"{Tools.GetDate()} {Tools.GetTime()}"
+    return saveTime

@@ -58,7 +58,7 @@ class TaskThread(threading.Thread):
                 logging.info(f"[{curTime}]Receive STT result successfully.")
                 # 将文件信息保存到数据库中
                 summaryText = LLMInterface.FileSummary(content)
-                saveTime = f"{Tools.GetDate()} {Tools.GetTime()}"
+                saveTime = Tools.GetSaveTime()
                 FileProcess.SaveFileInfo(FileName = fullFileName,
                                          Description = summaryText,
                                          SaveTime = saveTime)
