@@ -278,18 +278,21 @@ def DeleteFile():
 def Save():
     try:
         requestData = request.json
-        fileName = requestData["fileName"]
         content = requestData["content"]
 
         prompt = "根据下面这段文字生成一个文件名，字数10个字以内，只回答文件名不要回复多余的内容，不需要扩展名:\n" + content
         fileName = LLMInterface.GetResponse_String(prompt)
-        rawFileName = Tools.GetFileName(fileName)
-        txtFileName = rawFileName + ".txt"
+        txtFileName = fileName + ".txt"
         savePath = os.path.join(fileSavePath, txtFileName)
         with open(savePath, "w") as f:
             f.write(content)
 
+        fileSummary = LLMInterface.FileSummary(content)
         curTime = Tools.GetTime()
+        FileProcess.SaveFileInfo(FileName = txtFileName,
+                                 SaveTime = curTime,
+                                 Description = fileSummary)
+
         logging.info(f"[{curTime}]User txt file [{txtFileName}] saved successfully.")
         retObj = {
             "statusCode": 1,
