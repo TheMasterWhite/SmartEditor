@@ -11,6 +11,7 @@ class BotBasic():  # 聊天机器人基本接口
 
 
     def AddMessage(self, Role, content, UserId):
+        # 初始化提示词
         if UserId not in self.Parameter:
             self.Parameter[UserId] = []
 

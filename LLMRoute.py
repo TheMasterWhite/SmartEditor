@@ -342,6 +342,9 @@ def ChatBot():
 
         # 不传入文件情况下调用聊天机器人
         if userFileList is None:
+            if userId not in bot.Parameter:
+                prompt = GetPrompt().Data()["ScenePrompt_General"]["Agent"]
+                content = prompt + content
             response = bot.GetResponse(content, userId)
             curTime = Tools.GetTime()
             retObj = {
@@ -422,6 +425,9 @@ def ChatBotStream():
 
         # 不传入文件情况下调用聊天机器人
         if userFileList is None:
+            if userId not in bot.Parameter:
+                prompt = GetPrompt().Data()["ScenePrompt_General"]["Agent"]
+                content = prompt + content
             responseStream = bot.GetResponseStream(content, userId)
             curTime = Tools.GetTime()
             logging.info(f"[{curTime}]ChatbotStream request successed.")
