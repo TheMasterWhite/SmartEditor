@@ -1,11 +1,11 @@
 import copy
 import logging, os
 from flask import Flask, Blueprint, request, jsonify, send_file
-from utils import Tools
 from utils.Config.FileProcess import *
 from utils.SModel.OCR import OCRInterface
 from utils.SModel.STT import *
 from utils.LModel.Interface import *
+from utils import Tools
 
 ServiceProcessBlueprint = Blueprint("ServiceProcessBlueprint", __name__, url_prefix = "/Service")
 fileSavePath = copy.deepcopy(GLOBAL_FileSavePath)
@@ -288,9 +288,8 @@ def Save():
         savePath = os.path.join(fileSavePath, txtFileName)
         with open(savePath, "w") as f:
             f.write(content)
-        logging.info("291")
+
         saveTime = Tools.GetSaveTime()
-        logging.info(f"293")
         fileSummary = LLMInterface.FileSummary(content)
         FileProcess.SaveFileInfo(FileName = txtFileName,
                                  SaveTime = saveTime,
