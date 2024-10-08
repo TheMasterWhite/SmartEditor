@@ -288,9 +288,10 @@ def Save():
         savePath = os.path.join(fileSavePath, txtFileName)
         with open(savePath, "w") as f:
             f.write(content)
-
-        fileSummary = LLMInterface.FileSummary(content)
+        logging.info("291")
         saveTime = Tools.GetSaveTime()
+        logging.info(f"293")
+        fileSummary = LLMInterface.FileSummary(content)
         FileProcess.SaveFileInfo(FileName = txtFileName,
                                  SaveTime = saveTime,
                                  Description = fileSummary)
