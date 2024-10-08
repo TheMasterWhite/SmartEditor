@@ -279,6 +279,8 @@ def Save():
     try:
         requestData = request.json
         content = requestData["content"]
+        if len(content) <= 1:
+            raise ValueError("File content is empty.")
 
         prompt = "根据下面这段文字生成一个文件名，字数10个字以内，只回答文件名不要回复多余的内容，不需要扩展名:\n" + content
         fileName = LLMInterface.GetResponse_String(prompt)
