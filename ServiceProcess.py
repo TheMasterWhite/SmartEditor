@@ -259,6 +259,9 @@ def DeleteFile():
 
             return jsonify(retObj)
 
+    except FileNotFoundError as e:
+        pass
+
     except Exception as e:
         curTime = Tools.GetTime()
         logging.error(f"[{curTime}]Module:[DeleteFile]" + str(e))
