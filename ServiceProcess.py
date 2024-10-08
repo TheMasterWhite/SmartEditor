@@ -281,6 +281,8 @@ def Save():
         fileName = requestData["fileName"]
         content = requestData["content"]
 
+        prompt = "根据下面这段文字生成一个文件名，字数10个字以内，只回答文件名不要回复多余的内容，不需要扩展名:\n" + content
+        fileName = LLMInterface.GetResponse_String(prompt)
         rawFileName = Tools.GetFileName(fileName)
         txtFileName = rawFileName + ".txt"
         savePath = os.path.join(fileSavePath, txtFileName)
