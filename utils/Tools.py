@@ -30,5 +30,7 @@ def GetFileName(FileName):
 
 # 获取文件保存时的格式化时间结构
 def GetSaveTime():
-    saveTime = f"{Tools.GetDate()} {Tools.GetTime()}"
+    curDate = datetime.now().strftime("%y.%m.%d")
+    curTime = datetime.now().strftime("%H:%M:%S")
+    saveTime = f"{curDate} {curTime}"
     return saveTime
