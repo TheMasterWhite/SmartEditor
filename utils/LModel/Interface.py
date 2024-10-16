@@ -19,7 +19,7 @@ class LLMBasic:  # 大模型基本通信接口类
             Client = ZhipuAI(api_key = GLOBAL_ZHIPU_KEY)
             Response = Client.chat.completions.create(
                 model = "glm-4-0520",
-                message = Parameter
+                messages = Parameter
             )
             return Response.choices[0].message
 
@@ -36,7 +36,7 @@ class LLMBasic:  # 大模型基本通信接口类
             Client = ZhipuAI(api_key = GLOBAL_ZHIPU_KEY)
             Response = Client.chat.completions.create(
                 model = "glm-4-0520",
-                message = Parameter,
+                messages = Parameter,
                 stream = True
             )
             for i in Response:
@@ -54,7 +54,7 @@ class LLMBasic:  # 大模型基本通信接口类
             Client = ZhipuAI(api_key = GLOBAL_ZHIPU_KEY)
             Response = Client.chat.completions.create(
                 model = "glm-4-0520",
-                message = ListPrompt
+                messages = ListPrompt
             )
             return Response.choices[0].message
 
@@ -70,7 +70,7 @@ class LLMBasic:  # 大模型基本通信接口类
             Client = ZhipuAI(api_key = GLOBAL_ZHIPU_KEY)
             Response = Client.chat.completions.create(
                 model = "glm-4-0520",
-                message = ListPrompt,
+                messages = ListPrompt,
                 stream = True
             )
             for i in Response:
