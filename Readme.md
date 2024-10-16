@@ -1,192 +1,76 @@
-# 项目文件目录树
+# <center>基于PaddlePaddle<br>和ERNIE SDK的智能写作助手</center>
 
-SmartEditor
-├── Main.py	#项目主入口
-├── Readme.md	#Help
-├── Saves	#用于保存小模型识别结果
-│   ├── OcrResult	#OCR识别结果
-│   │   ├── ......
-│   ├── SttResult	#语音转文字识别结果
-│   │   ├── ......
-│   └── TarResult	#目标检测识别结果
-│       ├── ......
-├── requirements.txt
-├── resources	#存放用户输入文件
-│   ├── ......
-└── utils	#功能接口类
-    ├── Config	#基础工具包
-    │   ├── Config.cfg	#配置文件
-    │   ├── FileProcess.py	#文件处理功能接口类
-    │   ├── HeadFiles.py	#头文件类，用于一键导包和初始化项目
-    │   ├── PMTProcess.py	#提示词处理与知识库功能接口类
-    │   ├── Prompts.json	#存放提示词的表
-    │   ├── __init__.py
-    │   └── __pycache__
-    ├── LModel	#大模型功能类
-    │   ├── ChatBot.py	#智能问答机器人类
-    │   ├── Interface.py	#大模型基本功能接口类
-    │   ├── __init__.py
-    │   └── __pycache__
-    ├── SModel	#小模型功能类
-    │   ├── OCR.py	#OCR
-    │   ├── STT.py	#语音转文字
-    │   ├── TarDetect.py	#目标检测
-    │   └──  __init__.py
-    └──UT.py	#单元测试
+## <center>项目概述</center>
 
-# PMTProcess.py
+随着大模型的广泛应用，各类AI智能写作辅助工具如雨后春笋般涌现，然而市面上多数产品仍以chat的形式为用户提供简单的写作辅助服务，在基于特定素材的进行创作的场景中表现出一定的局限性，且这类辅助工具未集成文本编辑器，导致用户在写作时需要频繁切换窗口，对工作效率产生了一定的影响。
 
-GetPrompt类
+为了提高文本写作的工作效率、改善写作辅助工具的用户体验，本项目基于PaddlePaddle、ERNIE SDK、WangEditor框架等技术，构建了一款智能写作助手。该助手旨在实现如下目标：
 
-```python
-def Data(self):  # 返回存储Prompt的json字典
-    return self.data
-#调用方法
-a = GetPrompt().Data()["一级目录"]["二级目录"]#返回一个dict
-```
+- 在不切换窗口的情况下**同步写作与使用AI辅助功能**
+- 调用多模态模型**自动化处理用户上传的素材文件**
 
-KnowledgeLib类
+- 基于用户提供的知识库进行**格式化文本生成**
 
-```python
-def InitList_String(KnowledgeText):  # 载入用户知识库，传入知识库字符串返回初始化后的列表
-def InitList_Path(KnowledgePath):  # 载入用户知识库，传入知识库文件路径返回初始化后的列表
-```
+## <center>项目技术方案</center>
 
-# FileProcess.py
+系统功能架构主要包括文本智能润色、格式化文本生成、多媒体信息处理以及用户知识库管理等模块，总体功能架构如图1所示。
 
-FileProcess类
+<p align="center">
+  <img src="https://smart-editor.oss-cn-shenzhen.aliyuncs.com/%E7%B3%BB%E7%BB%9F%E6%80%BB%E4%BD%93%E6%9E%B6%E6%9E%84%E5%9B%BE.png" alt="图注内容" style="display:block;margin:auto;">
+  <p style="text-align:center;">图 1 系统总体功能架构图</p>
+</p>
+文本智能润色模块提供翻译、总结、纠错、润色、文档助手五大功能，与文本编辑器相结合，实现无需切换窗口即可在AI助力下完成文档撰写工作。格式化文本生成模块依托文心大模型强大的文本生成能力，提供了丰富的文本生成工具，用户只需提供必要的信息即可快速生成一篇格式化文本。多媒体信息处理模块支持多种文件格式，系统将自动判断上传的文件类型并调用相应的的小模型对多媒体文件进行处理。用户知识库管理模块储存用户上传的多媒体文件，提供增删查改四大基础功能，此外也可使用大模型的联网搜索增强功能对知识库内容进行检查，以验证其时效性。相较于其他智能写作辅助工具，本项目主要创新点如下：
 
-```python
-def ReadTxt(FilePath):  # 打开txt文件并返回内容，传参为文件地址
-def Base64(FilePath):  # 对文件进行Base64编码，返回编码内容文件，传入文件路径
-def AbsPath(FilePath):  # 获取绝对路径
-def GetFileTimePath(FileName, TarPath, FileExtension):  # 将文件名赋予时间并返回绝对路径
-```
+- **多媒体数据处理+格式化文本生成工具链**
+- **智能润色+知识库检查工具链**
+- **知识库联网检查**
+- **在线文档与知识库管理模块**
 
-OSSProcess类
+#### **智能润色模块**
 
-```python
-def UploadFile(FilePath, FileExtension, BucketName = "smart-editor"):  # 上传文件到阿里云，传入相对路径和文件扩展名,返回OSS文件路径
-```
+该模块集成AI基础润色功能、写作情境选择功能、文档编辑助手以及在线文本编辑器，模块功能集中便于用户使用，其搭载的智能润色+知识库检查工具链架构如图2所示，页面如图3所示。用户通过选定目标文本并指定所需的润色功能，后端服务接收到请求后，根据用户选择的写作情景载入相应的提示词，并将提示词与原始文本拼接，通过ERNIE SDK向大模型发送文本生成请求，接收到生成结果后将内容返回给用户。
 
-JsonOperator类
+<p align="center">
+  <img src="https://smart-editor.oss-cn-shenzhen.aliyuncs.com/%E6%96%87%E6%9C%AC%E6%B6%A6%E8%89%B2%E6%B5%81%E7%A8%8B.png" alt="图注内容" style="display:block;margin:auto;">
+  <p style="text-align:center;">图 2 智能润色+知识库检查工具链架构图</p>
+</p>
+<p align="center">
+  <img src="https://smart-editor.oss-cn-shenzhen.aliyuncs.com/%E7%BC%96%E8%BE%91%E5%99%A8%E9%A1%B5%E9%9D%A2.png" alt="图注内容" style="display:block;margin:auto;">
+  <p style="text-align:center;">图 3 编辑器页面展示图</p>
+</p>
 
-```python
-def Save(JsonObject, Path, FileName):  # 保存Json文件至指定目录，传入Json对象、保存路径与文件名
-def Load(FilePath, FileName):  # 加载Json文件
-```
+#### **格式化文本生成模块**
 
-# ChatBot.py
+该模块基于多媒体数据处理+格式化文本生成工具链搭建，其功能架构如图4所示，页面效果如图5、图6所示。，载入文本生成提示词与用户需求，通过ERNIE SDK向文心大模型发起调用，如果对大模型生成结果不满意，可选择重新生成。
+<p align="center">
+  <img src="https://smart-editor.oss-cn-shenzhen.aliyuncs.com/%E6%A0%BC%E5%BC%8F%E5%8C%96%E6%96%87%E6%9C%AC%E7%94%9F%E6%88%90%E5%B7%A5%E5%85%B7%E9%93%BE.png" alt="图注内容" style="display:block;margin:auto;">
+  <p style="text-align:center;">图 4 多媒体数据处理+格式化文本生成工具链架构图</p>
+</p>
+<p align="center">
+  <img src="https://smart-editor.oss-cn-shenzhen.aliyuncs.com/%E6%96%87%E6%9C%AC%E7%94%9F%E6%88%90%E5%B7%A5%E5%85%B7%E7%AE%B1%E4%B8%BB%E9%A1%B5%E9%9D%A2.png" alt="图注内容" style="display:block;margin:auto;">
+  <p style="text-align:center;">图 5 文本生成工具箱界面</p>
+</p>
+<p align="center">
+  <img src="https://smart-editor.oss-cn-shenzhen.aliyuncs.com/%E6%96%87%E6%9C%AC%E7%94%9F%E6%88%90%E5%B7%A5%E5%85%B7%E7%AE%B1%E8%AF%A6%E7%BB%86%E9%A1%B5%E9%9D%A2.png" alt="图注内容" style="display:block;margin:auto;">
+  <p style="text-align:center;">图 6 文本生成工具箱详细界面</p>
+</p>
+#### **多媒体信息处理模块**
 
-BotBasic类
+该模块同样基于多媒体数据处理+格式化文本生成工具链搭建，系统接收用户上传的多媒体文件，随后，识别文件格式并对其进行预处理，处理完毕后向部署在AI Studio上的模型服务发起调用请求，接收到模型处理结果后将其保存至用户知识库中。其多媒体文件上传页面效果如图7所示
 
-```python
-def AddMessage(self, role, content):
-    # 向对象添加交互内容，如果添加的是用户信息则会返回结果，否则返回Lambda表达式
-def AddMessageStream(self, role, content):
-    # 与上条函数相似，返回迭代器
-```
+<p align="center">
+  <img src="https://smart-editor.oss-cn-shenzhen.aliyuncs.com/%E5%A4%9A%E5%AA%92%E4%BD%93%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E7%95%8C%E9%9D%A2.png" alt="图注内容" style="display:block;margin:auto;">
+  <p style="text-align:center;">图 7 多媒体文件上传页面</p>
+</p>
 
-BotInterface类(继承BotBasic)
+#### **用户知识库管理模块**
 
-```python
-def GetResponse(self, Content):  # 获取机器人问答结果，传入内容
-def GetResponseStream(self, Content):# 流式获取机器人回复内容，传入输入内容返回迭代器
-def LoadKnowledgeLib_String(self, KnowledgeText):  # 载入知识库，传入知识库文本
-def LoadKnowledgeLib_Path(self, KnowledgePath):  # 载入知识库，传入知识库路径
-def ClearHistory(self):  # 清除历史记录
-    
-用法：需要实例化一个对象
-bot = BotInterface()
-response = Bot.Getresponse("输入内容")
-bot.ClearHistory()
-```
-
-# Interface.py
-
-LLMBasic类
-
-```python
-def GetResponse_String(Prompt):  # 获取推理结果，传入字符串，返回String
-def GetResponseStream_String(Prompt):  # 流式获取推理结果，传入字符串，返回迭代器
-def GetResponse_List(ListPrompt):  # 获取推理结果，传入List，返回String
-def GetResponseStream_List(ListPrompt):  # 流式获取推理结果，传入List，返回迭代器
-```
-
-LLMInterface类(继承LLMBasic)
-
-```python
-传参Scene是指ScenePrompt_xxx大类名称
------------------------------------------------------------------------------------------------------
-def Translate(Tartext, Tarlanguage = "英语",Scene = GeneralScene):  
-    # 翻译，Tartext传入翻译目标字符串，TarLanguage传入目标语言,返回String
-def TranslateStream(...):  # 与上文相同，返回迭代器
------------------------------------------------------------------------------------------------------
-def Summary(Tartext, Scene = GeneralScene):  # 精炼语言，，Tartext传入目标字符串,返回String
-def SummaryStream(...):  # 与上文相同，返回迭代器
------------------------------------------------------------------------------------------------------
-def Correct(Tartext, Scene = GeneralScene):  # 句子纠错，Tartext传入目标字符串,返回String
-def CorrectStream(...):  # 与上文相同，返回迭代器
------------------------------------------------------------------------------------------------------ 
-def Polish(Tartext, Scene = GeneralScene):  # 文章润色，Tartext传入目标字符串,返回String
-def PolishStream(...):  # 与上文相同，返回迭代器
------------------------------------------------------------------------------------------------------
-def Check_String(Tartext, KnowledgeContent):  # 检查输入内容与知识库的差异，传入目标文本和用户知识库字符串
-def CheckStream_String(Tartext, KnowledgeContent):  
-    # 检查输入内容与知识库的差异，传入目标文本和用户知识库文本，返回迭代器
-def Check_List(Tartext, KnowledgeList):  # 检查输入内容与知识库的差异，传入目标文本和初始化之后的列表
-def CheckStream_List(Tartext, KnowledgeList):  # 检查输入内容与知识库的差异，传入目标文本和初始化之后的列表，返回迭代器
-```
-
-# OCR.py
-
-OCRBasic类
-
-```python
-def GetDocJson(FilePath, FileCode):  # 获取文档抽取OCR模型识别内容，
-    # 传入相对文件地址、文件类型和JSON文件保存地址，文件类型为"IMG"或"PDF",返回解析json
-def GetRawJson(FilePath):  # 获取RawOCR识别结果，传入文件地址返回Json对象
-```
-
-OCRInterface类(继承OCRBasic)
-
-```python
-传参ResultType是提示词列表中OCRPrompt类下的二级类
------------------------------------------------------------------------------------------------------
-def Doc(FilePath, FileType = "IMG", SavePath = "Saves/OcrResult"):
-    # 获取DocOCR识别结果，返回String
-def Raw(FilePath, SavePath = "Saves/OcrResult"):  # 获取RawOCR结果，返回String
-def ProcessDoc(FilePath, FileType = "IMG", SavePath = "Saves/OcrResult", ResultType = "General"):
-def ProcessRaw(FilePath, SavePath = "Saves/RawResult", ResultType = "General"):
-	# 使用大模型处理OCR识别结果，传入字符串和结果类型对应的Prompt名字，返回字符串
-```
-
-# STT.py
-
-STTBasic类
-
-```python
-def CreateTask(FilePath, FileExtension, Language = "Chinese"):  # 创建音频转写任务
-def QueryTask(TaskID):  # 获取音频转写任务结果
-```
-
-STTInterface类(继承STTBasic)
-
-```python
-def GetResult(FilePath, FileExtension, Language = "Chinese", SavePath = "Saves/SttResult"):  # 获取语音转文字结果，返回String
-```
-
-# TarDetect.py
-
-TarDetectBasic类
-
-```python
-def GetJson(FilePath):
-	# 获取目标检测结果，传入文件地址返回结果String并返回Json对象
-```
-
-TarInterface类(继承TarDetectBasic)
-
-```python
-def GetResult(FilePath, SavePath = "Saves/TarResult"):  # 获取目标检测结果
-```
+该模块实现了个人与团队知识资产的集中管理与高效利用，用户可以在该模块中维护专有知识库，同时还可以利用大模型的联网搜索增强功能对知识库文件进行联网检查，知识库联网检查流程如图7所示，知识库文件管理页面效果如图8所示。
+<p align="center">
+  <img src="https://smart-editor.oss-cn-shenzhen.aliyuncs.com/%E7%9F%A5%E8%AF%86%E5%BA%93%E6%A3%80%E6%9F%A5%E6%B5%81%E7%A8%8B.png" alt="图注内容" style="display:block;margin:auto;">
+  <p style="text-align:center;">图 7 知识库检查流程示意图</p>
+</p>
+<p align="center">
+  <img src="https://smart-editor.oss-cn-shenzhen.aliyuncs.com/%E5%9C%A8%E7%BA%BF%E6%96%87%E6%A1%A3%E7%95%8C%E9%9D%A2.png" alt="图注内容" style="display:block;margin:auto;">
+  <p style="text-align:center;">图 8 知识库文件管理页面</p>
+</p>

@@ -1,5 +1,6 @@
 import copy
 import requests, json, os
+from utils.LModel.Interface import *
 
 # 用于单元测试
 headers = {'Content-Type': 'application/json'}
@@ -88,25 +89,10 @@ def LLMTestStream():
 
 def UploadFile(FileName):
     url = "http://8.148.25.61:8888/Service/UploadFile"
-    # files = {"file": open("E:/Code/CodeLibrary/Python/SmartEditor/resources/作文.pdf", "rb")}
-    # response = requests.post(url, files = files)
-    # print(response.json())
-    #
+
     files = {"file": open(f"E:/Code/CodeLibrary/Python/SmartEditor/resources/{FileName}", "rb")}
     response = requests.post(url, files = files)
     print(response.json())
-
-    # files = {"file": open("E:/Code/CodeLibrary/Python/SmartEditor/resources/沁园春长沙.mp4", "rb")}
-    # response = requests.post(url, files = files)
-    # print(response.json())
-    #
-    # files = {"file": open("E:/Code/CodeLibrary/Python/SmartEditor/resources/文心一言wrong.txt", "rb")}
-    # response = requests.post(url, files = files)
-    # print(response.json())
-
-    # files = {"file": open("E:/Code/CodeLibrary/Python/SmartEditor/resources/Poster.jpg", "rb")}
-    # response = requests.post(url, files = files)
-    # print(response.json())
 
 
 def SModelTest():
@@ -127,7 +113,6 @@ def SModelTest():
 
 
 def ChatBot():
-    ClearBotHistory("Test")
 
     url = "http://8.148.25.61:8888/LLMInterface/ChatBot"
     data = {
@@ -201,7 +186,7 @@ def CheckFile():
 def Delete():
     url = "http://8.148.25.61:8888/Service/DeleteFile"
     data = {
-        "fileName": "Poster.jpg"
+        "fileName": ["作文.pdf",]
     }
     response = requests.post(url, data = json.dumps(data), headers = headers)
     print(response.json())
@@ -227,33 +212,20 @@ def UploadResource(FileName):
 def TextGen():
     url = "http://8.148.25.61:8888/LLMInterface/TextGen"
     data = {
-        "content": "写一个介绍演讲稿",
-        "template": "演讲稿",
-        "materialFiles": ["亚托莉.txt", "亚托莉剧情.txt"]
+        "content": "",
+        "template": "会议纪要",
+        "materialFiles": ["会议公报.txt"]
     }
     response = requests.post(url, data = json.dumps(data), headers = headers)
     print(response.json()["response"])
 
 
-def main():
-    # print("-UploadFile-")
-
-    # print()
-    # print("-LLMTest-")
-    LLMTest()
-    # print()
-    # print("-LLMTestStream-")
-    # LLMTestStream()
-    # print()
-    # print("-SModelTest-")
-    # SModelTest()
-    # print()
-    # print("-ChatBot-")
-    # ChatBot()
-    # print()
-    # print("-ChatBotStream-")
-    # ChatBotStream()
+def GetFileList():
+    url = "http://8.148.25.61:8888/Service/GetFileInfo"
+    response = requests.get(url = url, headers = headers)
+    print(json.dumps(response.json(), indent = 4, ensure_ascii = False))
 
 
 if __name__ == "__main__":
-    TextGen()
+    a = LLMBasic.GetResponse_String("你好啊，请问你是谁")
+    print(a)

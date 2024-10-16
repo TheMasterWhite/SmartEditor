@@ -20,7 +20,7 @@ logging.basicConfig(filename = f"Logs/[{curData}][{curTime}].log",
 def ReadConfigFile():
     # 读取配置文件
     filePath = "/Server/SmartEditor/config.json"  # linux
-    # filePath = "E:/Code/CodeLibrary/Python/SmartEditor/config.json"  # windows
+    #filePath = "E:/Code/CodeLibrary/Python/SmartEditor/config.json"  # windows
 
     with open(filePath, "r", encoding = "utf-8") as f:
         configData = json.load(f)

@@ -2,7 +2,8 @@ from utils import Tools
 from utils.Config.PMTProcess import GetPrompt, KnowledgeLib
 from utils.Config.FileProcess import FileProcess, OSSProcess, JsonOperator
 from Config import *
-import erniebot, copy
+import copy
+from zhipuai import ZhipuAI
 
 fileSavePath = copy.deepcopy(GLOBAL_FileSavePath)
 
@@ -15,11 +16,12 @@ class LLMBasic:  # 大模型基本通信接口类
 
         try:
             Parameter = [{"role": "user", "content": Prompt}]
-            Response = erniebot.ChatCompletion.create(
-                model = "ernie-4.0",
-                messages = Parameter
+            Client = ZhipuAI(api_key = GLOBAL_ZHIPU_KEY)
+            Response = Client.chat.completions.create(
+                model = "glm-4-0520",
+                message = Parameter
             )
-            return Response.get_result()
+            return Response.choices[0].message
 
         except Exception as e:
             raise e
@@ -31,13 +33,14 @@ class LLMBasic:  # 大模型基本通信接口类
 
         try:
             Parameter = [{"role": "user", "content": Prompt}]
-            Response = erniebot.ChatCompletion.create(
-                model = "ernie-4.0",
-                messages = Parameter,
+            Client = ZhipuAI(api_key = GLOBAL_ZHIPU_KEY)
+            Response = Client.chat.completions.create(
+                model = "glm-4-0520",
+                message = Parameter,
                 stream = True
             )
             for i in Response:
-                yield i.get_result()
+                yield i.choices[0].delta
 
         except Exception as e:
             raise e
@@ -48,11 +51,12 @@ class LLMBasic:  # 大模型基本通信接口类
     def GetResponse_List(ListPrompt):
 
         try:
-            Response = erniebot.ChatCompletion.create(
-                model = "ernie-4.0",
-                messages = ListPrompt,
+            Client = ZhipuAI(api_key = GLOBAL_ZHIPU_KEY)
+            Response = Client.chat.completions.create(
+                model = "glm-4-0520",
+                message = ListPrompt
             )
-            return Response.get_result()
+            return Response.choices[0].message
 
         except Exception as e:
             raise e
@@ -63,13 +67,14 @@ class LLMBasic:  # 大模型基本通信接口类
     def GetResponseStream_List(ListPrompt):
 
         try:
-            Response = erniebot.ChatCompletion.create(
-                model = "ernie-4.0",
-                messages = ListPrompt,
+            Client = ZhipuAI(api_key = GLOBAL_ZHIPU_KEY)
+            Response = Client.chat.completions.create(
+                model = "glm-4-0520",
+                message = ListPrompt,
                 stream = True
             )
             for i in Response:
-                yield i.get_result()
+                yield i.choices[0].delta
 
         except Exception as e:
             raise e
