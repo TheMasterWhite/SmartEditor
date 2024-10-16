@@ -21,7 +21,7 @@ class LLMBasic:  # 大模型基本通信接口类
                 model = "glm-4-0520",
                 messages = Parameter
             )
-            return Response.choices[0].message
+            return Response.choices[0].message.content
 
         except Exception as e:
             raise e
@@ -40,7 +40,7 @@ class LLMBasic:  # 大模型基本通信接口类
                 stream = True
             )
             for i in Response:
-                yield i.choices[0].delta
+                yield i.choices[0].delta.content
 
         except Exception as e:
             raise e
@@ -56,7 +56,7 @@ class LLMBasic:  # 大模型基本通信接口类
                 model = "glm-4-0520",
                 messages = ListPrompt
             )
-            return Response.choices[0].message
+            return Response.choices[0].message.content
 
         except Exception as e:
             raise e
@@ -74,7 +74,7 @@ class LLMBasic:  # 大模型基本通信接口类
                 stream = True
             )
             for i in Response:
-                yield i.choices[0].delta
+                yield i.choices[0].delta.content
 
         except Exception as e:
             raise e
