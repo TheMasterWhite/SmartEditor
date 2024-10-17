@@ -39,27 +39,6 @@ class OCRBasic:
             logging.error(f"[{curTime}]Module:[GetDocJson]" + str(e))
 
 
-    @staticmethod
-    def GetRawJson(FilePath):  # 获取RawOCR识别结果，传入文件地址返回Json对象
-
-        try:
-            base64File = FileProcess.Base64(FilePath)
-            headers = {
-                "Authorization": f"token {GLOBAL_ERNIETOKEN}",
-                "Content-Type": "application/json"
-            }
-            payload = {
-                "image": base64File  # Base64编码的文件内容或者文件链接
-            }
-            response = requests.post(url = GLOBAL_RAW_OCRURL, json = payload, headers = headers)
-            responseData = response.json()
-            return responseData
-
-        except Exception as e:
-            curTime = Tools.GetTime()
-            logging.error(f"[{curTime}]Module:[GetRawJson]" + str(e))
-
-
 class OCRInterface(OCRBasic):
 
     @staticmethod
@@ -81,20 +60,6 @@ class OCRInterface(OCRBasic):
 
 
     @staticmethod
-    def Raw(FilePath, SavePath = "Saves/OcrResult"):  # 获取RawOCR结果，返回String
-
-        try:
-            response = super(OCRInterface, OCRInterface).GetRawJson(FilePath)
-            result = [i['text'] for i in response['result']['texts']]
-            resultText = "".join(result)
-            return resultText
-
-        except Exception as e:
-            curTime = Tools.GetTime()
-            logging.error(f"[{curTime}]Module:[Raw]" + str(e))
-
-
-    @staticmethod
     def ProcessDoc(FilePath, FileType = "IMG", SavePath = "Saves/OcrResult", ResultType = "General"):
         # 使用大模型处理OCR识别结果，传入字符串和结果类型对应的Prompt名字，返回字符串
 
@@ -110,15 +75,35 @@ class OCRInterface(OCRBasic):
 
 
     @staticmethod
-    def ProcessRaw(FilePath, SavePath = "Saves/RawResult", ResultType = "General"):
-        # 使用大模型处理OCR识别结果，传入字符串和结果类型对应的Prompt名字，返回字符串
+    def BaiDu(FilePath, FileType):
         try:
-            ocrResult = OCRInterface.Raw(FilePath, FileType, SavePath)
-            prompt = GetPrompt().Data()["OCRPrompt"][ResultType]
-            prompt += ocrResult
-            content = LLMInterface.GetResponse_String(prompt)
-            return content
 
+            # 获取鉴权
+            url = "https://aip.baidubce.com/oauth/2.0/token"
+            params = {
+                "grant_type": "client_credentials",
+                "client_id": GLOBAL_Baidu_AK,
+                "client_secret": GLOBAL_Baidu_SK
+            }
+            token = str(requests.post(url, params = params).json().get("access_token"))
+
+            url = "https://aip.baidubce.com/rest/2.0/ocr/v1/doc_convert/request?access_token=" + token
+            headers = {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Accept': 'application/json'
+            }
+
+            base64File = FileProcess.Base64(FilePath)
+            if FileType == "IMG":
+                data = {
+                    "image": base64File,
+                }
+            else:
+                data = {
+                    "pdf_file": base64File
+                }
+            response = requests.post(url, data = data, headers = headers)
+            return response.text
         except Exception as e:
             curTime = Tools.GetTime()
-            logging.error(f"[{curTime}]Module:[ProcessRaw]" + str(e))
+            logging.error(f"[{curTime}]Module:[BaiDuOCR]" + str(e))
