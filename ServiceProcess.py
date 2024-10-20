@@ -90,17 +90,6 @@ def UploadFile():
         }
         return jsonify(retObj)
 
-    # AI Studio服务未启动
-    except TypeError as e:
-        curTime = Tools.GetTime()
-        logging.info(f"[{curTime}]" + str(e))
-        retObj = {
-            "statusCode": 0,
-            "requestTime": curTime,
-            "response": "AI Studio service did not started."
-        }
-        return jsonify(retObj)
-
     except Exception as e:
         curTime = Tools.GetTime()
         logging.error(f"[{curTime}]Module:[UploadFile]" + str(e))
