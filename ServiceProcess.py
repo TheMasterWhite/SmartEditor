@@ -68,6 +68,22 @@ def UploadFile():
                                      Description = summaryText,
                                      SaveTime = saveTime)
 
+        elif fileExtension in ["doc", "docx"]:
+            docFile = os.path.join(fileSavePath, fullFileName)
+            txtSavePath = os.path.join(fileSavePath, fileName + ".txt")
+            with open(txt_path, 'w', encoding = 'utf-8') as txt_file:
+                # 遍历文档中的每个段落
+                for para in doc.paragraphs:
+                    # 将段落文本写入txt文件
+                    txt_file.write(para.text + '\n')
+
+            text = FileProcess.ReadTxt(txtSavePath)
+            # 将文件信息保存到数据库中
+            summaryText = LLMInterface.FileSummary(text)
+            saveTime = Tools.GetSaveTime()
+            FileProcess.SaveFileInfo(FileName = fullFileName,
+                                     Description = summaryText,
+                                     SaveTime = saveTime)
         else:
             # 上传文件格式不支持
             raise ValueError("Unsupported file type.")
