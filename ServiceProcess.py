@@ -72,11 +72,11 @@ def UploadFile():
         elif fileExtension in ["doc", "docx"]:
             docFile = os.path.join(fileSavePath, fullFileName)
             txtSavePath = os.path.join(fileSavePath, fileName + ".txt")
-            with open(txt_path, 'w', encoding = 'utf-8') as txt_file:
+            with open(txtSavePath, 'w', encoding = 'utf-8') as f:
                 # 遍历文档中的每个段落
                 for para in doc.paragraphs:
                     # 将段落文本写入txt文件
-                    txt_file.write(para.text + '\n')
+                    f.write(para.text + '\n')
 
             text = FileProcess.ReadTxt(txtSavePath)
             # 将文件信息保存到数据库中
