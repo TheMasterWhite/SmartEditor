@@ -125,6 +125,7 @@ def UploadFile():
 def DownloadFile(fileName):
     try:
         filePath = os.path.join(fileSavePath, fileName)
+        logging.info(f"[{filePath}]")
         # 文件不存在
         if not os.path.exists(filePath):
             raise FileNotFoundError(f"File [{fileName}] does not exist.")
