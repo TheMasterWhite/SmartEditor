@@ -5,6 +5,7 @@ import base64, os, pathlib, json, logging
 from pathlib import Path
 from Config import *
 from utils import Tools
+import urllib
 
 fileSavePath = copy.deepcopy(GLOBAL_FileSavePath)
 
