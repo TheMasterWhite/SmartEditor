@@ -35,8 +35,8 @@ def UploadFile():
         elif fileExtension in ["pdf", "jpg", "jpeg", "png"]:
             if fileExtension == "pdf":
                 filePath = os.path.join(fileSavePath, fullFileName)
-                OCRResult = OCRInterface.Doc(FilePath = filePath,
-                                             FileType = "PDF")
+                OCRResult = OCRInterface.BaiDu(FilePath = filePath,
+                                               FileType = "PDF")
                 FileProcess.SaveTxt(FileName = fileName,
                                     Content = OCRResult)
                 # 将文件信息保存到数据库中
@@ -48,8 +48,8 @@ def UploadFile():
 
             else:
                 filePath = os.path.join(fileSavePath, fullFileName)
-                OCRResult = OCRInterface.Doc(FilePath = filePath,
-                                             FileType = "IMG")
+                OCRResult = OCRInterface.BaiDu(FilePath = filePath,
+                                               FileType = "IMG")
                 FileProcess.SaveTxt(FileName = fileName,
                                     Content = OCRResult)
                 # 将文件信息保存到数据库中
