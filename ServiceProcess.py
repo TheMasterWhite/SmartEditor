@@ -6,6 +6,7 @@ from utils.SModel.OCR import OCRInterface
 from utils.SModel.STT import *
 from utils.LModel.Interface import *
 from utils import Tools
+from docx import Document
 
 ServiceProcessBlueprint = Blueprint("ServiceProcessBlueprint", __name__, url_prefix = "/Service")
 fileSavePath = copy.deepcopy(GLOBAL_FileSavePath)
@@ -45,7 +46,7 @@ def UploadFile():
                 FileProcess.SaveFileInfo(FileName = fullFileName,
                                          Description = summaryText,
                                          SaveTime = saveTime)
-
+            # 文件为图片格式
             else:
                 filePath = os.path.join(fileSavePath, fullFileName)
                 OCRResult = OCRInterface.BaiDu(FilePath = filePath,
@@ -61,6 +62,23 @@ def UploadFile():
 
         elif fileExtension in ["txt"]:
             text = FileProcess.ReadTxt(os.path.join(fileSavePath, fullFileName))
+            # 将文件信息保存到数据库中
+            summaryText = LLMInterface.FileSummary(text)
+            saveTime = Tools.GetSaveTime()
+            FileProcess.SaveFileInfo(FileName = fullFileName,
+                                     Description = summaryText,
+                                     SaveTime = saveTime)
+
+        elif fileExtension in ["doc", "docx"]:
+            docFile = os.path.join(fileSavePath, fullFileName)
+            txtSavePath = os.path.join(fileSavePath, fileName + ".txt")
+            with open(txt_path, 'w', encoding = 'utf-8') as txt_file:
+                # 遍历文档中的每个段落
+                for para in doc.paragraphs:
+                    # 将段落文本写入txt文件
+                    txt_file.write(para.text + '\n')
+
+            text = FileProcess.ReadTxt(txtSavePath)
             # 将文件信息保存到数据库中
             summaryText = LLMInterface.FileSummary(text)
             saveTime = Tools.GetSaveTime()
