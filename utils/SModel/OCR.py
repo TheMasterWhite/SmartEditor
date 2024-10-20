@@ -93,17 +93,22 @@ class OCRInterface(OCRBasic):
                 'Accept': 'application/json'
             }
 
-            base64File = FileProcess.Base64(FilePath)
+            base64File = ""
+            data = ""
+            with open(FilePath, "rb") as f:
+                base64File = base64.b64encode(f.read()).decode("utf8")
+                base64File = urllib.parse.quote_plus(content)
+
             if FileType == "IMG":
-                data = {
-                    "image": base64File,
-                }
+                data = "image=" + base64File
             else:
-                data = {
-                    "pdf_file": base64File
-                }
+                data = "pdf_file=" + base64File
             response = requests.post(url, data = data, headers = headers)
-            return response.text
+            result = ""
+            for results in response.json()["words_result"]:
+                result += results["words"]
+            return result
+
         except Exception as e:
             curTime = Tools.GetTime()
             logging.error(f"[{curTime}]Module:[BaiDuOCR]" + str(e))
