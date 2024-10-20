@@ -127,7 +127,7 @@ def DownloadFile(fileName):
         filePath = os.path.join(fileSavePath, fileName)
         # 文件不存在
         if not os.path.exists(filePath):
-            raise FileNotFoundError(f"File [{filePath}] does not exist.")
+            raise FileNotFoundError(f"File 123[{fileSavePath}][{filePath}] does not exist.")
 
         return send_file(filePath, as_attachment = True)
 
