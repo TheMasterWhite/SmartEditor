@@ -88,7 +88,7 @@ class OCRInterface(OCRBasic):
             }
             token = str(requests.post(url, params = params).json().get("access_token"))
 
-            url = "https://aip.baidubce.com/rest/2.0/ocr/v1/doc_convert/request?access_token=" + token
+            url = "https://aip.baidubce.com/rest/2.0/ocr/v1/accurate_basic?access_token=" + token
             headers = {
                 'Content-Type': 'application/x-www-form-urlencoded',
                 'Accept': 'application/json'
@@ -104,7 +104,7 @@ class OCRInterface(OCRBasic):
                 data = "image=" + base64File
             else:
                 data = "pdf_file=" + base64File
-                
+
             response = requests.post(url, data = data, headers = headers)
             result = ""
             for results in response.json()["words_result"]:
