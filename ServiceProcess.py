@@ -71,6 +71,7 @@ def UploadFile():
 
         elif fileExtension in ["doc", "docx"]:
             docFile = os.path.join(fileSavePath, fullFileName)
+            doc = Document(docFile)
             txtSavePath = os.path.join(fileSavePath, fileName + ".txt")
             with open(txtSavePath, 'w', encoding = 'utf-8') as f:
                 # 遍历文档中的每个段落
