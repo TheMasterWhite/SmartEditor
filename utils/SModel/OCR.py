@@ -97,13 +97,14 @@ class OCRInterface(OCRBasic):
             base64File = ""
             data = ""
             with open(FilePath, "rb") as f:
-                base64File = base64.b64encode(f.read()).decode("utf8")
+                content = base64.b64encode(f.read()).decode("utf8")
                 base64File = urllib.parse.quote_plus(content)
 
             if FileType == "IMG":
                 data = "image=" + base64File
             else:
                 data = "pdf_file=" + base64File
+                
             response = requests.post(url, data = data, headers = headers)
             result = ""
             for results in response.json()["words_result"]:
