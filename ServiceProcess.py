@@ -576,7 +576,7 @@ def protected():
     token = request.headers.get("Authorization")
     curTime = Tools.GetTime()
     logging.info("666666")
-    payload = jwt.decode(Token, GLOBAL_JWT_KEY, algorithms = ["RS256"])
+    payload = jwt.decode(token, GLOBAL_JWT_KEY, algorithms = ["RS256"])
     username = payload["username"]
 
     conn = sqlite3.connect("UserInfo.db")
