@@ -474,7 +474,7 @@ def Login():
 
         # 生成JWT
         token = jwt.encode({
-            "user": username,
+            "username": username,
             "exp": datetime.datetime.utcnow() + datetime.timedelta(hours = 24)  # 设置token过期时间为24小时
         }, GLOBAL_JWT_KEY, algorithm = "RS256")
 
@@ -500,6 +500,7 @@ def Login():
         conn.close()
 
 
+# 注册
 @ServiceProcessBlueprint.route('/Register', methods = ['POST'])
 def Register():
     try:
