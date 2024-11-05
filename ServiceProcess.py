@@ -638,7 +638,7 @@ def protected():
             retObj = {
                 "statusCode": 1,
                 "requestTime": curTime,
-                "response": [GLOBAL_RSA_PRIVATE_KEY, GLOBAL_RSA_PUBLIC_KEY]
+                "response": GLOBAL_RSA_PRIVATE_KEY
             }
             return jsonify(retObj)
         else:
