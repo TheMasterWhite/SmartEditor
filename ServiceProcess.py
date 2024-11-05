@@ -574,11 +574,20 @@ def Register():
 def protected():
     # 从请求头中获取token
     token = request.headers.get("Authorization")
-    isvalid = Tools.ValidToken(token)
     curTime = Tools.GetTime()
+    logging.info("666666")
+    payload = jwt.decode(Token, GLOBAL_JWT_KEY, algorithms = ["RS256"])
+    username = payload["username"]
+
+    conn = sqlite3.connect("UserInfo.db")
+    cursor = conn.cursor()
+    cursor.execute("SELECT username FROM users WHERE username = ?", (username,))
+    result = cursor.fetchone()
+    searchName = result[0] if result else None
+
     retObj = {
         "statusCode": 1,
         "requestTime": curTime,
-        "response": str(isvalid)
+        "response": searchName
     }
     return jsonify(retObj)
