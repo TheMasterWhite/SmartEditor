@@ -17,7 +17,7 @@ class TaskThread(threading.Thread):
     def __init__(self):
         super().__init__()
         self.taskQueue = queue.Queue()
-        self.fileIdList = {}
+        self.fileInfoDict = {}
         curTime = Tools.GetTime()
         logging.info(f"[{curTime}]TaskThread Started.")
 
@@ -49,7 +49,7 @@ class TaskThread(threading.Thread):
             status = responseData["tasks_info"][0]["task_status"]
 
             if (status == "Success"):
-                fullFileName = self.fileIdList[taskId]
+                fullFileName = self.fileInfoDict[taskId]
                 fileName = Tools.GetFileName(fullFileName)
                 content = responseData["tasks_info"][0]["task_result"]["result"][0]
                 # 保存结果到txt
@@ -61,8 +61,9 @@ class TaskThread(threading.Thread):
                 saveTime = Tools.GetSaveTime()
                 FileProcess.SaveFileInfo(FileName = fullFileName,
                                          Description = summaryText,
-                                         SaveTime = saveTime)
-                del self.fileIdList[taskId]
+                                         SaveTime = saveTime,
+                                         UserName = fileInfoDict[taskId]["userName"])
+                del self.fileInfoDict[taskId]
 
             elif (status == "Failed"):
                 curTime = Tools.GetTime()
@@ -74,6 +75,9 @@ class TaskThread(threading.Thread):
 
 
     # 添加轮询任务id
-    def PutTaskId(self, FileName, TaskId):
+    def PutTaskId(self, FileName, TaskId, UserName):
         self.taskQueue.put(TaskId)
-        self.fileIdList[TaskId] = FileName
+        self.fileInfoDict[TaskId] = {
+            "fileName": FileName,
+            "userName": UserName
+        }

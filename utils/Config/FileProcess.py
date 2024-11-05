@@ -91,38 +91,38 @@ class FileProcess:
 
     # 保存文件信息到数据库
     @staticmethod
-    def SaveFileInfo(FileName, SaveTime, Description):
+    def SaveFileInfo(FileName, SaveTime, Description, UserName):
         try:
             # 连接到SQLite数据库
             conn = sqlite3.connect("UserInfo.db")
             cursor = conn.cursor()
 
-            # 创建表
-            cursor.execute('''
-            CREATE TABLE IF NOT EXISTS files (
-                filename TEXT PRIMARY KEY,
-                saveTime TEXT,
-                description TEXT
-            )
-            ''')
-            cursor.execute("INSERT OR REPLACE INTO files (filename, saveTime, description) VALUES (?, ?, ?)",
-                           (FileName, SaveTime, Description))
-            conn.commit()
+            cursor.execute("SELECT userFiles FROM users WHERE userName = ?", (UserName,))
+            userFileList = json.load(cursor.fetchone())["fileList"]
+            data = {
+                "fileName": FileName,
+                "saveTime": SaveTime,
+                "sescription": Description,
+                "uuid": Tools.GetUUID()
+            }
+            userFileList.append(data)
+            userFiles = json.dumps(userFileList)
+            cursor.execute("UPDATE users SET userFiles = ? WHERE userName = ?", (userFiles, UserName))
 
         except Exception as e:
             raise e
 
 
-    # 查询文件上传时间和描述
+    # 根据用户名查询文件上传时间和描述
     @staticmethod
-    def GetFileInfo(FileName):
+    def GetFileInfo(UserName):
         try:
             # 连接到SQLite数据库
             conn = sqlite3.connect("UserInfo.db")
             cursor = conn.cursor()
 
             # 查询文件描述和时间
-            cursor.execute("SELECT description, saveTime FROM files WHERE filename = ?", (FileName,))
+            cursor.execute("SELECT userFiles FROM users WHERE userName = ?", (UserName,))
             result = cursor.fetchone()
             cursor.close()
             conn.close()
@@ -139,11 +139,11 @@ class FileProcess:
 
     # 删除数据库中的文件信息
     @staticmethod
-    def DeleteFileInfo(FileName):
+    def DeleteFileInfo(UserName, FileUUID):
         try:
             conn = sqlite3.connect("UserInfo.db")
             cursor = conn.cursor()
-            cursor.execute("DELETE FROM files WHERE filename = ?", (FileName,))
+            cursor.execute("SELECT ", (UserName,))
             conn.commit()
             cursor.close()
             conn.close()
@@ -212,12 +212,14 @@ if __name__ == '__main__':
             {
                 "fileName": "a",
                 "saveTime": "a",
-                "description": "a"
+                "description": "a",
+                "uuid": "1234"
             },
             {
-                "fileName": "a",
-                "saveTime": "a",
-                "description": "a"
+                "name": "a",
+                "time": "a",
+                "description": "a",
+                "uuid": "1234"
             }
         ]
     }

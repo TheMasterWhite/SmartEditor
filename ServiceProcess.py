@@ -1,4 +1,5 @@
 import copy
+import json
 import logging, os
 from flask import Flask, Blueprint, request, jsonify, send_file
 from utils.Config.FileProcess import *
@@ -20,20 +21,28 @@ resourceSavePath = copy.deepcopy(GLOBAL_ResourcesSavePath)
 @ServiceProcessBlueprint.route("/UploadFile", methods = ["POST"])
 def UploadFile():
     try:
+        # 鉴权认证
+        valInfo = Tools.ValidToken(request.headers)
+        if valInfo["status"] is False:
+            raise Exception(valInfo["msg"])
+        else:
+            userName = valInfo["username"]
+
         # 请求中不存在文件
         if "file" not in request.files:
             raise Exception("No file in the request.")
 
-        # 获取文件并保存
+        # 获取文件，并保存到用户文件夹中
         file = request.files["file"]
         fullFileName = file.filename
-        file.save(os.path.join(fileSavePath, fullFileName))
+        os.makedirs(userName, exist_ok = True)
+        file.save(os.path.join(os.path.join(fileSavePath, userName), fullFileName))
         fileExtension = Tools.GetExtension(fullFileName)
         fileName = Tools.GetFileName(fullFileName)
         curTime = Tools.GetTime()
         # 预处理音视频
         if fileExtension in ["mp4", "wav", "mp3", "pcm", "m4a", "amr"]:
-            STTInterface.MainProcess(FullFileName = fullFileName)
+            STTInterface.MainProcess(FullFileName = fullFileName, UserName = userName)
 
         # 预处理图片
         elif fileExtension in ["pdf", "jpg", "jpeg", "png"]:
@@ -48,7 +57,8 @@ def UploadFile():
                 summaryText = LLMInterface.FileSummary(OCRResult)
                 FileProcess.SaveFileInfo(FileName = fullFileName,
                                          Description = summaryText,
-                                         SaveTime = saveTime)
+                                         SaveTime = saveTime,
+                                         UserName = userName)
 
             else:
                 filePath = os.path.join(fileSavePath, fullFileName)
@@ -61,7 +71,8 @@ def UploadFile():
                 saveTime = Tools.GetSaveTime()
                 FileProcess.SaveFileInfo(FileName = fullFileName,
                                          Description = summaryText,
-                                         SaveTime = saveTime)
+                                         SaveTime = saveTime,
+                                         UserName = userName)
 
         elif fileExtension in ["txt"]:
             text = FileProcess.ReadTxt(os.path.join(fileSavePath, fullFileName))
@@ -70,7 +81,8 @@ def UploadFile():
             saveTime = Tools.GetSaveTime()
             FileProcess.SaveFileInfo(FileName = fullFileName,
                                      Description = summaryText,
-                                     SaveTime = saveTime)
+                                     SaveTime = saveTime,
+                                     UserName = userName)
 
         elif fileExtension in ["doc", "docx"]:
             docFile = os.path.join(fileSavePath, fullFileName)
@@ -88,7 +100,8 @@ def UploadFile():
             saveTime = Tools.GetSaveTime()
             FileProcess.SaveFileInfo(FileName = fullFileName,
                                      Description = summaryText,
-                                     SaveTime = saveTime)
+                                     SaveTime = saveTime,
+                                     UserName = userName)
 
         else:
             # 上传文件格式不支持
@@ -138,6 +151,13 @@ def UploadFile():
 @ServiceProcessBlueprint.route("/DownloadFile/<fileName>", methods = ["GET"])
 def DownloadFile(fileName):
     try:
+        # 鉴权验证
+        valInfo = Tools.ValidToken(request.headers)
+        if valInfo["status"] is False:
+            raise Exception(valInfo["msg"])
+        else:
+            userName = valInfo["username"]
+
         filePath = os.path.join(fileSavePath, fileName)
         # 文件不存在
         if not os.path.exists(filePath):
@@ -170,6 +190,13 @@ def DownloadFile(fileName):
 @ServiceProcessBlueprint.route("/ReadFile", methods = ["POST"])
 def ReadFile():
     try:
+        # 鉴权验证
+        valInfo = Tools.ValidToken(request.headers)
+        if valInfo["status"] is False:
+            raise Exception(valInfo["msg"])
+        else:
+            userName = valInfo["username"]
+
         requestData = request.json
         fullFileName = requestData.get("fileName", None)
         if fullFileName is None:
@@ -206,6 +233,13 @@ def ReadFile():
 @ServiceProcessBlueprint.route("/DeleteFile", methods = ["POST"])
 def DeleteFile():
     try:
+        # 鉴权验证
+        valInfo = Tools.ValidToken(request.headers)
+        if valInfo["status"] is False:
+            raise Exception(valInfo["msg"])
+        else:
+            userName = valInfo["username"]
+
         requestData = request.json
         fullFileNameList = requestData.get("fileName", None)
         curTime = Tools.GetTime()
@@ -260,7 +294,7 @@ def DeleteFile():
             }
             fileExtension = Tools.GetExtension(fullFileName)
             rawFileName = Tools.GetFileName(fullFileName)
-            filePath = os.path.join(fileSavePath, fullFileName)
+            filePath = os.path.join(os.path.join(fileSavePath, userName), fullFileName)
 
             # 判断文件存不存在
             if not os.path.exists(filePath):
@@ -299,6 +333,13 @@ def DeleteFile():
 @ServiceProcessBlueprint.route("/Save", methods = ["POST"])
 def Save():
     try:
+        # 鉴权验证
+        valInfo = Tools.ValidToken(request.headers)
+        if valInfo["status"] is False:
+            raise Exception(valInfo["msg"])
+        else:
+            userName = valInfo["username"]
+
         requestData = request.json
         content = requestData["content"]
         if len(content) <= 5:
@@ -313,9 +354,10 @@ def Save():
 
         saveTime = Tools.GetSaveTime()
         fileSummary = LLMInterface.FileSummary(content)
-        FileProcess.SaveFileInfo(FileName = txtFileName,
+        FileProcess.SaveFileInfo(FileName = fullFileName,
+                                 Description = summaryText,
                                  SaveTime = saveTime,
-                                 Description = fileSummary)
+                                 UserName = userName)
 
         curTime = Tools.GetTime()
         logging.info(f"[{curTime}]User txt file [{txtFileName}] saved successfully.")
@@ -408,10 +450,15 @@ def UploadResource():
 @ServiceProcessBlueprint.route("/GetFileInfo", methods = ["GET"])
 def GetFileList():
     try:
+        # 鉴权验证
+        valInfo = Tools.ValidToken(request.headers)
+        if valInfo["status"] is False:
+            raise Exception(valInfo["msg"])
+        else:
+            userName = valInfo["username"]
+
         # 从请求头中获取username
-        token = request.headers.get("Authorization").split(" ")[1]
-        payload = jwt.decode(token, GLOBAL_RSA_PUBLIC_KEY, algorithms = "RS256")
-        username = payload["username"]
+        userName = Tools.GetUsername(request.headers)
         fileList = []
 
         for fullFileName in os.listdir(fileSavePath):
@@ -531,11 +578,14 @@ def Register():
         # 插入新用户
         cursor.execute('''
         CREATE TABLE IF NOT EXISTS users (
-            username TEXT PRIMARY KEY,
+            userName TEXT PRIMARY KEY,
             passwordHash TEXT
+            userFiles TEXT
         )
         ''')
-        cursor.execute("INSERT INTO users (username, passwordHash) VALUES (?, ?)", (username, hashedPassword))
+        userFiles = json.dumps({"fileList": []})
+        cursor.execute("INSERT INTO users (userName, passwordHash, userFiles) VALUES (?, ?, ?)",
+                       (username, hashedPassword, userFiles))
         conn.commit()
         curTime = Tools.GetTime()
         retObj = {

@@ -1,5 +1,8 @@
 from datetime import datetime
 import os
+import uuid
+import time
+import jwt
 
 
 # 获取格式化时间
@@ -53,18 +56,43 @@ def ValidUsername(Username):
     return Username.isalnum()
 
 
-# 验证JWT token
-def ValidToken(Token):
+# 验证JWT并返回数据
+def ValidToken(Header):
     try:
-        payload = jwt.decode(Token, GLOBAL_RSA_PUBLIC_KEY, algorithms = ["RS256"])
+        token = Header.get("Authorization").split(" ")[1]
+        payload = jwt.decode(token, GLOBAL_RSA_PUBLIC_KEY, algorithms = ["RS256"])
         username = payload["username"]
-        return (True, "OK")
+        retObj = {
+            "status": True,
+            "msg": "OK",
+            "username": username,
+        }
+        return retObj
 
     except jwt.ExpiredSignatureError:
-        return (False, "登录过期，请重新登录！")
+        retObj = {
+            "status": False,
+            "msg": "登录过期，请重新登录！",
+        }
+        return retObj
 
     except jwt.InvalidTokenError:
-        return (False, "验证失败，请重试！")
+        retObj = {
+            "status": False,
+            "msg": "验证失败，请重试！",
+        }
+        return retObj
 
     except Exception as e:
-        return (False, str(e))
+        retObj = {
+            "status": False,
+            "msg": str(e),
+        }
+        return retObj
+
+
+# 根据时间生成一个uuid
+def GetUUID():
+    timestamp = int(time.time())
+    UUID = uuid.uuid1()
+    return UUID

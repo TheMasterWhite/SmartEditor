@@ -50,7 +50,7 @@ class STTInterface:  # 小模型应用接口类
 
 
     @staticmethod
-    def MainProcess(FullFileName, Language = "Chinese"):
+    def MainProcess(FullFileName, UserName, Language = "Chinese"):
         try:
             fileExtension = Tools.GetExtension(FullFileName)
             fileName = Tools.GetFileName(FullFileName)
@@ -65,7 +65,8 @@ class STTInterface:  # 小模型应用接口类
                                                  Language = Language)
                 # 加入轮询队列
                 QuerySTTThread.PutTaskId(FileName = fileName_Wav,
-                                         TaskId = taskId)
+                                         TaskId = taskId,
+                                         UserName = UserName)
 
             # 音频文件，直接转文字处理
             elif fileExtension in ["wav", "mp3", "pcm", "m4a", "amr"]:
@@ -74,7 +75,8 @@ class STTInterface:  # 小模型应用接口类
                                                  Language = Language)
                 # 加入轮询队列
                 QuerySTTThread.PutTaskId(FileName = FullFileName,
-                                         TaskId = taskId)
+                                         TaskId = taskId,
+                                         UserName = UserName)
 
         except Exception as e:
             curTime = Tools.GetTime()
