@@ -545,7 +545,6 @@ def Register():
 
     except sqlite3.IntegrityError:
         curTime = Tools.GetTime()
-        logging.error(f"[{curTime}]Module:[register]" + str(e))
         retObj = {
             "statusCode": 0,
             "requestTime": curTime,
