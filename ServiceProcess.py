@@ -461,7 +461,7 @@ def Login():
         if password is None:
             raise Exception("请输入密码！")
 
-        cursor.execute("SELECT passwordHash FROM userKey WHERE username = ?", (username,))
+        cursor.execute("SELECT passwordHash FROM users WHERE username = ?", (username,))
         user = cursor.fetchone()
         hashedPassword = hashlib.sha256(user[0].encode()).hexdigest()
 
