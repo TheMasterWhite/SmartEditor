@@ -3,6 +3,7 @@ import os
 import uuid
 import time
 import jwt
+import logging
 
 GLOBAL_RSA_PUBLIC_KEY = os.environ.get("GLOBAL_RSA_PUBLIC_KEY")
 
@@ -89,6 +90,7 @@ def ValidToken(Token):
             "status": False,
             "msg": str(e),
         }
+        logging.info(str(e))
         return retObj
 
 
