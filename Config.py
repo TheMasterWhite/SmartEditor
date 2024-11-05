@@ -28,6 +28,9 @@ def ReadConfigFile():
     for key, value in configData.items():
         globals()[key] = value
 
+    with open("/Server/极狐云服务器密钥对.pem", "r", encoding = "utf-8") as f:
+        GLOBAL_JWT_KEY = f.read()
+
 
 def InitToken():  # 初始化环境变量
 
