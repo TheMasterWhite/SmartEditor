@@ -12,7 +12,6 @@ from utils import Tools
 curTime = Tools.GetTime()
 curData = Tools.GetDate()
 os.makedirs("Logs", exist_ok = True)
-global GLOBAL_JWT_KEY
 logging.basicConfig(filename = f"Logs/[{curData}][{curTime}].log",
                     filemode = 'w',
                     level = logging.INFO)
@@ -28,9 +27,9 @@ def ReadConfigFile():
 
     for key, value in configData.items():
         globals()[key] = value
-
-    with open("/Server/极狐云服务器密钥对.pem", "r", encoding = "utf-8") as f:
-        GLOBAL_JWT_KEY = f.read()
+        if key == "GLOBAL_JWT_KEY":
+            with open("/Server/极狐云服务器密钥对.pem", "r", encoding = "utf-8") as f:
+                globals()[key] = f.read()
 
 
 def InitToken():  # 初始化环境变量
