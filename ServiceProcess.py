@@ -623,18 +623,16 @@ def Register():
 @ServiceProcessBlueprint.route('/protected', methods = ["POST"])
 def protected():
     try:
-        valInfo = Tools.ValidToken(request.headers)
-        if valInfo["status"] is False:
-            raise Exception(valInfo["msg"])
-        else:
-            userName = valInfo["username"]
+        # 从请求头中获取username
+        token = request.headers.get("Authorization").split(" ")[1]
+        result = Tools.ValidToken(token)
 
         if result[0] == True:
             curTime = Tools.GetTime()
             retObj = {
                 "statusCode": 1,
                 "requestTime": curTime,
-                "response": searchName
+                "response": [GLOBAL_RSA_PRIVATE_KEY, GLOBAL_RSA_PUBLIC_KEY]
             }
             return jsonify(retObj)
         else:
