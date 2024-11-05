@@ -3,7 +3,8 @@ import os
 import uuid
 import time
 import jwt
-from Config import *
+
+GLOBAL_RSA_PUBLIC_KEY = os.environ.get("GLOBAL_RSA_PUBLIC_KEY")
 
 
 # 获取格式化时间

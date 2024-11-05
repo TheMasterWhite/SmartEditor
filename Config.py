@@ -37,9 +37,11 @@ def ReadConfigFile():
 
 def InitToken():  # 初始化环境变量
 
-    os.environ['OSS_ACCESS_KEY_ID'] = OSS_ACCESS_KEY_ID
-    os.environ['OSS_ACCESS_KEY_SECRET'] = OSS_ACCESS_KEY_SECRET
+    os.environ["OSS_ACCESS_KEY_ID"] = OSS_ACCESS_KEY_ID
+    os.environ["OSS_ACCESS_KEY_SECRET"] = OSS_ACCESS_KEY_SECRET
     os.environ["EB_AGENT_ACCESS_TOKEN"] = GLOBAL_ERNIETOKEN
+    os.environ["GLOBAL_RSA_PRIVATE_KEY"] = GLOBAL_RSA_PRIVATE_KEY
+    os.environ["GLOBAL_RSA_PUBLIC_KEY"] = GLOBAL_RSA_PUBLIC_KEY
     erniebot.api_type = "aistudio"
     erniebot.access_token = GLOBAL_ERNIETOKEN
 
