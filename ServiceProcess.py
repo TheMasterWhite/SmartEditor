@@ -476,7 +476,7 @@ def Login():
         token = jwt.encode({
             "username": username,
             "exp": datetime.datetime.utcnow() + datetime.timedelta(hours = 24)  # 设置token过期时间为24小时
-        }, GLOBAL_JWT_KEY, algorithm = "RS256")
+        }, GLOBAL_RSA_PRIVATE_KEY, algorithm = "RS256")
 
         retObj = {
             "statusCode": 1,
@@ -576,7 +576,7 @@ def protected():
         # 从请求头中获取token
         token = request.headers.get("Authorization")
         curTime = Tools.GetTime()
-        payload = jwt.decode(token, GLOBAL_JWT_KEY, algorithms = ["RS256"])
+        payload = jwt.decode(token, GLOBAL_RSA_PUBLIC_KEY, algorithms = ["RS256"])
         username = payload["username"]
 
         conn = sqlite3.connect("UserInfo.db")
