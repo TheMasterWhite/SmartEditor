@@ -623,9 +623,11 @@ def Register():
 @ServiceProcessBlueprint.route('/protected', methods = ["POST"])
 def protected():
     try:
-        # 从请求头中获取username
-        token = request.headers.get("Authorization").split(" ")[1]
-        result = Tools.ValidToken(token)
+        valInfo = Tools.ValidToken(request.headers)
+        if valInfo["status"] is False:
+            raise Exception(valInfo["msg"])
+        else:
+            userName = valInfo["username"]
 
         if result[0] == True:
             curTime = Tools.GetTime()

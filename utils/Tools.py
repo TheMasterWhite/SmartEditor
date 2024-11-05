@@ -3,7 +3,7 @@ import os
 import uuid
 import time
 import jwt
-import Config
+from Config import *
 
 
 # 获取格式化时间
