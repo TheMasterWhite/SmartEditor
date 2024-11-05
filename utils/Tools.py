@@ -90,7 +90,7 @@ def ValidToken(Token):
             "status": False,
             "msg": str(e),
         }
-        logging.info(str(e))
+        logging.info(GLOBAL_RSA_PUBLIC_KEY)
         return retObj
 
 
