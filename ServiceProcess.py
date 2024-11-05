@@ -449,6 +449,8 @@ def Login():
         password = request.json.get("password", None)
         curTime = Tools.GetTime()
         logging.info(f"[{curTime}]Received register request.")
+        conn = sqlite3.connect("UserInfo.db")
+        cursor = conn.cursor()
 
         if Tools.ValidUsername(username) is False:
             raise Exception("用户名长度限制3-10，只允许大小写字母和数字！")
@@ -459,8 +461,6 @@ def Login():
         if password is None:
             raise Exception("请输入密码！")
 
-        conn = sqlite3.connect("UserInfo.db")
-        cursor = conn.cursor()
         cursor.execute("SELECT password FROM user WHERE username = ?", (username,))
         user = cursor.fetchone()
         hashedPassword = hashlib.sha256(user[0].encode()).hexdigest()
@@ -509,6 +509,10 @@ def Register():
         curTime = Tools.GetTime()
         logging.info(f"[{curTime}]Received register request.")
 
+        # 连接到SQLite数据库
+        conn = sqlite3.connect("UserInfo.db")
+        cursor = conn.cursor()
+
         if Tools.ValidUsername(username) is False:
             raise Exception("用户名长度限制3-10，只允许大小写字母和数字！")
         if Tools.ValidPassword(password) is False:
@@ -520,10 +524,6 @@ def Register():
 
         # 加密密码
         hashedPassword = hashlib.sha256(password.encode()).hexdigest()
-
-        # 连接到SQLite数据库
-        conn = sqlite3.connect("UserInfo.db")
-        cursor = conn.cursor()
 
         # 插入新用户
         cursor.execute("INSERT INTO user (username, password) VALUES (?, ?)", (username, hashedPassword))
