@@ -447,6 +447,8 @@ def Login():
         requestData = request.json
         username = request.json.get("username", None)
         password = request.json.get("password", None)
+        curTime = Tools.GetTime()
+        logging.info(f"[{curTime}]Received register request.")
 
         if Tools.ValidUsername(username) is False:
             raise Exception("用户名长度限制3-10，只允许大小写字母和数字！")
@@ -502,6 +504,10 @@ def Register():
         # 获取用户名和密码
         username = request.json.get("username")
         password = request.json.get("password")
+        username = request.json.get("username", None)
+        password = request.json.get("password", None)
+        curTime = Tools.GetTime()
+        logging.info(f"[{curTime}]Received register request.")
 
         if Tools.ValidUsername(username) is False:
             raise Exception("用户名长度限制3-10，只允许大小写字母和数字！")
