@@ -53,8 +53,4 @@ def ValidUsername(Username):
     if len(Username) < 3 or len(Username) > 10:
         return False
 
-    has_upper = any(char.isupper() for char in Username)
-    has_lower = any(char.islower() for char in Username)
-    has_digit = any(char.isdigit() for char in Username)
-
-    return has_upper and has_lower and has_digit and Username.isalnum()
+    return Username.isalnum()
