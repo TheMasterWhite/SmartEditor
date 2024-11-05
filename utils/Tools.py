@@ -56,19 +56,15 @@ def ValidUsername(Username):
 # 验证JWT token
 def ValidToken(Token):
     try:
-        payload = jwt.decode(Token, GLOBAL_JWT_KEY, algorithms = ["RS256"])
+        payload = jwt.decode(Token, GLOBAL_RSA_PUBLIC_KEY, algorithms = ["RS256"])
         username = payload["username"]
+        return (True, "OK")
 
-        conn = sqlite3.connect("UserInfo.db")
-        cursor = conn.cursor()
-        cursor.execute("SELECT username FROM users WHERE username = ?", (username,))
-        result = cursor.fetchone()
-        searchName = result[0] if result else None
+    except jwt.ExpiredSignatureError:
+        return (False, "登录过期，请重新登录！")
 
-        if username == searchName:
-            return True
-        else:
-            return False
+    except jwt.InvalidTokenError:
+        return (False, "验证失败，请重试！")
 
     except Exception as e:
-        raise e
+        return (False, str(e))

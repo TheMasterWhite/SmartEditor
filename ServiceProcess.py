@@ -408,7 +408,12 @@ def UploadResource():
 @ServiceProcessBlueprint.route("/GetFileInfo", methods = ["GET"])
 def GetFileList():
     try:
+        # 从请求头中获取username
+        token = request.headers.get("Authorization").split(" ")[1]
+        payload = jwt.decode(token, GLOBAL_RSA_PUBLIC_KEY, algorithms = "RS256")
+        username = payload["username"]
         fileList = []
+
         for fullFileName in os.listdir(fileSavePath):
             fileInfo = FileProcess.GetFileInfo(FileName = fullFileName)
             if fileInfo is None:
@@ -448,8 +453,7 @@ def Login():
         requestData = request.json
         username = request.json.get("username", None)
         password = request.json.get("password", None)
-        curTime = Tools.GetTime()
-        logging.info(f"[{curTime}]Received register request.")
+
         conn = sqlite3.connect("UserInfo.db")
         cursor = conn.cursor()
 
@@ -505,12 +509,8 @@ def Login():
 def Register():
     try:
         # 获取用户名和密码
-        username = request.json.get("username")
-        password = request.json.get("password")
         username = request.json.get("username", None)
         password = request.json.get("password", None)
-        curTime = Tools.GetTime()
-        logging.info(f"[{curTime}]Received register request.")
 
         # 连接到SQLite数据库
         conn = sqlite3.connect("UserInfo.db")
@@ -573,24 +573,20 @@ def Register():
 @ServiceProcessBlueprint.route('/protected', methods = ["POST"])
 def protected():
     try:
-        # 从请求头中获取token
+        # 从请求头中获取username
         token = request.headers.get("Authorization").split(" ")[1]
-        curTime = Tools.GetTime()
-        payload = jwt.decode(token, GLOBAL_RSA_PUBLIC_KEY, algorithms = "RS256")
-        username = payload["username"]
+        result = Tools.ValidToken(token)
 
-        conn = sqlite3.connect("UserInfo.db")
-        cursor = conn.cursor()
-        cursor.execute("SELECT username FROM users WHERE username = ?", (username,))
-        result = cursor.fetchone()
-        searchName = result[0] if result else None
-
-        retObj = {
-            "statusCode": 1,
-            "requestTime": curTime,
-            "response": searchName
-        }
-        return jsonify(retObj)
+        if result[0] == True:
+            curTime = Tools.GetTime()
+            retObj = {
+                "statusCode": 1,
+                "requestTime": curTime,
+                "response": searchName
+            }
+            return jsonify(retObj)
+        else:
+            raise result[1]
 
     except Exception as e:
         curTime = Tools.GetTime()
