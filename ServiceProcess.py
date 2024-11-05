@@ -481,7 +481,7 @@ def Login():
             "username": username,
             "exp": datetime.datetime.utcnow() + datetime.timedelta(hours = 24)  # 设置token过期时间为24小时
         }, GLOBAL_RSA_PRIVATE_KEY, algorithm = "RS256")
-
+        curTime = Tools.GetTime()
         retObj = {
             "statusCode": 1,
             "requestTime": curTime,
