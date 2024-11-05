@@ -640,6 +640,7 @@ def protected():
 
     except Exception as e:
         curTime = Tools.GetTime()
+        logging.error(f"[{curTime}]Module:[protected]" + str(e))
         retObj = {
             "statusCode": 0,
             "requestTime": curTime,
