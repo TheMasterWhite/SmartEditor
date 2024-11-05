@@ -570,7 +570,7 @@ def Register():
 
 
 # test
-@ServiceProcessBlueprint.route('/protected', methods = ['GET'])
+@ServiceProcessBlueprint.route('/protected', methods = ["POST"])
 def protected():
     # 从请求头中获取token
     token = request.headers.get("Authorization")
