@@ -441,7 +441,7 @@ def GetFileList():
 
 
 # 登录
-@ServiceProcessBlueprint.route("Login", methods = ["POST"])
+@ServiceProcessBlueprint.route("/Login", methods = ["POST"])
 def Login():
     try:
         requestData = request.json
