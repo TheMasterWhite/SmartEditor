@@ -580,7 +580,7 @@ def protected():
 
     try:
         # 验证token
-        data = jwt.decode(token, GLOBAL_JWT_KEY, algorithms = ['HS256'])
-        return jsonify({'message': f'Welcome {data["user"]}!'})
+        data = jwt.decode(token, GLOBAL_JWT_KEY, algorithms = ["RS256"])
+        return jsonify({'message': f'Welcome {data["username"]}!'})
     except:
         return jsonify({'message': 'Invalid token'}), 401
