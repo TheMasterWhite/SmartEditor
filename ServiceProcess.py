@@ -578,9 +578,6 @@ def protected():
         curTime = Tools.GetTime()
         payload = jwt.decode(token, GLOBAL_RSA_PUBLIC_KEY, algorithms = "RS256")
         username = payload["username"]
-        logging.info("\n\n\n")
-        logging.info(username)
-        logging.info("\n\n\n")
 
         conn = sqlite3.connect("UserInfo.db")
         cursor = conn.cursor()
@@ -591,7 +588,7 @@ def protected():
         retObj = {
             "statusCode": 1,
             "requestTime": curTime,
-            "response": token
+            "response": searchName
         }
         return jsonify(retObj)
 
