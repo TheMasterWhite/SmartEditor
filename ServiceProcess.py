@@ -7,6 +7,8 @@ from utils.SModel.STT import *
 from utils.LModel.Interface import *
 from utils import Tools
 import jwt
+import hashlib
+import sqlite3
 
 ServiceProcessBlueprint = Blueprint("ServiceProcessBlueprint", __name__, url_prefix = "/Service")
 fileSavePath = copy.deepcopy(GLOBAL_FileSavePath)
@@ -446,18 +448,25 @@ def Login():
         username = request.json.get("username", None)
         password = request.json.get("password", None)
 
-        if username is None or password is None:
-            raise Exception("No username or password provided.")
+        if Tools.ValidUsername(username) is False:
+            raise Exception("用户名长度限制3-10，只允许大小写字母和数字！")
+        if Tools.ValidPassword(password) is False:
+            raise Exception("密码长度限制8-16，只允许大小写字母和数字！")
+        if username is None:
+            raise Exception("请输入用户名！")
+        if password is None:
+            raise Exception("请输入密码！")
 
         conn = sqlite3.connect("UserInfo.db")
         cursor = conn.cursor()
-        cursor.execute("SELECT password FROM users WHERE username = ?", (username,))
+        cursor.execute("SELECT password FROM user WHERE username = ?", (username,))
         user = cursor.fetchone()
+        hashedPassword = hashlib.sha256(user[0].encode()).hexdigest()
 
         # 验证用户名和密码
         if user is None:
             raise Exception("User does not exist.")
-        elif user[0] != password:
+        elif hashedPassword != password:
             raise Exception("Incorrect password.")
 
         # 生成JWT
@@ -466,8 +475,6 @@ def Login():
             "exp": datetime.datetime.utcnow() + datetime.timedelta(hours = 24)  # 设置token过期时间为24小时
         }, GLOBAL_JWT_KEY, algorithm = "RS256")
 
-        # 关闭数据库连接
-        conn.close()
         retObj = {
             "statusCode": 1,
             "requestTime": curTime,
@@ -476,7 +483,6 @@ def Login():
         return jsonify(retObj)
 
     except Exception as e:
-        conn.close()
         curTime = Tools.GetTime()
         logging.error(f"[{curTime}]Module:[Login]" + str(e))
         retObj = {
@@ -485,6 +491,68 @@ def Login():
             "response": str(e)
         }
         return jsonify(retObj)
+
+    finally:
+        conn.close()
+
+
+@ServiceProcessBlueprint.route('/Register', methods = ['POST'])
+def Register():
+    try:
+        # 获取用户名和密码
+        username = request.json.get("username")
+        password = request.json.get("password")
+
+        if Tools.ValidUsername(username) is False:
+            raise Exception("用户名长度限制3-10，只允许大小写字母和数字！")
+        if Tools.ValidPassword(password) is False:
+            raise Exception("密码长度限制8-16，只允许大小写字母和数字！")
+        if username is None:
+            raise Exception("请输入用户名！")
+        if password is None:
+            raise Exception("请输入密码！")
+
+        # 加密密码
+        hashedPassword = hashlib.sha256(password.encode()).hexdigest()
+
+        # 连接到SQLite数据库
+        conn = sqlite3.connect("UserInfo.db")
+        cursor = conn.cursor()
+
+        # 插入新用户
+        cursor.execute("INSERT INTO user (username, password) VALUES (?, ?)", (username, hashedPassword))
+        conn.commit()
+        curTime = Tools.GetTime()
+        retObj = {
+            "statusCode": 1,
+            "requestTime": curTime,
+            "response": "注册成功，请返回登录！"
+        }
+        return jsonify(retObj)
+
+
+    except sqlite3.IntegrityError:
+        curTime = Tools.GetTime()
+        logging.error(f"[{curTime}]Module:[register]" + str(e))
+        retObj = {
+            "statusCode": 0,
+            "requestTime": curTime,
+            "response": "此用户已存在!"
+        }
+        return jsonify(retObj)
+
+    except Exception as e:
+        curTime = Tools.GetTime()
+        logging.error(f"[{curTime}]Module:[register]" + str(e))
+        retObj = {
+            "statusCode": 0,
+            "requestTime": curTime,
+            "response": str(e)
+        }
+        return jsonify(retObj)
+
+    finally:
+        conn.close()
 
 
 # test
