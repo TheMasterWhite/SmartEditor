@@ -574,7 +574,7 @@ def Register():
 def protected():
     try:
         # 从请求头中获取token
-        token = request.headers.get("Authorization")
+        token = request.headers.get("Authorization").split(" ")[1]
         curTime = Tools.GetTime()
         payload = jwt.decode(token, GLOBAL_RSA_PUBLIC_KEY, algorithms = "RS256")
         username = payload["username"]
