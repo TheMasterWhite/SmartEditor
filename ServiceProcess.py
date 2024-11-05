@@ -22,7 +22,8 @@ resourceSavePath = copy.deepcopy(GLOBAL_ResourcesSavePath)
 def UploadFile():
     try:
         # 鉴权认证
-        valInfo = Tools.ValidToken(request.headers)
+        token = request.headers.get("Authorization").split(" ")[1]
+        valInfo = Tools.ValidToken(token)
         if valInfo["status"] is False:
             raise Exception(valInfo["msg"])
         else:
@@ -152,7 +153,8 @@ def UploadFile():
 def DownloadFile(fileName):
     try:
         # 鉴权验证
-        valInfo = Tools.ValidToken(request.headers)
+        token = request.headers.get("Authorization").split(" ")[1]
+        valInfo = Tools.ValidToken(token)
         if valInfo["status"] is False:
             raise Exception(valInfo["msg"])
         else:
@@ -191,7 +193,8 @@ def DownloadFile(fileName):
 def ReadFile():
     try:
         # 鉴权验证
-        valInfo = Tools.ValidToken(request.headers)
+        token = request.headers.get("Authorization").split(" ")[1]
+        valInfo = Tools.ValidToken(token)
         if valInfo["status"] is False:
             raise Exception(valInfo["msg"])
         else:
@@ -234,7 +237,8 @@ def ReadFile():
 def DeleteFile():
     try:
         # 鉴权验证
-        valInfo = Tools.ValidToken(request.headers)
+        token = request.headers.get("Authorization").split(" ")[1]
+        valInfo = Tools.ValidToken(token)
         if valInfo["status"] is False:
             raise Exception(valInfo["msg"])
         else:
@@ -334,7 +338,8 @@ def DeleteFile():
 def Save():
     try:
         # 鉴权验证
-        valInfo = Tools.ValidToken(request.headers)
+        token = request.headers.get("Authorization").split(" ")[1]
+        valInfo = Tools.ValidToken(token)
         if valInfo["status"] is False:
             raise Exception(valInfo["msg"])
         else:
@@ -451,7 +456,8 @@ def UploadResource():
 def GetFileList():
     try:
         # 鉴权验证
-        valInfo = Tools.ValidToken(request.headers)
+        token = request.headers.get("Authorization").split(" ")[1]
+        valInfo = Tools.ValidToken(token)
         if valInfo["status"] is False:
             raise Exception(valInfo["msg"])
         else:

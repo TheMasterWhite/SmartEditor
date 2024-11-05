@@ -58,10 +58,9 @@ def ValidUsername(Username):
 
 
 # 验证JWT并返回数据
-def ValidToken(Header):
+def ValidToken(Token):
     try:
-        token = Header.get("Authorization").split(" ")[1]
-        payload = jwt.decode(token, GLOBAL_RSA_PUBLIC_KEY, algorithms = ["RS256"])
+        payload = jwt.decode(Token, GLOBAL_RSA_PUBLIC_KEY, algorithms = ["RS256"])
         username = payload["username"]
         retObj = {
             "status": True,
