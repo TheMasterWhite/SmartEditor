@@ -89,7 +89,6 @@ def ValidToken(Token):
             "status": False,
             "msg": str(e),
         }
-        logging.error(f"[{ValidToken}]" + str(e))
         return retObj
 
 
