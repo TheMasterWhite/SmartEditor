@@ -6,6 +6,7 @@ from utils.SModel.OCR import OCRInterface
 from utils.SModel.STT import *
 from utils.LModel.Interface import *
 from utils import Tools
+import jwt
 
 ServiceProcessBlueprint = Blueprint("ServiceProcessBlueprint", __name__, url_prefix = "/Service")
 fileSavePath = copy.deepcopy(GLOBAL_FileSavePath)
@@ -85,7 +86,7 @@ def UploadFile():
             FileProcess.SaveFileInfo(FileName = fullFileName,
                                      Description = summaryText,
                                      SaveTime = saveTime)
-            
+
         else:
             # 上传文件格式不支持
             raise ValueError("Unsupported file type.")
@@ -435,3 +436,69 @@ def GetFileList():
             "response": str(e)
         }
         return jsonify(retObj)
+
+
+# 登录
+@ServiceProcessBlueprint.route("Login", methods = ["POST"])
+def Login():
+    try:
+        requestData = request.json
+        username = request.json.get("username", None)
+        password = request.json.get("password", None)
+
+        if username is None or password is None:
+            raise Exception("No username or password provided.")
+
+        conn = sqlite3.connect("UserInfo.db")
+        cursor = conn.cursor()
+        cursor.execute("SELECT password FROM users WHERE username = ?", (username,))
+        user = cursor.fetchone()
+
+        # 验证用户名和密码
+        if user is None:
+            raise Exception("User does not exist.")
+        elif user[0] != password:
+            raise Exception("Incorrect password.")
+
+        # 生成JWT
+        token = jwt.encode({
+            "user": username,
+            "exp": datetime.datetime.utcnow() + datetime.timedelta(hours = 24)  # 设置token过期时间为24小时
+        }, GLOBAL_JWT_KEY, algorithm = "RS256")
+
+        # 关闭数据库连接
+        conn.close()
+        retObj = {
+            "statusCode": 1,
+            "requestTime": curTime,
+            "response": token
+        }
+        return jsonify(retObj)
+
+    except Exception as e:
+        conn.close()
+        curTime = Tools.GetTime()
+        logging.error(f"[{curTime}]Module:[Login]" + str(e))
+        retObj = {
+            "statusCode": 0,
+            "requestTime": curTime,
+            "response": str(e)
+        }
+        return jsonify(retObj)
+
+
+# test
+@ServiceProcessBlueprint.route('/protected', methods = ['GET'])
+def protected():
+    # 从请求头中获取token
+    token = request.headers.get('Authorization')
+
+    if not token:
+        return jsonify({'message': 'Token is missing'}), 401
+
+    try:
+        # 验证token
+        data = jwt.decode(token, GLOBAL_JWT_KEY, algorithms = ['HS256'])
+        return jsonify({'message': f'Welcome {data["user"]}!'})
+    except:
+        return jsonify({'message': 'Invalid token'}), 401
