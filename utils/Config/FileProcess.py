@@ -94,7 +94,7 @@ class FileProcess:
     def SaveFileInfo(FileName, SaveTime, Description):
         try:
             # 连接到SQLite数据库
-            conn = sqlite3.connect("FileInfo.db")
+            conn = sqlite3.connect("UserInfo.db")
             cursor = conn.cursor()
 
             # 创建表
@@ -118,7 +118,7 @@ class FileProcess:
     def GetFileInfo(FileName):
         try:
             # 连接到SQLite数据库
-            conn = sqlite3.connect("FileInfo.db")
+            conn = sqlite3.connect("UserInfo.db")
             cursor = conn.cursor()
 
             # 查询文件描述和时间
@@ -143,7 +143,7 @@ class FileProcess:
     @staticmethod
     def DeleteFileInfo(FileName):
         try:
-            conn = sqlite3.connect("FileInfo.db")
+            conn = sqlite3.connect("UserInfo.db")
             cursor = conn.cursor()
             cursor.execute("DELETE FROM files WHERE filename = ?", (FileName,))
             conn.commit()

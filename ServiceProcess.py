@@ -461,7 +461,7 @@ def Login():
         if password is None:
             raise Exception("请输入密码！")
 
-        cursor.execute("SELECT password FROM user WHERE username = ?", (username,))
+        cursor.execute("SELECT passwordHash FROM userKey WHERE username = ?", (username,))
         user = cursor.fetchone()
         hashedPassword = hashlib.sha256(user[0].encode()).hexdigest()
 
@@ -526,7 +526,13 @@ def Register():
         hashedPassword = hashlib.sha256(password.encode()).hexdigest()
 
         # 插入新用户
-        cursor.execute("INSERT INTO user (username, password) VALUES (?, ?)", (username, hashedPassword))
+        cursor.execute('''
+        CREATE TABLE IF NOT EXISTS users (
+            username TEXT PRIMARY KEY,
+            passwordHash TEXT
+        )
+        ''')
+        cursor.execute("INSERT INTO users (username, passwordHash) VALUES (?, ?)", (username, hashedPassword))
         conn.commit()
         curTime = Tools.GetTime()
         retObj = {
