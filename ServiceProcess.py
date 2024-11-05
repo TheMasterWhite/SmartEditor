@@ -467,9 +467,9 @@ def Login():
 
         # 验证用户名和密码
         if user is None:
-            raise Exception("User does not exist.")
+            raise Exception("用户名不存在！")
         elif hashedPassword != password:
-            raise Exception("Incorrect password.")
+            raise Exception("密码错误！")
 
         # 生成JWT
         token = jwt.encode({
