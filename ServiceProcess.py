@@ -572,22 +572,31 @@ def Register():
 # test
 @ServiceProcessBlueprint.route('/protected', methods = ["POST"])
 def protected():
-    # 从请求头中获取token
-    token = request.headers.get("Authorization")
-    curTime = Tools.GetTime()
-    logging.info("666666")
-    payload = jwt.decode(token, GLOBAL_JWT_KEY, algorithms = ["RS256"])
-    username = payload["username"]
+    try:
+        # 从请求头中获取token
+        token = request.headers.get("Authorization")
+        curTime = Tools.GetTime()
+        # payload = jwt.decode(token, GLOBAL_JWT_KEY, algorithms = ["RS256"])
+        # username = payload["username"]
+        #
+        # conn = sqlite3.connect("UserInfo.db")
+        # cursor = conn.cursor()
+        # cursor.execute("SELECT username FROM users WHERE username = ?", (username,))
+        # result = cursor.fetchone()
+        # searchName = result[0] if result else None
 
-    conn = sqlite3.connect("UserInfo.db")
-    cursor = conn.cursor()
-    cursor.execute("SELECT username FROM users WHERE username = ?", (username,))
-    result = cursor.fetchone()
-    searchName = result[0] if result else None
+        retObj = {
+            "statusCode": 1,
+            "requestTime": curTime,
+            "response": token
+        }
+        return jsonify(retObj)
 
-    retObj = {
-        "statusCode": 1,
-        "requestTime": curTime,
-        "response": searchName
-    }
-    return jsonify(retObj)
+    except Exception as e:
+        curTime = Tools.GetTime()
+        retObj = {
+            "statusCode": 0,
+            "requestTime": curTime,
+            "response": str(e)
+        }
+        return jsonify(retObj)
