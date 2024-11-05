@@ -40,11 +40,9 @@ def GetSaveTime():
 def ValidPassword(Password):
     if len(Password) < 8 or len(Password) > 16:
         return False
-
     has_upper = any(char.isupper() for char in Password)
     has_lower = any(char.islower() for char in Password)
     has_digit = any(char.isdigit() for char in Password)
-
     return has_upper and has_lower and has_digit and Password.isalnum()
 
 
@@ -52,5 +50,25 @@ def ValidPassword(Password):
 def ValidUsername(Username):
     if len(Username) < 3 or len(Username) > 10:
         return False
-
     return Username.isalnum()
+
+
+# 验证JWT token
+def ValidToken(Token):
+    try:
+        payload = jwt.decode(Token, GLOBAL_JWT_KEY, algorithms = ["RS256"])
+        username = payload["username"]
+
+        conn = sqlite3.connect("UserInfo.db")
+        cursor = conn.cursor()
+        cursor.execute("SELECT username FROM users WHERE username = ?", (username,))
+        result = cursor.fetchone()
+        searchName = result[0] if result else None
+
+        if username == searchName:
+            return True
+        else:
+            return False
+
+    except Exception as e:
+        raise e

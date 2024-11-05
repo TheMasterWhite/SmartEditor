@@ -573,14 +573,12 @@ def Register():
 @ServiceProcessBlueprint.route('/protected', methods = ['GET'])
 def protected():
     # 从请求头中获取token
-    token = request.headers.get('Authorization')
-
-    if not token:
-        return jsonify({'message': 'Token is missing'}), 401
-
-    try:
-        # 验证token
-        data = jwt.decode(token, GLOBAL_JWT_KEY, algorithms = ["RS256"])
-        return jsonify({'message': f'Welcome {data["username"]}!'})
-    except:
-        return jsonify({'message': 'Invalid token'}), 401
+    token = request.headers.get("Authorization")
+    isvalid = Tools.ValidToken(token)
+    curTime = Tools.GetTime()
+    retObj = {
+        "statusCode": 1,
+        "requestTime": curTime,
+        "response": str(isvalid)
+    }
+    return jsonify(retObj)
