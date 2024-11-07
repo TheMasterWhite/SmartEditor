@@ -63,15 +63,16 @@ def UploadFile():
         else:
             userName = valInfo["username"]
 
-        # # 请求中不存在文件
-        # if "file" not in request.files:
-        #     raise Exception("No file in the request.")
+        # 请求中不存在文件
+        if "file" not in request.files:
+            raise Exception("No file in the request.")
 
         # 获取文件，并保存到用户文件夹中
         file = request.files["file"]
         fullFileName = file.filename
-        os.makedirs(userName, exist_ok = True)
-        file.save(os.path.join(os.path.join(fileSavePath, userName), fullFileName))
+        fileSaveFolderPath = os.path.join(fileSavePath, userName)
+        os.makedirs(fileSaveFolderPath, exist_ok = True)
+        file.save(os.path.join(fileSaveFolderPath, fullFileName))
         fileExtension = Tools.GetExtension(fullFileName)
         fileName = Tools.GetFileName(fullFileName)
         curTime = Tools.GetTime()
