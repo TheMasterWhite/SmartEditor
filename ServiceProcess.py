@@ -127,7 +127,7 @@ def UploadFile():
         elif fileExtension in ["doc", "docx"]:
             docFile = os.path.join(fullFileSavePath)
             doc = Document(docFile)
-            txtSavePath = os.path.join(fileSavePath, fileName + ".txt")
+            txtSavePath = os.path.join(fileSaveFolderPath, fileName + ".txt")
             with open(txtSavePath, 'w', encoding = 'utf-8') as f:
                 # 遍历文档中的每个段落
                 for para in doc.paragraphs:
@@ -624,7 +624,7 @@ def Register():
         cursor.execute('''
         CREATE TABLE IF NOT EXISTS users (
             userName TEXT PRIMARY KEY,
-            passwordHash TEXT
+            passwordHash TEXT,
             userFiles TEXT
         )
         ''')
