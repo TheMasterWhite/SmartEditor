@@ -548,12 +548,13 @@ def Login():
 
         cursor.execute("SELECT passwordHash FROM users WHERE username = ?", (username,))
         user = cursor.fetchone()
-        hashedPassword = hashlib.sha256(password.encode()).hexdigest()
-
         # 验证用户名和密码
         if user is None:
             raise Exception("用户名不存在！")
-        elif hashedPassword != user[0]:
+
+        hashedPassword = hashlib.sha256(password.encode()).hexdigest()
+
+        if hashedPassword != user[0]:
             raise Exception("密码错误！")
 
         # 生成JWT
