@@ -666,18 +666,25 @@ def protected():
     try:
         # 从请求头中获取username
         token = request.headers.get("Authorization").split(" ")[1]
-        result = ValidToken(token)
+        payload = jwt.decode(token, GLOBAL_RSA_PUBLIC_KEY, algorithms = ["RS256"])
+        username = payload["username"]
 
-        if result[0] == True:
-            curTime = Tools.GetTime()
-            retObj = {
-                "statusCode": 1,
-                "requestTime": curTime,
-                "response": [GLOBAL_RSA_PRIVATE_KEY, GLOBAL_RSA_PUBLIC_KEY]
-            }
-            return jsonify(retObj)
-        else:
-            raise result[1]
+        # if result[0] == True:
+        #     curTime = Tools.GetTime()
+        #     retObj = {
+        #         "statusCode": 1,
+        #         "requestTime": curTime,
+        #         "response": [GLOBAL_RSA_PRIVATE_KEY, GLOBAL_RSA_PUBLIC_KEY]
+        #     }
+        #     return jsonify(retObj)
+        # else:
+        #     raise result[1]
+        return jsonify({
+            "statusCode": 1,
+            "requestTime": curTime,
+            "response": [GLOBAL_RSA_PRIVATE_KEY, GLOBAL_RSA_PUBLIC_KEY],
+            "aaa": username
+        })
 
     except Exception as e:
         curTime = Tools.GetTime()
