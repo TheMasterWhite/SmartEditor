@@ -98,14 +98,17 @@ class FileProcess:
 
             cursor.execute("SELECT userFiles FROM users WHERE userName = ?", (UserName,))
             userFileList = json.load(cursor.fetchone())["fileList"]
+            logging.info("100")
             data = {
                 "fileName": FileName,
                 "saveTime": SaveTime,
                 "sescription": Description,
                 "uuid": Tools.GetUUID()
             }
+            logging.info("107")
             userFileList.append(data)
             userFiles = json.dumps({"fileList": userFileList})
+            logging.info("110")
             cursor.execute("UPDATE users SET userFiles = ? WHERE userName = ?", (userFiles, UserName))
 
         except Exception as e:
