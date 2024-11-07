@@ -122,12 +122,9 @@ class FileProcess:
             # 连接到SQLite数据库
             with sqlite3.connect("UserInfo.db") as conn:
                 cursor = conn.cursor()
-
                 # 查询文件描述和时间
                 cursor.execute("SELECT userFiles FROM users WHERE userName = ?", (UserName,))
                 userFileList = json.loads(cursor.fetchone()[0])["fileList"]
-                cursor.close()
-                conn.close()
             return userFileList
 
         except Exception as e:
