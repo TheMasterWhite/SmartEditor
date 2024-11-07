@@ -17,7 +17,7 @@ fileSavePath = copy.deepcopy(GLOBAL_FileSavePath)
 resourceSavePath = copy.deepcopy(GLOBAL_ResourcesSavePath)
 
 
-# 验证JWT并返回数据
+# 验证JWT并返回结果
 def ValidToken(Token):
     try:
         payload = jwt.decode(Token, GLOBAL_RSA_PUBLIC_KEY, algorithms = ["RS256"])
@@ -63,9 +63,9 @@ def UploadFile():
         else:
             userName = valInfo["username"]
 
-        # 请求中不存在文件
-        if "file" not in request.files:
-            raise Exception("No file in the request.")
+        # # 请求中不存在文件
+        # if "file" not in request.files:
+        #     raise Exception("No file in the request.")
 
         # 获取文件，并保存到用户文件夹中
         file = request.files["file"]
