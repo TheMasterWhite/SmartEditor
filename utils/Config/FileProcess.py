@@ -98,7 +98,6 @@ class FileProcess:
 
             cursor.execute("SELECT userFiles FROM users WHERE userName = ?", (UserName,))
             userFiles = cursor.fetchone()
-            print(userFiles)
             userFileList = json.loads(userFiles)["fileList"]
             data = {
                 "fileName": FileName,

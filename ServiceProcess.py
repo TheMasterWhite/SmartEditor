@@ -670,9 +670,13 @@ def protected():
     try:
         # 从请求头中获取username
         token = request.headers.get("Authorization").split(" ")[1]
-        # payload = jwt.decode(token, GLOBAL_RSA_PUBLIC_KEY, algorithms = ["RS256"])
-        # username = payload["username"]
         result = ValidToken(token)
+        # 连接到SQLite数据库
+        conn = sqlite3.connect("UserInfo.db")
+        cursor = conn.cursor()
+
+        cursor.execute("SELECT userFiles FROM users WHERE userName = ?", (UserName,))
+        userFiles = cursor.fetchone()
 
         if result["status"] == True:
             curTime = Tools.GetTime()
@@ -680,7 +684,7 @@ def protected():
             retObj = {
                 "statusCode": 1,
                 "requestTime": curTime,
-                "response": userName
+                "response": userFiles
             }
             return jsonify(retObj)
         else:
