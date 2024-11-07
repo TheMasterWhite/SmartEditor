@@ -501,24 +501,14 @@ def GetFileList():
             userName = valInfo["username"]
         fileList = []
 
-        for fullFileName in os.listdir(fileSavePath):
-            fileInfo = FileProcess.GetFileInfo(FileName = fullFileName)
-            if fileInfo is None:
-                continue
-            else:
-                distObj = {
-                    "name": fullFileName,
-                    "description": fileInfo[0],
-                    "time": fileInfo[1],
-                }
-                fileList.append(distObj)
+        fileInfo = FileProcess.GetFileInfo(UserName = userName)
 
         curTime = Tools.GetTime()
         logging.info(f"[{curTime}]Send file list successed.")
         retObj = {
             "statusCode": 1,
             "requestTime": curTime,
-            "response": fileList,
+            "response": fileInfo,
         }
         return jsonify(retObj)
 
