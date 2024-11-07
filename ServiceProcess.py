@@ -70,12 +70,14 @@ def UploadFile():
         # 获取文件，并保存到用户文件夹中
         file = request.files["file"]
         fullFileName = file.filename  # 文件全名
-        fileSaveFolderPath = os.path.join(fileSavePath, userName)  # 用户文件夹路径
-        os.makedirs(fileSaveFolderPath, exist_ok = True)  # 确保用户文件夹存在
-        fullFileSavePath = os.path.join(fileSaveFolderPath, fullFileName)  # 用户文件保存路径
-        file.save(fullFileSavePath)  # 保存
+        userFolderPath = os.path.join(fileSavePath, userName)  # 用户文件夹路径
+        os.makedirs(userFolderPath, exist_ok = True)
         fileExtension = Tools.GetExtension(fullFileName)  # 文件扩展名
-        fileName = Tools.GetFileName(fullFileName)  # 文件名
+        fileName = Tools.GetFileName(fullFileName)  # 纯文件名
+        fileUUID = Tools.GetUUID()
+        fullFileSavePath = os.path.join(userFolderPath, fileUUID + "." + fileExtension)  # 用户文件保存路径
+        file.save(fullFileSavePath)  # 保存
+
         curTime = Tools.GetTime()
         # 预处理音视频
         if fileExtension in ["mp4", "wav", "mp3", "pcm", "m4a", "amr"]:
@@ -118,15 +120,16 @@ def UploadFile():
             # 将文件信息保存到数据库中
             summaryText = LLMInterface.FileSummary(text)
             saveTime = Tools.GetSaveTime()
-            FileProcess.SaveFileInfo(FileName = fullFileName,
-                                     Description = summaryText,
-                                     SaveTime = saveTime,
-                                     UserName = userName)
+            fileId = FileProcess.SaveFileInfo(FileName = fullFileName,
+                                              Description = summaryText,
+                                              SaveTime = saveTime,
+                                              UserName = userName,
+                                              UUID = fileUUID)
 
         elif fileExtension in ["doc", "docx"]:
             docFile = os.path.join(fullFileSavePath)
             doc = Document(docFile)
-            txtSavePath = os.path.join(fileSaveFolderPath, fileName + ".txt")
+            txtSavePath = os.path.join(userFolderPath, fileName + ".txt")
             with open(txtSavePath, 'w', encoding = 'utf-8') as f:
                 # 遍历文档中的每个段落
                 for para in doc.paragraphs:

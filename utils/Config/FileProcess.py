@@ -90,7 +90,7 @@ class FileProcess:
 
     # 保存文件信息到数据库
     @staticmethod
-    def SaveFileInfo(FileName, SaveTime, Description, UserName):
+    def SaveFileInfo(FileName, SaveTime, Description, UserName, UUID):
         try:
             # 连接到SQLite数据库
             with sqlite3.connect("UserInfo.db") as conn:
@@ -102,7 +102,7 @@ class FileProcess:
                     "fileName": FileName,
                     "saveTime": SaveTime,
                     "description": Description,
-                    "uuid": Tools.GetUUID()
+                    "uuid": UUID
                 }
                 userFileList.append(data)
                 userFiles = json.dumps({"fileList": userFileList})
