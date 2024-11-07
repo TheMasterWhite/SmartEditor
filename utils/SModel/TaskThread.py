@@ -49,11 +49,14 @@ class TaskThread(threading.Thread):
             status = responseData["tasks_info"][0]["task_status"]
 
             if (status == "Success"):
-                fullFileName = self.fileInfoDict[taskId]
+                fullFileName = self.fileInfoDict[taskId]["fileName"]
+                userName = self.fileInfoDict[taskId]["userName"]
                 fileName = Tools.GetFileName(fullFileName)
                 content = responseData["tasks_info"][0]["task_result"]["result"][0]
                 # 保存结果到txt
-                FileProcess.SaveTxt(fileName, content)
+                FileProcess.SaveTxt(FileName = fileName,
+                                    Content = content,
+                                    UserName = userName)
                 curTime = Tools.GetTime()
                 logging.info(f"[{curTime}]Receive STT result successfully.")
                 # 将文件信息保存到数据库中
@@ -62,7 +65,7 @@ class TaskThread(threading.Thread):
                 FileProcess.SaveFileInfo(FileName = fullFileName,
                                          Description = summaryText,
                                          SaveTime = saveTime,
-                                         UserName = fileInfoDict[taskId]["userName"])
+                                         UserName = userName)
                 del self.fileInfoDict[taskId]
 
             elif (status == "Failed"):

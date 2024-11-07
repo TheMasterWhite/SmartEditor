@@ -32,7 +32,7 @@ class FileProcess:
 
     # 将字符串文本保存到txt中
     @staticmethod
-    def SaveTxt(FileName, Content):
+    def SaveTxt(FileName, Content, UserName):
         try:
             fullFileName = FileName + ".txt"
             filePath = os.path.join(fileSavePath, fullFileName)

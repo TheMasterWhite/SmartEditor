@@ -70,12 +70,13 @@ def UploadFile():
 
         # 获取文件，并保存到用户文件夹中
         file = request.files["file"]
-        fullFileName = file.filename
-        fileSaveFolderPath = os.path.join(fileSavePath, userName)
-        os.makedirs(fileSaveFolderPath, exist_ok = True)
-        file.save(os.path.join(fileSaveFolderPath, fullFileName))
-        fileExtension = Tools.GetExtension(fullFileName)
-        fileName = Tools.GetFileName(fullFileName)
+        fullFileName = file.filename  # 文件全名
+        fileSaveFolderPath = os.path.join(fileSavePath, userName)  # 用户文件夹路径
+        os.makedirs(fileSaveFolderPath, exist_ok = True)  # 确保用户文件夹存在
+        fullFileSavePath = os.path.join(fileSaveFolderPath, fullFileName)  # 用户文件保存路径
+        file.save(fullFileSavePath)  # 保存
+        fileExtension = Tools.GetExtension(fullFileName)  # 文件扩展名
+        fileName = Tools.GetFileName(fullFileName)  # 文件名
         curTime = Tools.GetTime()
         # 预处理音视频
         if fileExtension in ["mp4", "wav", "mp3", "pcm", "m4a", "amr"]:
@@ -84,11 +85,12 @@ def UploadFile():
         # 预处理图片
         elif fileExtension in ["pdf", "jpg", "jpeg", "png"]:
             if fileExtension == "pdf":
-                filePath = os.path.join(fileSavePath, fullFileName)
+                filePath = os.path.join(fullFileSavePath)
                 OCRResult = OCRInterface.Doc(FilePath = filePath,
                                              FileType = "PDF")
                 FileProcess.SaveTxt(FileName = fileName,
-                                    Content = OCRResult)
+                                    Content = OCRResult,
+                                    UserName = userName)
                 # 将文件信息保存到数据库中
                 saveTime = Tools.GetSaveTime()
                 summaryText = LLMInterface.FileSummary(OCRResult)
@@ -98,11 +100,12 @@ def UploadFile():
                                          UserName = userName)
 
             else:
-                filePath = os.path.join(fileSavePath, fullFileName)
+                filePath = os.path.join(fullFileSavePath)
                 OCRResult = OCRInterface.Doc(FilePath = filePath,
                                              FileType = "IMG")
                 FileProcess.SaveTxt(FileName = fileName,
-                                    Content = OCRResult)
+                                    Content = OCRResult,
+                                    UserName = userName)
                 # 将文件信息保存到数据库中
                 summaryText = LLMInterface.FileSummary(OCRResult)
                 saveTime = Tools.GetSaveTime()
@@ -112,7 +115,7 @@ def UploadFile():
                                          UserName = userName)
 
         elif fileExtension in ["txt"]:
-            text = FileProcess.ReadTxt(os.path.join(fileSavePath, fullFileName))
+            text = FileProcess.ReadTxt(fullFileSavePath)
             # 将文件信息保存到数据库中
             summaryText = LLMInterface.FileSummary(text)
             saveTime = Tools.GetSaveTime()
@@ -122,7 +125,7 @@ def UploadFile():
                                      UserName = userName)
 
         elif fileExtension in ["doc", "docx"]:
-            docFile = os.path.join(fileSavePath, fullFileName)
+            docFile = os.path.join(fullFileSavePath)
             doc = Document(docFile)
             txtSavePath = os.path.join(fileSavePath, fileName + ".txt")
             with open(txtSavePath, 'w', encoding = 'utf-8') as f:
