@@ -133,10 +133,6 @@ class FileProcess:
         except Exception as e:
             raise e
 
-        finally:
-            conn.close()
-            cursor.close()
-
 
     # 删除数据库中的文件信息
     @staticmethod
