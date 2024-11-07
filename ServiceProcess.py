@@ -537,14 +537,16 @@ def Login():
         conn = sqlite3.connect("UserInfo.db")
         cursor = conn.cursor()
 
-        if Tools.ValidUsername(username) is False:
-            raise Exception("用户名长度限制3-10，只允许大小写字母和数字！")
-        if Tools.ValidPassword(password) is False:
-            raise Exception("密码长度限制8-16，只允许大小写字母和数字！")
+
         if username is None:
             raise Exception("请输入用户名！")
         if password is None:
             raise Exception("请输入密码！")
+        if Tools.ValidUsername(username) is False:
+            raise Exception("用户名长度限制3-10，只允许大小写字母和数字！")
+        if Tools.ValidPassword(password) is False:
+            raise Exception("密码长度限制8-16，只允许大小写字母和数字！")
+
 
         cursor.execute("SELECT passwordHash FROM users WHERE username = ?", (username,))
         user = cursor.fetchone()
