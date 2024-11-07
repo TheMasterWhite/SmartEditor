@@ -101,17 +101,23 @@ class FileProcess:
             data = {
                 "fileName": FileName,
                 "saveTime": SaveTime,
-                "sescription": Description,
+                "dsescription": Description,
                 "uuid": Tools.GetUUID()
             }
+            logging.info(data)
             userFileList.append(data)
             userFiles = json.dumps({"fileList": userFileList})
+            logging.info(userFiles)
             cursor.execute("UPDATE users SET userFiles = ? WHERE userName = ?", (userFiles, UserName))
 
         except Exception as e:
             curTime = Tools.GetTime()
             logging.error(f"[{curTime}]Module:[SaveFileInfo]" + str(e))
             raise e
+
+        finally:
+            conn.close()
+            cursor.close()
 
 
     # 根据用户名查询文件上传时间和描述
@@ -131,6 +137,10 @@ class FileProcess:
 
         except Exception as e:
             raise e
+
+        finally:
+            conn.close()
+            cursor.close()
 
 
     # 删除数据库中的文件信息
@@ -208,12 +218,6 @@ if __name__ == '__main__':
             {
                 "fileName": "a",
                 "saveTime": "a",
-                "description": "a",
-                "uuid": "1234"
-            },
-            {
-                "name": "a",
-                "time": "a",
                 "description": "a",
                 "uuid": "1234"
             }
