@@ -48,7 +48,6 @@ def ValidToken(Token):
             "status": False,
             "msg": str(e),
         }
-        logging.info(GLOBAL_RSA_PUBLIC_KEY)
         return retObj
 
 
@@ -666,26 +665,21 @@ def protected():
     try:
         # 从请求头中获取username
         token = request.headers.get("Authorization").split(" ")[1]
-        payload = jwt.decode(token, GLOBAL_RSA_PUBLIC_KEY, algorithms = ["RS256"])
-        username = payload["username"]
+        # payload = jwt.decode(token, GLOBAL_RSA_PUBLIC_KEY, algorithms = ["RS256"])
+        # username = payload["username"]
+        result = ValidToken(token)
 
-        # if result[0] == True:
-        #     curTime = Tools.GetTime()
-        #     retObj = {
-        #         "statusCode": 1,
-        #         "requestTime": curTime,
-        #         "response": [GLOBAL_RSA_PRIVATE_KEY, GLOBAL_RSA_PUBLIC_KEY]
-        #     }
-        #     return jsonify(retObj)
-        # else:
-        #     raise result[1]
-        curTime = Tools.GetTime()
-        return jsonify({
-            "statusCode": 1,
-            "requestTime": curTime,
-            "response": [GLOBAL_RSA_PRIVATE_KEY, GLOBAL_RSA_PUBLIC_KEY],
-            "aaa": username
-        })
+        if result["status"] == True:
+            curTime = Tools.GetTime()
+            userName = result["username"]
+            retObj = {
+                "statusCode": 1,
+                "requestTime": curTime,
+                "response": userName
+            }
+            return jsonify(retObj)
+        else:
+            raise result["msg"]
 
     except Exception as e:
         curTime = Tools.GetTime()
