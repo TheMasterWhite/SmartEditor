@@ -97,8 +97,9 @@ class FileProcess:
             cursor = conn.cursor()
 
             cursor.execute("SELECT userFiles FROM users WHERE userName = ?", (UserName,))
-            logging.info(userFiles)
-            userFileList = json.loads(cursor.fetchone())["fileList"]
+            userFiles = cursor.fetchone()
+            print(userFiles)
+            userFileList = json.loads(userFiles)["fileList"]
             data = {
                 "fileName": FileName,
                 "saveTime": SaveTime,
