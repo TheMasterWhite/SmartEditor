@@ -115,9 +115,7 @@ def UploadFile():
                                          UserName = userName)
 
         elif fileExtension in ["txt"]:
-            logging.info("118Lines")
             text = FileProcess.ReadTxt(fullFileSavePath)
-            logging.info("120Lines")
             # 将文件信息保存到数据库中
             summaryText = LLMInterface.FileSummary(text)
             saveTime = Tools.GetSaveTime()
@@ -125,6 +123,7 @@ def UploadFile():
                                      Description = summaryText,
                                      SaveTime = saveTime,
                                      UserName = userName)
+            logging.info("126")
 
         elif fileExtension in ["doc", "docx"]:
             docFile = os.path.join(fullFileSavePath)
@@ -159,7 +158,6 @@ def UploadFile():
     # 文件不符合格式规范
     except ValueError as e:
         curTime = Tools.GetTime()
-        logging.info(f"[{curTime}]" + str(e))
         retObj = {
             "statusCode": 0,
             "requestTime": curTime,

@@ -109,6 +109,8 @@ class FileProcess:
             cursor.execute("UPDATE users SET userFiles = ? WHERE userName = ?", (userFiles, UserName))
 
         except Exception as e:
+            curTime = Tools.GetTime()
+            logging.error(f"[{curTime}]Module:[SaveFileInfo]" + str(e))
             raise e
 
 
