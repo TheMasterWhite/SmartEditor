@@ -679,6 +679,7 @@ def protected():
         #     return jsonify(retObj)
         # else:
         #     raise result[1]
+        curTime = Tools.GetTime()
         return jsonify({
             "statusCode": 1,
             "requestTime": curTime,
