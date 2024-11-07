@@ -58,6 +58,7 @@ def UploadFile():
         # 鉴权认证
         token = request.headers.get("Authorization").split(" ")[1]
         valInfo = ValidToken(token)
+        userName = ""
         if valInfo["status"] is False:
             raise Exception(valInfo["msg"])
         else:
