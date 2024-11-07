@@ -34,7 +34,7 @@ class FileProcess:
     def SaveTxt(FileName, Content, UserName):
         try:
             fullFileName = FileName + ".txt"
-            filePath = os.path.join(fileSavePath, fullFileName)
+            filePath = os.path.join(os.path.join(fileSavePath, UserName), fullFileName)
             with open(filePath, 'w', encoding = 'utf-8') as f:
                 f.write(Content)
         except Exception as e:
@@ -97,19 +97,16 @@ class FileProcess:
             cursor = conn.cursor()
 
             cursor.execute("SELECT userFiles FROM users WHERE userName = ?", (UserName,))
-            logging.info("100")
+            logging.info(userFiles)
             userFileList = json.loads(cursor.fetchone())["fileList"]
-            logging.info("102")
             data = {
                 "fileName": FileName,
                 "saveTime": SaveTime,
                 "sescription": Description,
                 "uuid": Tools.GetUUID()
             }
-            logging.info("107")
             userFileList.append(data)
             userFiles = json.dumps({"fileList": userFileList})
-            logging.info("110")
             cursor.execute("UPDATE users SET userFiles = ? WHERE userName = ?", (userFiles, UserName))
 
         except Exception as e:

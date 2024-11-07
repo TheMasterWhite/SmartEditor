@@ -172,7 +172,7 @@ def UploadFile():
         retObj = {
             "statusCode": 0,
             "requestTime": curTime,
-            "response": "AI Studio service did not started."
+            "response": str(e)
         }
         return jsonify(retObj)
 

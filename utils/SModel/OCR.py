@@ -75,6 +75,9 @@ class OCRInterface(OCRBasic):
             resultText = max(text, tableText)
             return resultText
 
+        except ValueError as e:
+            return ValueError("AI Studio服务未启动！")
+
         except Exception as e:
             curTime = Tools.GetTime()
             logging.error(f"[{curTime}]Module:[Doc]" + str(e))
