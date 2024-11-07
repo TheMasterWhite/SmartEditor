@@ -63,4 +63,4 @@ def ValidUsername(Username):
 def GetUUID():
     timestamp = int(time.time())
     UUID = uuid.uuid1()
-    return UUID
+    return str(UUID)
