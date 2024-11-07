@@ -93,31 +93,26 @@ class FileProcess:
     def SaveFileInfo(FileName, SaveTime, Description, UserName):
         try:
             # 连接到SQLite数据库
-            conn = sqlite3.connect("UserInfo.db")
-            cursor = conn.cursor()
+            with sqlite3.connect("UserInfo.db") as conn:
+                cursor = conn.cursor()
 
-            cursor.execute("SELECT userFiles FROM users WHERE userName = ?", (UserName,))
-            userFileList = json.loads(cursor.fetchone()[0])["fileList"]
-            data = {
-                "fileName": FileName,
-                "saveTime": SaveTime,
-                "dsescription": Description,
-                "uuid": Tools.GetUUID()
-            }
-            logging.info(data)
-            userFileList.append(data)
-            userFiles = json.dumps({"fileList": userFileList})
-            logging.info(userFiles)
-            cursor.execute("UPDATE users SET userFiles = ? WHERE userName = ?", (userFiles, UserName))
+                cursor.execute("SELECT userFiles FROM users WHERE userName = ?", (UserName,))
+                userFileList = json.loads(cursor.fetchone()[0])["fileList"]
+                data = {
+                    "fileName": FileName,
+                    "saveTime": SaveTime,
+                    "description": Description,
+                    "uuid": Tools.GetUUID()
+                }
+                userFileList.append(data)
+                userFiles = json.dumps({"fileList": userFileList})
+                cursor.execute("UPDATE users SET userFiles = ? WHERE userName = ?", (userFiles, UserName))
+                conn.commit()
 
         except Exception as e:
             curTime = Tools.GetTime()
             logging.error(f"[{curTime}]Module:[SaveFileInfo]" + str(e))
             raise e
-
-        finally:
-            conn.close()
-            cursor.close()
 
 
     # 根据用户名查询文件上传时间和描述
@@ -125,14 +120,14 @@ class FileProcess:
     def GetFileInfo(UserName):
         try:
             # 连接到SQLite数据库
-            conn = sqlite3.connect("UserInfo.db")
-            cursor = conn.cursor()
+            with sqlite3.connect("UserInfo.db") as conn:
+                cursor = conn.cursor()
 
-            # 查询文件描述和时间
-            cursor.execute("SELECT userFiles FROM users WHERE userName = ?", (UserName,))
-            userFileList = json.loads(cursor.fetchone()[0])["fileList"]
-            cursor.close()
-            conn.close()
+                # 查询文件描述和时间
+                cursor.execute("SELECT userFiles FROM users WHERE userName = ?", (UserName,))
+                userFileList = json.loads(cursor.fetchone()[0])["fileList"]
+                cursor.close()
+                conn.close()
             return userFileList
 
         except Exception as e:
