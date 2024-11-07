@@ -124,15 +124,10 @@ class FileProcess:
 
             # 查询文件描述和时间
             cursor.execute("SELECT userFiles FROM users WHERE userName = ?", (UserName,))
-            result = cursor.fetchone()
+            userFileList = json.loads(cursor.fetchone()[0])["fileList"]
             cursor.close()
             conn.close()
-
-            if result:
-                description, uploadTime = result
-                return [description, uploadTime]
-            else:
-                return None
+            return userFileList
 
         except Exception as e:
             raise e

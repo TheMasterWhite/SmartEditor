@@ -122,7 +122,6 @@ def UploadFile():
                                      Description = summaryText,
                                      SaveTime = saveTime,
                                      UserName = userName)
-            logging.info("126")
 
         elif fileExtension in ["doc", "docx"]:
             docFile = os.path.join(fullFileSavePath)
@@ -500,9 +499,6 @@ def GetFileList():
             raise Exception(valInfo["msg"])
         else:
             userName = valInfo["username"]
-
-        # 从请求头中获取username
-        userName = Tools.GetUsername(request.headers)
         fileList = []
 
         for fullFileName in os.listdir(fileSavePath):
