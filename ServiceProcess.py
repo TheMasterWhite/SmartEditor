@@ -577,7 +577,8 @@ def Login():
         retObj = {
             "statusCode": 0,
             "requestTime": curTime,
-            "response": str(e)
+            "response": str(e),
+            "token": None
         }
         return jsonify(retObj)
 
