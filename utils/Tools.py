@@ -59,41 +59,6 @@ def ValidUsername(Username):
     return Username.isalnum()
 
 
-# 验证JWT并返回数据
-def ValidToken(Token):
-    try:
-        payload = jwt.decode(Token, GLOBAL_RSA_PUBLIC_KEY, algorithms = ["RS256"])
-        username = payload["username"]
-        retObj = {
-            "status": True,
-            "msg": "OK",
-            "username": username,
-        }
-        return retObj
-
-    except jwt.ExpiredSignatureError:
-        retObj = {
-            "status": False,
-            "msg": "登录过期，请重新登录！",
-        }
-        return retObj
-
-    except jwt.InvalidTokenError:
-        retObj = {
-            "status": False,
-            "msg": "验证失败，请重试！",
-        }
-        return retObj
-
-    except Exception as e:
-        retObj = {
-            "status": False,
-            "msg": str(e),
-        }
-        logging.info(GLOBAL_RSA_PUBLIC_KEY)
-        return retObj
-
-
 # 根据时间生成一个uuid
 def GetUUID():
     timestamp = int(time.time())

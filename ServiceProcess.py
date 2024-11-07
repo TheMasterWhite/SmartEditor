@@ -17,13 +17,48 @@ fileSavePath = copy.deepcopy(GLOBAL_FileSavePath)
 resourceSavePath = copy.deepcopy(GLOBAL_ResourcesSavePath)
 
 
+# 验证JWT并返回数据
+def ValidToken(Token):
+    try:
+        payload = jwt.decode(Token, GLOBAL_RSA_PUBLIC_KEY, algorithms = ["RS256"])
+        username = payload["username"]
+        retObj = {
+            "status": True,
+            "msg": "OK",
+            "username": username,
+        }
+        return retObj
+
+    except jwt.ExpiredSignatureError:
+        retObj = {
+            "status": False,
+            "msg": "登录过期，请重新登录！",
+        }
+        return retObj
+
+    except jwt.InvalidTokenError:
+        retObj = {
+            "status": False,
+            "msg": "验证失败，请重试！",
+        }
+        return retObj
+
+    except Exception as e:
+        retObj = {
+            "status": False,
+            "msg": str(e),
+        }
+        logging.info(GLOBAL_RSA_PUBLIC_KEY)
+        return retObj
+
+
 # 从前端接收文件接口
 @ServiceProcessBlueprint.route("/UploadFile", methods = ["POST"])
 def UploadFile():
     try:
         # 鉴权认证
         token = request.headers.get("Authorization").split(" ")[1]
-        valInfo = Tools.ValidToken(token)
+        valInfo = ValidToken(token)
         if valInfo["status"] is False:
             raise Exception(valInfo["msg"])
         else:
@@ -154,7 +189,7 @@ def DownloadFile(fileName):
     try:
         # 鉴权验证
         token = request.headers.get("Authorization").split(" ")[1]
-        valInfo = Tools.ValidToken(token)
+        valInfo = ValidToken(token)
         if valInfo["status"] is False:
             raise Exception(valInfo["msg"])
         else:
@@ -194,7 +229,7 @@ def ReadFile():
     try:
         # 鉴权验证
         token = request.headers.get("Authorization").split(" ")[1]
-        valInfo = Tools.ValidToken(token)
+        valInfo = ValidToken(token)
         if valInfo["status"] is False:
             raise Exception(valInfo["msg"])
         else:
@@ -238,7 +273,7 @@ def DeleteFile():
     try:
         # 鉴权验证
         token = request.headers.get("Authorization").split(" ")[1]
-        valInfo = Tools.ValidToken(token)
+        valInfo = ValidToken(token)
         if valInfo["status"] is False:
             raise Exception(valInfo["msg"])
         else:
@@ -339,7 +374,7 @@ def Save():
     try:
         # 鉴权验证
         token = request.headers.get("Authorization").split(" ")[1]
-        valInfo = Tools.ValidToken(token)
+        valInfo = ValidToken(token)
         if valInfo["status"] is False:
             raise Exception(valInfo["msg"])
         else:
@@ -457,7 +492,7 @@ def GetFileList():
     try:
         # 鉴权验证
         token = request.headers.get("Authorization").split(" ")[1]
-        valInfo = Tools.ValidToken(token)
+        valInfo = ValidToken(token)
         if valInfo["status"] is False:
             raise Exception(valInfo["msg"])
         else:
@@ -631,7 +666,7 @@ def protected():
     try:
         # 从请求头中获取username
         token = request.headers.get("Authorization").split(" ")[1]
-        result = Tools.ValidToken(token)
+        result = ValidToken(token)
 
         if result[0] == True:
             curTime = Tools.GetTime()
