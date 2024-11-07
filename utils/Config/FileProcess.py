@@ -22,10 +22,9 @@ class FileProcess:
     def ReadTxt(FilePath):
 
         try:
-            file = open(FilePath, 'r', encoding = 'utf-8')
-            Content = file.read()
-            file.close()
-            return Content
+            with open(FilePath, 'r', encoding = 'utf-8') as f:
+                content = f.read()
+            return content
         except Exception as e:
             raise e
 

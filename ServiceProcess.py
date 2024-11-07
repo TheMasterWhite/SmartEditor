@@ -115,7 +115,9 @@ def UploadFile():
                                          UserName = userName)
 
         elif fileExtension in ["txt"]:
+            logging.info("118Lines")
             text = FileProcess.ReadTxt(fullFileSavePath)
+            logging.info("120Lines")
             # 将文件信息保存到数据库中
             summaryText = LLMInterface.FileSummary(text)
             saveTime = Tools.GetSaveTime()
