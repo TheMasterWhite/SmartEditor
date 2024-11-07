@@ -105,7 +105,7 @@ class FileProcess:
                 "uuid": Tools.GetUUID()
             }
             userFileList.append(data)
-            userFiles = json.dumps(userFileList)
+            userFiles = json.dumps({"fileList": userFileList})
             cursor.execute("UPDATE users SET userFiles = ? WHERE userName = ?", (userFiles, UserName))
 
         except Exception as e:
