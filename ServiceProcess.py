@@ -351,7 +351,7 @@ def DeleteFile():
                 oriFilePath = os.path.join(fileSavePath, userName, fileUUID + "." + fileExtension)
                 os.remove(oriFilePath)
                 logging.info(f"[{curTime}]\"{fullFileName}\" deleted successfully.")
-
+        curTime = Tools.GetTime()
         retObj = {
             "statusCode": 1,
             "requestTime": curTime,
