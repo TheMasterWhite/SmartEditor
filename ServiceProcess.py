@@ -344,13 +344,13 @@ def DeleteFile():
             # 目标文件是多媒体文件
             else:
                 fileName = Tools.GetFileName(fullFileName)
-                oriFilePath = os.path.join(fileSavePath, userName, fullFileName)
-                os.remove(oriFilePath)
-                logging.info(f"[{curTime}]\"{fullFileName}\" deleted successfully.")
-
                 if fileExtension in ["mp4", "mp3", "pcm", "m4a", "amr"]:
                     wavPath = os.path.join(fileSavePath, userName, fileUUID + ".wav")
                     os.remove(wavPath)
+
+                oriFilePath = os.path.join(fileSavePath, userName, fileUUID + "." + fileExtension)
+                os.remove(oriFilePath)
+                logging.info(f"[{curTime}]\"{fullFileName}\" deleted successfully.")
 
         retObj = {
             "statusCode": 1,
