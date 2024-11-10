@@ -344,7 +344,7 @@ def DeleteFile():
             # 目标文件是多媒体文件
             else:
                 fileName = Tools.GetFileName(fullFileName)
-                if fileExtension in ["mp4", "mp3", "pcm", "m4a", "amr"]:
+                if fileExtension in ["mp4"]:
                     wavPath = os.path.join(fileSavePath, userName, fileUUID + ".wav")
                     os.remove(wavPath)
 
