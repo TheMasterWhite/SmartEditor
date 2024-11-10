@@ -349,6 +349,7 @@ def DeleteFile():
                     os.remove(wavPath)
 
                 oriFilePath = os.path.join(fileSavePath, userName, fileUUID + "." + fileExtension)
+                os.remove(filePath)
                 os.remove(oriFilePath)
                 logging.info(f"[{curTime}]\"{fullFileName}\" deleted successfully.")
         curTime = Tools.GetTime()
