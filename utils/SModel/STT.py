@@ -57,17 +57,18 @@ class STTInterface:  # 小模型应用接口类
 
             # 视频文件转wav再STT处理
             if fileExtension in ["mp4"]:
-                FileProcess.ConvertToWav(FileName = fileName,
+                FileProcess.ConvertToWav(UUID = UUID,
                                          FileExtension = fileExtension,
                                          UserName = UserName)
                 # 发起STT服务调用
-                fileName_Wav = os.path.join(fileSavePath, UserName, fileName + ".wav")
+                fileName_Wav = os.path.join(fileSavePath, UserName, UUID + ".wav")
                 taskId = STTInterface.CreateTask(FullFileName = fileName_Wav,
                                                  Language = Language)
                 # 加入轮询队列
-                QuerySTTThread.PutTaskId(FileName = fileName_Wav,
+                QuerySTTThread.PutTaskId(FileName = FullFileName,
                                          TaskId = taskId,
-                                         UserName = UserName)
+                                         UserName = UserName,
+                                         UUID = UUID)
 
             # 音频文件，直接转文字处理
             elif fileExtension in ["wav", "mp3", "pcm", "m4a", "amr"]:

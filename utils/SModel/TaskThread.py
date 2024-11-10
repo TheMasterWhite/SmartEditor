@@ -49,12 +49,12 @@ class TaskThread(threading.Thread):
             status = responseData["tasks_info"][0]["task_status"]
 
             if (status == "Success"):
-                fullFileName = self.fileInfoDict[taskId]["fileName"]
+                fullFileName = self.fileInfoDict[taskId]["fileName"]  # 多媒体文件名
                 userName = self.fileInfoDict[taskId]["userName"]
-                fileName = Tools.GetFileName(fullFileName)
+                fileUUID = self.fileInfoDict[taskId]["UUID"]  # 文件UUID
                 content = responseData["tasks_info"][0]["task_result"]["result"][0]
                 # 保存结果到txt
-                FileProcess.SaveTxt(FileName = fileName,
+                FileProcess.SaveTxt(FileName = fileUUID,
                                     Content = content,
                                     UserName = userName)
                 curTime = Tools.GetTime()
@@ -65,7 +65,8 @@ class TaskThread(threading.Thread):
                 FileProcess.SaveFileInfo(FileName = fullFileName,
                                          Description = summaryText,
                                          SaveTime = saveTime,
-                                         UserName = userName)
+                                         UserName = userName,
+                                         UUID = fileUUID)
                 del self.fileInfoDict[taskId]
 
             elif (status == "Failed"):
@@ -78,9 +79,10 @@ class TaskThread(threading.Thread):
 
 
     # 添加轮询任务id
-    def PutTaskId(self, FileName, TaskId, UserName):
+    def PutTaskId(self, FileName, TaskId, UserName, UUID):
         self.taskQueue.put(TaskId)
         self.fileInfoDict[TaskId] = {
             "fileName": FileName,
-            "userName": UserName
+            "userName": UserName,
+            "UUID": UUID
         }

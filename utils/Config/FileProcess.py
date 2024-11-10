@@ -34,7 +34,7 @@ class FileProcess:
     def SaveTxt(FileName, Content, UserName):
         try:
             fullFileName = FileName + ".txt"
-            filePath = os.path.join(os.path.join(fileSavePath, UserName), fullFileName)
+            filePath = os.path.join(fileSavePath, UserName, fullFileName)
             with open(filePath, 'w', encoding = 'utf-8') as f:
                 f.write(Content)
         except Exception as e:
@@ -69,9 +69,9 @@ class FileProcess:
 
     # 将多媒体文件转换成wav格式
     @staticmethod
-    def ConvertToWav(FileName, FileExtension, UserName):
+    def ConvertToWav(FileName, UUID, FileExtension, UserName):
         try:
-            filePath = os.path.join(fileSavePath, UserName, FileName + f".{FileExtension}")
+            filePath = os.path.join(fileSavePath, UserName, UUID + f".{FileExtension}")
             # 文件不存在
             if not os.path.exists(filePath):
                 raise FileNotFoundError(f"File {FileName} does not exist.")
