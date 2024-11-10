@@ -88,8 +88,7 @@ def UploadFile():
         # 预处理图片
         elif fileExtension in ["pdf", "jpg", "jpeg", "png"]:
             if fileExtension == "pdf":
-                filePath = os.path.join(fullFileSavePath, userName, fileUUID + "." + fileExtension)
-                OCRResult = OCRInterface.Doc(FilePath = filePath,
+                OCRResult = OCRInterface.Doc(FilePath = fullFileSavePath,
                                              FileType = "PDF")
                 FileProcess.SaveTxt(UUID = fileUUID,
                                     Content = OCRResult,
