@@ -81,8 +81,9 @@ def UploadFile():
         curTime = Tools.GetTime()
         # 预处理音视频
         if fileExtension in ["mp4", "wav", "mp3", "pcm", "m4a", "amr"]:
-            saveFileName = fileUUID + "." + fileExtension
-            STTInterface.MainProcess(FullFileName = saveFileName, UserName = userName)
+            STTInterface.MainProcess(FullFileName = fullFileName,
+                                     UserName = userName,
+                                     UUID = fileUUID)
 
         # 预处理图片
         elif fileExtension in ["pdf", "jpg", "jpeg", "png"]:

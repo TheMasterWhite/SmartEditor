@@ -69,16 +69,15 @@ class FileProcess:
 
     # 将多媒体文件转换成wav格式
     @staticmethod
-    def ConvertToWav(FileName, FileExtension):
+    def ConvertToWav(FileName, FileExtension, UserName):
         try:
-            filePath = os.path.join(fileSavePath, FileName)
-            fileName = Tools.GetFileName(FileName)
+            filePath = os.path.join(fileSavePath, UserName, FileName)
             # 文件不存在
             if not os.path.exists(filePath):
-                raise FileNotFoundError(f"File {fileName} does not exist.")
+                raise FileNotFoundError(f"File {FileName} does not exist.")
             # 音频处理
             audio = AudioSegment.from_file(filePath, format = FileExtension)
-            savePath = fileSavePath + '/' + fileName + ".wav"
+            savePath = os.path.join(fileSavePath, UserName, '/' + FileName + ".wav")
             audio.export(savePath, format = "wav")
             curTime = Tools.GetTime()
             logging.info(f"[{curTime}]File {FileName} converted successfully.")

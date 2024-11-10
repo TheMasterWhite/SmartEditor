@@ -50,17 +50,18 @@ class STTInterface:  # 小模型应用接口类
 
 
     @staticmethod
-    def MainProcess(FullFileName, UserName, Language = "Chinese"):
+    def MainProcess(FullFileName, UserName, UUID, Language = "Chinese"):
         try:
             fileExtension = Tools.GetExtension(FullFileName)
             fileName = Tools.GetFileName(FullFileName)
 
             # 视频文件转wav再STT处理
             if fileExtension in ["mp4"]:
-                FileProcess.ConvertToWav(FileName = FullFileName,
-                                         FileExtension = fileExtension)
+                FileProcess.ConvertToWav(FileName = fileName,
+                                         FileExtension = fileExtension,
+                                         UserName = UserName)
                 # 发起STT服务调用
-                fileName_Wav = fileName + ".wav"
+                fileName_Wav = os.path.join(fileSavePath, UserName, fileName + ".wav")
                 taskId = STTInterface.CreateTask(FullFileName = fileName_Wav,
                                                  Language = Language)
                 # 加入轮询队列
