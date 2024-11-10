@@ -132,7 +132,7 @@ def UploadFile():
 
         elif fileExtension in ["doc", "docx"]:
             doc = Document(fullFileSavePath)
-            txtSavePath = os.path.join(userFolderPath, fileName + ".txt")
+            txtSavePath = os.path.join(userFolderPath, fileUUID + ".txt")
             text = ""
             with open(txtSavePath, 'w', encoding = 'utf-8') as f:
                 # 遍历文档中的每个段落
