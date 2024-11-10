@@ -198,12 +198,12 @@ def UploadFile():
 def DownloadFile(UUID):
     try:
         # 鉴权验证
-        token = request.headers.get("Authorization").split(" ")[1]
-        valInfo = ValidToken(token)
-        if valInfo["status"] is False:
-            raise Exception(valInfo["msg"])
-        else:
-            userName = valInfo["username"]
+        # token = request.headers.get("Authorization").split(" ")[1]
+        # valInfo = ValidToken(token)
+        # if valInfo["status"] is False:
+        #     raise Exception(valInfo["msg"])
+        # else:
+        #     userName = valInfo["username"]
 
         fullFileName = FileProcess.GetFileInfo(UUID)
         # 文件不存在
