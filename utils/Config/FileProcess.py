@@ -152,14 +152,19 @@ class FileProcess:
 
     # 删除数据库中的文件信息
     @staticmethod
-    def DeleteFileInfo(UserName, FileUUID):
+    def DeleteFileInfo(UserName, UUID):
         try:
-            conn = sqlite3.connect("UserInfo.db")
-            cursor = conn.cursor()
-            cursor.execute("SELECT ", (UserName,))
-            conn.commit()
-            cursor.close()
-            conn.close()
+            with sqlite3.connect("UserInfo.db") as conn:
+                cursor = conn.cursor()
+                # 查询文件描述和时间
+                cursor.execute("SELECT userFiles FROM users WHERE userName = ?", (UserName,))
+                userFileList = json.loads(cursor.fetchone()[0])["fileList"]
+
+                # 列表中uuid对应的对象
+                fileList = list(filter(lambda x: x["uuid"] != UUID, fileList))
+                userFiles = json.dumps({"fileList": userFileList})
+                cursor.execute("UPDATE users SET userFiles = ? WHERE userName = ?", (userFiles, UserName))
+                conn.commit()
 
         except Exception as e:
             raise e
