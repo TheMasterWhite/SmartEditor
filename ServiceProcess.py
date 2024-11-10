@@ -332,11 +332,12 @@ def DeleteFile():
         # 判断文件存不存在
         if not os.path.exists(filePath):
             raise FileNotFoundError(f"File does not exist.")
+
         else:
             fullFileName = FileProcess.GetFileInfo(UUID = fileUUID, UserName = userName)
             fileExtension = Tools.GetExtension(fullFileName)
             # 目标文件是txt
-            if fileExtension == ".txt":
+            if fileExtension == "txt":
                 os.remove(filePath)
                 logging.info(f"[{curTime}]\"{fullFileName}\" deleted successfully.")
 
