@@ -11,6 +11,7 @@ import jwt
 import hashlib
 import sqlite3
 import datetime
+from docx import Document
 
 ServiceProcessBlueprint = Blueprint("ServiceProcessBlueprint", __name__, url_prefix = "/Service")
 fileSavePath = copy.deepcopy(GLOBAL_FileSavePath)
