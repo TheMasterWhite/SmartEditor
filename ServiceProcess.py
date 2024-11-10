@@ -208,11 +208,12 @@ def DownloadFile(UUID):
         fullFileName = FileProcess.GetFileInfo(UUID)
         # 文件不存在
         if fullFileName is None:
-            raise FileNotFoundError(f"THe file does not exist.")
+            raise FileNotFoundError(f"The file does not exist.")
         else:
             fileExtension = Tools.GetExtension(fullFileName)
-            retFileName = UUID + "." + FileProcess
-            filePath = os.path.join(fileSavePath, userName, retFileName)
+            retFileName = UUID + "." + fileExtension
+            # filePath = os.path.join(fileSavePath, userName, retFileName)
+            filePath = os.path.join(fileSavePath, "Test1", retFileName)
             return send_file(filePath, as_attachment = True)
 
     except Exception as e:
