@@ -77,7 +77,7 @@ class FileProcess:
                 raise FileNotFoundError(f"File {FileName} does not exist.")
             # 音频处理
             audio = AudioSegment.from_file(filePath, format = FileExtension)
-            savePath = os.path.join(fileSavePath, UserName, FileName + ".wav")
+            savePath = os.path.join(fileSavePath, UserName, UUID + ".wav")
             audio.export(savePath, format = "wav")
             curTime = Tools.GetTime()
             logging.info(f"[{curTime}]File {FileName} converted successfully.")

@@ -57,7 +57,8 @@ class STTInterface:  # 小模型应用接口类
 
             # 视频文件转wav再STT处理
             if fileExtension in ["mp4"]:
-                FileProcess.ConvertToWav(UUID = UUID,
+                FileProcess.ConvertToWav(FileName = fileName,
+                                         UUID = UUID,
                                          FileExtension = fileExtension,
                                          UserName = UserName)
                 # 发起STT服务调用
