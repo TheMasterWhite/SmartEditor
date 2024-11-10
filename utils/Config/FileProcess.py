@@ -161,9 +161,9 @@ class FileProcess:
                 userFileList = json.loads(cursor.fetchone()[0])["fileList"]
 
                 # 列表中uuid对应的对象
-                fileList = list(filter(lambda x: x["uuid"] != UUID, fileList))
-                userFiles = json.dumps({"fileList": userFileList})
-                cursor.execute("UPDATE users SET userFiles = ? WHERE userName = ?", (userFiles, UserName))
+                fileList = list(filter(lambda x: x["uuid"] != UUID, userFileList))
+                newUserFiles = json.dumps({"fileList": fileList})
+                cursor.execute("UPDATE users SET userFiles = ? WHERE userName = ?", (newUserFiles, UserName))
                 conn.commit()
 
         except Exception as e:
