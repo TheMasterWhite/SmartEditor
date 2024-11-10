@@ -104,7 +104,7 @@ def UploadFile():
 
             else:
                 filePath = os.path.join(fullFileSavePath)
-                OCRResult = OCRInterface.Doc(FilePath = filePath,
+                OCRResult = OCRInterface.Doc(FilePath = fullFileSavePath,
                                              FileType = "IMG")
                 FileProcess.SaveTxt(UUID = fileUUID,
                                     Content = OCRResult,
@@ -130,23 +130,24 @@ def UploadFile():
                                               UUID = fileUUID)
 
         elif fileExtension in ["doc", "docx"]:
-            docFile = os.path.join(fullFileSavePath)
-            doc = Document(docFile)
+            doc = Document(fullFileSavePath)
             txtSavePath = os.path.join(userFolderPath, fileName + ".txt")
+            text = ""
             with open(txtSavePath, 'w', encoding = 'utf-8') as f:
                 # 遍历文档中的每个段落
                 for para in doc.paragraphs:
                     # 将段落文本写入txt文件
                     f.write(para.text + '\n')
+                    text += para.text + "\n"
 
-            text = FileProcess.ReadTxt(txtSavePath)
             # 将文件信息保存到数据库中
             summaryText = LLMInterface.FileSummary(text)
             saveTime = Tools.GetSaveTime()
             FileProcess.SaveFileInfo(FileName = fullFileName,
                                      Description = summaryText,
                                      SaveTime = saveTime,
-                                     UserName = userName)
+                                     UserName = userName,
+                                     UUID = fileUUID)
 
         else:
             # 上传文件格式不支持
