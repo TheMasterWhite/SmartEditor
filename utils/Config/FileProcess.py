@@ -116,7 +116,7 @@ class FileProcess:
 
     # 根据用户名查询文件上传时间和描述
     @staticmethod
-    def GetFileInfo(UserName):
+    def GetFileList(UserName):
         try:
             # 连接到SQLite数据库
             with sqlite3.connect("UserInfo.db") as conn:
@@ -125,6 +125,26 @@ class FileProcess:
                 cursor.execute("SELECT userFiles FROM users WHERE userName = ?", (UserName,))
                 userFileList = json.loads(cursor.fetchone()[0])["fileList"]
             return userFileList
+
+        except Exception as e:
+            raise e
+
+
+    # 根据UUID获得全文件名
+    @staticmethod
+    def GetFileInfo(UUID):
+        try:
+            # 连接到SQLite数据库
+            with sqlite3.connect("UserInfo.db") as conn:
+                cursor = conn.cursor()
+                # 查询文件描述和时间
+                cursor.execute("SELECT userFiles FROM users WHERE userName = ?", (UserName,))
+                userFileList = json.loads(cursor.fetchone()[0])["fileList"]
+
+            for data in userFileList:
+                if data["uuid"] == UUID:
+                    return data["fileName"]
+            return None
 
         except Exception as e:
             raise e

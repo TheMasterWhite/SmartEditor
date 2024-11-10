@@ -194,8 +194,8 @@ def UploadFile():
 
 
 # 文件下载接口
-@ServiceProcessBlueprint.route("/DownloadFile/<fileName>", methods = ["GET"])
-def DownloadFile(fileName):
+@ServiceProcessBlueprint.route("/DownloadFile/<UUID>", methods = ["GET"])
+def DownloadFile(UUID):
     try:
         # 鉴权验证
         token = request.headers.get("Authorization").split(" ")[1]
@@ -205,22 +205,15 @@ def DownloadFile(fileName):
         else:
             userName = valInfo["username"]
 
-        filePath = os.path.join(fileSavePath, fileName)
+        fullFileName = FileProcess.GetFileInfo(UUID)
         # 文件不存在
-        if not os.path.exists(filePath):
-            raise FileNotFoundError(f"File [{fileName}] does not exist.")
-
-        return send_file(filePath, as_attachment = True)
-
-    except FileNotFoundError as e:
-        curTime = Tools.GetTime()
-        logging.error(f"[{curTime}]Module:[DownloadFile]" + str(e))
-        retObj = {
-            "statusCode": 0,
-            "requestTime": curTime,
-            "response": str(e)
-        }
-        return jsonify(retObj), 404
+        if fullFileName is None:
+            raise FileNotFoundError(f"THe file does not exist.")
+        else:
+            fileExtension = Tools.GetExtension(fullFileName)
+            retFileName = UUID + "." + FileProcess
+            filePath = os.path.join(fileSavePath, userName, retFileName)
+            return send_file(filePath, as_attachment = True)
 
     except Exception as e:
         curTime = Tools.GetTime()
@@ -520,7 +513,7 @@ def GetFileList():
             userName = valInfo["username"]
         fileList = []
 
-        fileInfo = FileProcess.GetFileInfo(UserName = userName)
+        fileInfo = FileProcess.GetFileList(UserName = userName)
 
         curTime = Tools.GetTime()
         logging.info(f"[{curTime}]Send file list successed.")
