@@ -54,7 +54,7 @@ class TaskThread(threading.Thread):
                 fileUUID = self.fileInfoDict[taskId]["UUID"]  # 文件UUID
                 content = responseData["tasks_info"][0]["task_result"]["result"][0]
                 # 保存结果到txt
-                FileProcess.SaveTxt(FileName = fileUUID,
+                FileProcess.SaveTxt(UUID = fileUUID,
                                     Content = content,
                                     UserName = userName)
                 curTime = Tools.GetTime()

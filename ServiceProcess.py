@@ -88,10 +88,10 @@ def UploadFile():
         # 预处理图片
         elif fileExtension in ["pdf", "jpg", "jpeg", "png"]:
             if fileExtension == "pdf":
-                filePath = os.path.join(fullFileSavePath)
+                filePath = os.path.join(fullFileSavePath, userName, fileUUID + "." + fileExtension)
                 OCRResult = OCRInterface.Doc(FilePath = filePath,
                                              FileType = "PDF")
-                FileProcess.SaveTxt(FileName = fileName,
+                FileProcess.SaveTxt(UUID = fileUUID,
                                     Content = OCRResult,
                                     UserName = userName)
                 # 将文件信息保存到数据库中
@@ -100,13 +100,14 @@ def UploadFile():
                 FileProcess.SaveFileInfo(FileName = fullFileName,
                                          Description = summaryText,
                                          SaveTime = saveTime,
-                                         UserName = userName)
+                                         UserName = userName,
+                                         UUID = fileUUID)
 
             else:
                 filePath = os.path.join(fullFileSavePath)
                 OCRResult = OCRInterface.Doc(FilePath = filePath,
                                              FileType = "IMG")
-                FileProcess.SaveTxt(FileName = fileName,
+                FileProcess.SaveTxt(UUID = fileUUID,
                                     Content = OCRResult,
                                     UserName = userName)
                 # 将文件信息保存到数据库中
@@ -115,7 +116,8 @@ def UploadFile():
                 FileProcess.SaveFileInfo(FileName = fullFileName,
                                          Description = summaryText,
                                          SaveTime = saveTime,
-                                         UserName = userName)
+                                         UserName = userName,
+                                         UUID = fileUUID)
 
         elif fileExtension in ["txt"]:
             text = FileProcess.ReadTxt(fullFileSavePath)

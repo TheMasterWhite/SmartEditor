@@ -31,9 +31,9 @@ class FileProcess:
 
     # 将字符串文本保存到txt中
     @staticmethod
-    def SaveTxt(FileName, Content, UserName):
+    def SaveTxt(UUID, Content, UserName):
         try:
-            fullFileName = FileName + ".txt"
+            fullFileName = UUID + ".txt"
             filePath = os.path.join(fileSavePath, UserName, fullFileName)
             with open(filePath, 'w', encoding = 'utf-8') as f:
                 f.write(Content)
