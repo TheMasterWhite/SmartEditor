@@ -76,13 +76,15 @@ class STTInterface:  # 小模型应用接口类
             # 音频文件，直接转文字处理
             elif fileExtension in ["wav", "mp3", "pcm", "m4a", "amr"]:
                 # 发起STT服务调用
-                taskId = STTInterface.CreateTask(FullFileName = FullFileName,
+                fullFileName = UUID + "." + fileExtension
+                taskId = STTInterface.CreateTask(FullFileName = fullFileName,
                                                  UserName = UserName,
                                                  Language = Language)
                 # 加入轮询队列
                 QuerySTTThread.PutTaskId(FileName = FullFileName,
                                          TaskId = taskId,
-                                         UserName = UserName)
+                                         UserName = UserName,
+                                         UUID = UUID)
 
         except Exception as e:
             curTime = Tools.GetTime()
