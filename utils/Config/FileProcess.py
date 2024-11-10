@@ -148,7 +148,7 @@ class FileProcess:
 class OSSProcess:  # OSS云服务处理类
 
     @staticmethod
-    def UploadFile(FileName, FileExtension, BucketName = "smart-editor"):
+    def UploadFile(FileName, FileExtension, UserName, BucketName = "smart-editor"):
         # 上传文件到阿里云，传入文件名和文件扩展名,返回OSS文件路径
 
         try:
@@ -159,7 +159,7 @@ class OSSProcess:  # OSS云服务处理类
             bucket = oss2.Bucket(auth = auth, endpoint = endPoint,
                                  bucket_name = BucketName)
             fullFileName = FileName + '.' + FileExtension
-            filePath = os.path.join(fileSavePath, fullFileName)
+            filePath = os.path.join(fileSavePath, UserName, fullFileName)
             with open(filePath, 'rb') as fileobj:
                 # Tell方法用于返回当前位置。
                 current = fileobj.tell()

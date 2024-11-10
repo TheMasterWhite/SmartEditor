@@ -14,14 +14,15 @@ class STTInterface:  # 小模型应用接口类
 
     # 创建音频转写任务
     @staticmethod
-    def CreateTask(FullFileName, Language = "Chinese"):
+    def CreateTask(FullFileName, UserName, Language = "Chinese"):
 
         try:
             fileExtension = Tools.GetExtension(FullFileName)
             fileName = Tools.GetFileName(FullFileName)
             # 将文件上传到阿里云并获取外链
             ossPath = OSSProcess.UploadFile(FileName = fileName,
-                                            FileExtension = fileExtension)
+                                            FileExtension = fileExtension,
+                                            UserName = UserName)
             creatUrl = "https://aip.baidubce.com/rpc/2.0/aasr/v1/create?access_token=" + GetAccessToken()
             code = {"Chinese": 80006, "English": 1737}
             # 请求头
@@ -62,8 +63,9 @@ class STTInterface:  # 小模型应用接口类
                                          FileExtension = fileExtension,
                                          UserName = UserName)
                 # 发起STT服务调用
-                fileName_Wav = os.path.join(fileSavePath, UserName, UUID + ".wav")
+                fileName_Wav = UUID + ".wav"
                 taskId = STTInterface.CreateTask(FullFileName = fileName_Wav,
+                                                 UserName = UserName,
                                                  Language = Language)
                 # 加入轮询队列
                 QuerySTTThread.PutTaskId(FileName = FullFileName,
@@ -75,6 +77,7 @@ class STTInterface:  # 小模型应用接口类
             elif fileExtension in ["wav", "mp3", "pcm", "m4a", "amr"]:
                 # 发起STT服务调用
                 taskId = STTInterface.CreateTask(FullFileName = FullFileName,
+                                                 UserName = UserName,
                                                  Language = Language)
                 # 加入轮询队列
                 QuerySTTThread.PutTaskId(FileName = FullFileName,
