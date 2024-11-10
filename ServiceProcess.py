@@ -197,7 +197,7 @@ def UploadFile():
 @ServiceProcessBlueprint.route("/DownloadFile", methods = ["GET"])
 def DownloadFile():
     try:
-        #鉴权验证
+        # 鉴权验证
         token = request.headers.get("Authorization").split(" ")[1]
         valInfo = ValidToken(token)
         if valInfo["status"] is False:
@@ -215,7 +215,6 @@ def DownloadFile():
             fileExtension = Tools.GetExtension(fullFileName)
             retFileName = UUID + "." + fileExtension
             filePath = os.path.join(fileSavePath, userName, retFileName)
-            #filePath = os.path.join(fileSavePath, "Test1", retFileName)
             return send_file(filePath, as_attachment = True)
 
     except Exception as e:
@@ -242,16 +241,14 @@ def ReadFile():
             userName = valInfo["username"]
 
         requestData = request.json
-        fullFileName = requestData.get("fileName", None)
-        if fullFileName is None:
+        UUID = requestData.get("uuid", None)
+        if UUID is None:
             raise ValueError("Parameter cannot be empty.")
 
-        filePath = os.path.join(fileSavePath, fullFileName)
+        filePath = os.path.join(fileSavePath, userName, UUID + ".txt")
         if not os.path.exists(filePath):
-            raise FileNotFoundError(f"File [{fullFileName}] does not exist.")
+            raise FileNotFoundError(f"File does not exist.")
 
-        fileName = Tools.GetFileName(fullFileName) + ".txt"
-        filePath = os.path.join(fileSavePath, fileName)
         fileContent = FileProcess.ReadTxt(FilePath = filePath)
 
         curTime = Tools.GetTime()
@@ -664,40 +661,3 @@ def Register():
 
     finally:
         conn.close()
-
-
-# test
-@ServiceProcessBlueprint.route('/protected', methods = ["POST"])
-def protected():
-    try:
-        # 从请求头中获取username
-        token = request.headers.get("Authorization").split(" ")[1]
-        result = ValidToken(token)
-        # 连接到SQLite数据库
-        conn = sqlite3.connect("UserInfo.db")
-        cursor = conn.cursor()
-
-        cursor.execute("SELECT userFiles FROM users WHERE userName = ?", (UserName,))
-        userFiles = cursor.fetchone()
-
-        if result["status"] == True:
-            curTime = Tools.GetTime()
-            userName = result["username"]
-            retObj = {
-                "statusCode": 1,
-                "requestTime": curTime,
-                "response": userFiles
-            }
-            return jsonify(retObj)
-        else:
-            raise result["msg"]
-
-    except Exception as e:
-        curTime = Tools.GetTime()
-        logging.error(f"[{curTime}]Module:[protected]" + str(e))
-        retObj = {
-            "statusCode": 0,
-            "requestTime": curTime,
-            "response": str(e)
-        }
-        return jsonify(retObj)
