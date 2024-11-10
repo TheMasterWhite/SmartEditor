@@ -197,7 +197,7 @@ def UploadFile():
 @ServiceProcessBlueprint.route("/DownloadFile", methods = ["GET"])
 def DownloadFile():
     try:
-        鉴权验证
+        #鉴权验证
         token = request.headers.get("Authorization").split(" ")[1]
         valInfo = ValidToken(token)
         if valInfo["status"] is False:
