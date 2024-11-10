@@ -35,8 +35,8 @@ def ReadConfigFile():
                 globals()[key] = f.read()
 
 
-def InitToken():  # 初始化环境变量
-
+# 初始化环境变量
+def InitToken():
     os.environ["OSS_ACCESS_KEY_ID"] = OSS_ACCESS_KEY_ID
     os.environ["OSS_ACCESS_KEY_SECRET"] = OSS_ACCESS_KEY_SECRET
     os.environ["EB_AGENT_ACCESS_TOKEN"] = GLOBAL_ERNIETOKEN

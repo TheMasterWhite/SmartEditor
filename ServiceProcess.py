@@ -81,7 +81,8 @@ def UploadFile():
         curTime = Tools.GetTime()
         # 预处理音视频
         if fileExtension in ["mp4", "wav", "mp3", "pcm", "m4a", "amr"]:
-            STTInterface.MainProcess(FullFileName = fullFileName, UserName = userName)
+            saveFileName = UUID + "." + fileExtension
+            STTInterface.MainProcess(FullFileName = saveFileName, UserName = userName)
 
         # 预处理图片
         elif fileExtension in ["pdf", "jpg", "jpeg", "png"]:
@@ -393,12 +394,14 @@ def Save():
         prompt = "根据下面这段文字生成一个文件名，字数10个字以内，如果无实质内容就回答“空文件”，只回答文件名不要回复多余的内容，不需要扩展名:\n" + content
         fileName = LLMInterface.GetResponse_String(prompt)
         txtFileName = fileName + ".txt"
-        savePath = os.path.join(fileSavePath, txtFileName)
+        userFolderPath = os.path.join(fileSavePath, userName)  # 用户文件夹路径
+        os.makedirs(userFolderPath, exist_ok = True)
+        savePath = os.path.join(userFolderPath, txtFileName)
         with open(savePath, "w") as f:
             f.write(content)
 
         saveTime = Tools.GetSaveTime()
-        fileSummary = LLMInterface.FileSummary(content)
+        summaryText = LLMInterface.FileSummary(content)
         FileProcess.SaveFileInfo(FileName = fullFileName,
                                  Description = summaryText,
                                  SaveTime = saveTime,
@@ -428,9 +431,18 @@ def Save():
 @ServiceProcessBlueprint.route("/CheckFile", methods = ["POST"])
 def CheckFile():
     try:
+        # 鉴权认证
+        token = request.headers.get("Authorization").split(" ")[1]
+        valInfo = ValidToken(token)
+        if valInfo["status"] is False:
+            raise Exception(valInfo["msg"])
+        else:
+            userName = valInfo["username"]
+
         requestData = request.json
         fullfileName = requestData["fileName"]
-        filePath = os.path.join(fileSavePath, fullfileName)
+        userFolderPath = os.path.join(fileSavePath, userName)
+        filePath = os.path.join(userFolderPath, fullfileName)
         if not os.path.exists(filePath):
             raise FileNotFoundError(f"File [{fullfileName}] does not exist.")
 
@@ -537,7 +549,6 @@ def Login():
         conn = sqlite3.connect("UserInfo.db")
         cursor = conn.cursor()
 
-
         if username is None:
             raise Exception("请输入用户名！")
         if password is None:
@@ -546,7 +557,6 @@ def Login():
             raise Exception("用户名长度限制3-10，只允许大小写字母和数字！")
         if Tools.ValidPassword(password) is False:
             raise Exception("密码长度限制8-16，只允许大小写字母和数字！")
-
 
         cursor.execute("SELECT passwordHash FROM users WHERE username = ?", (username,))
         user = cursor.fetchone()
