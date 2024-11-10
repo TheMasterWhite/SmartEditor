@@ -132,7 +132,7 @@ class FileProcess:
 
     # 根据UUID获得全文件名
     @staticmethod
-    def GetFileInfo(UUID):
+    def GetFileInfo(UUID, UserName):
         try:
             # 连接到SQLite数据库
             with sqlite3.connect("UserInfo.db") as conn:

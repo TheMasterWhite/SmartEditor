@@ -197,24 +197,25 @@ def UploadFile():
 @ServiceProcessBlueprint.route("/DownloadFile", methods = ["GET"])
 def DownloadFile():
     try:
-        # 鉴权验证
-        # token = request.headers.get("Authorization").split(" ")[1]
-        # valInfo = ValidToken(token)
-        # if valInfo["status"] is False:
-        #     raise Exception(valInfo["msg"])
-        # else:
-        #     userName = valInfo["username"]
+        鉴权验证
+        token = request.headers.get("Authorization").split(" ")[1]
+        valInfo = ValidToken(token)
+        if valInfo["status"] is False:
+            raise Exception(valInfo["msg"])
+        else:
+            userName = valInfo["username"]
+
         requestData = request.json
         UUID = requestData["uuid"]
-        fullFileName = FileProcess.GetFileInfo(UUID)
+        fullFileName = FileProcess.GetFileInfo(UUID = UUID, UserName = userName)
         # 文件不存在
         if fullFileName is None:
             raise FileNotFoundError(f"The file does not exist.")
         else:
             fileExtension = Tools.GetExtension(fullFileName)
             retFileName = UUID + "." + fileExtension
-            # filePath = os.path.join(fileSavePath, userName, retFileName)
-            filePath = os.path.join(fileSavePath, "Test1", retFileName)
+            filePath = os.path.join(fileSavePath, userName, retFileName)
+            #filePath = os.path.join(fileSavePath, "Test1", retFileName)
             return send_file(filePath, as_attachment = True)
 
     except Exception as e:
