@@ -339,7 +339,6 @@ def DeleteFile():
             # 目标文件是txt
             if fileExtension == "txt":
                 os.remove(filePath)
-                logging.info(f"[{curTime}]\"{fullFileName}\" deleted successfully.")
 
             # 目标文件是多媒体文件
             else:
@@ -352,7 +351,9 @@ def DeleteFile():
                 os.remove(filePath)
                 os.remove(oriFilePath)
                 logging.info(f"[{curTime}]\"{fullFileName}\" deleted successfully.")
+
         curTime = Tools.GetTime()
+        logging.info(f"[{curTime}]\"{fullFileName}\" deleted successfully.")
         retObj = {
             "statusCode": 1,
             "requestTime": curTime,
