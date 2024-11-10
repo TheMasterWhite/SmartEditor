@@ -194,8 +194,8 @@ def UploadFile():
 
 
 # 文件下载接口
-@ServiceProcessBlueprint.route("/DownloadFile/<UUID>", methods = ["GET"])
-def DownloadFile(UUID):
+@ServiceProcessBlueprint.route("/DownloadFile", methods = ["GET"])
+def DownloadFile():
     try:
         # 鉴权验证
         # token = request.headers.get("Authorization").split(" ")[1]
@@ -204,7 +204,8 @@ def DownloadFile(UUID):
         #     raise Exception(valInfo["msg"])
         # else:
         #     userName = valInfo["username"]
-
+        requestData = request.json
+        UUID = requestData["uuid"]
         fullFileName = FileProcess.GetFileInfo(UUID)
         # 文件不存在
         if fullFileName is None:
