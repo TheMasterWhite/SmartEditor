@@ -327,7 +327,7 @@ def DeleteFile():
         #     }
         #     return jsonify(retObj)
 
-        filePath = os.path.join(fileSavePath, userName, fileUUID)
+        filePath = os.path.join(fileSavePath, userName, fileUUID + ".txt")
 
         # 判断文件存不存在
         if not os.path.exists(filePath):
