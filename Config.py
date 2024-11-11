@@ -8,6 +8,7 @@ import requests, logging
 import copy
 from pathlib import Path
 from utils import Tools
+import jwt
 
 curTime = Tools.GetTime()
 curData = Tools.GetDate()
