@@ -160,6 +160,8 @@ def Image():
 
         requestData = request.json
         prompt = requestData["prompt"]
+
+        # 临时切换erniebot api类型
         erniebot.api_type = "yinian"
         erniebot.access_token = GetAccessToken_Image()
         response = erniebot.Image.create(model = "ernie-vilg-v2",
@@ -169,6 +171,8 @@ def Image():
                                          version = "v2",
                                          image_num = 1)
         url = response.get_result()[0]
+        erniebot.api_type = "aistudio"
+        curTime = Tools.GetTime()
         retObj = {
             "statusCode": 1,
             "requestTime": curTime,
