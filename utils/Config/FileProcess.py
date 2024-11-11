@@ -159,6 +159,7 @@ class FileProcess:
                 # 查询文件描述和时间
                 cursor.execute("SELECT userFiles FROM users WHERE userName = ?", (UserName,))
                 userFileList = json.loads(cursor.fetchone()[0])["fileList"]
+                logging.info(type(userFileList))
 
                 # 列表中uuid对应的对象
                 fileList = list(filter(lambda x: x["uuid"] != UUID, userFileList))
@@ -218,13 +219,7 @@ class JsonOperator:
             raise e
 
 
-def test():
-    a = GetPrompt().Data()["ScenePrompt_General"]["Translate"]
-    print(a)
-
-
 if __name__ == '__main__':
-    test()
     userFiles = {
         "fileList": [
             {
@@ -235,3 +230,5 @@ if __name__ == '__main__':
             }
         ]
     }
+
+
