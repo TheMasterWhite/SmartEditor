@@ -542,13 +542,12 @@ def ClearBotHistory():
         else:
             userName = valInfo["username"]
 
-        requestData = request.json
-        bot.ClearHistory(userId)
+        bot.ClearHistory(userName)
         curTime = Tools.GetTime()
         retObj = {
             "statusCode": 1,
             "requestTime": curTime,
-            "response": f"Successfully clear Bot history, userId = {userId}"
+            "response": f"Successfully clear Bot history, userName = {userName}"
         }
         return jsonify(retObj)
 
