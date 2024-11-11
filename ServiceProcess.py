@@ -413,18 +413,7 @@ def Save():
         os.makedirs(userFolderPath, exist_ok = True)
         savePath = os.path.join(userFolderPath, docFileName)
 
-        # doxc文件保存逻辑
-        doc = Document()
-        doc.add_heading(fileName)
-        tmps = ""
-        for char in content:
-            if char != "\n":
-                tmps += char
-            else:
-                doc.add_paragraph(tmps)
-                tmps = ""
-        doc.save(savePath)
-
+        Tools.SaveDocx(Title = fileName, Content = content, SavePath = savePath)
         saveTime = Tools.GetSaveTime()
         summaryText = LLMInterface.FileSummary(content)
         FileProcess.SaveFileInfo(FileName = fullFileName,
