@@ -72,20 +72,26 @@ def GetUUID():
 
 # 保存到docx中
 def SaveDocx(Title, SavePath, Content):
-    doc = Document()
-    # 设置中文标题样式
-    title_style = doc.styles.add_style("ChineseTitle", 1)  # 1代表段落样式
-    title_font = title_style.font
-    title_font.name = "宋体"
-    title_font.size = Pt(22)  # 二号字体
-    title_paragraph_format = title_style.paragraph_format
-    title_paragraph_format.space_after = Pt(0)  # 标题后无空行
-    doc.add_heading(Title, style = "ChineseTitle")
+    try:
+        doc = Document()
+        # 设置中文标题样式
+        title_style = doc.styles.add_style("Title", 1)  # 1代表段落样式
+        title_font = title_style.font
+        title_font.name = "宋体"
+        title_font.size = Pt(22)  # 二号字体
+        title_paragraph_format = title_style.paragraph_format
+        title_paragraph_format.space_after = Pt(0)  # 标题后无空行
+        doc.add_paragraph(Title, style = "Title")
 
-    # 设置中文正文样式
-    body_style = doc.styles["Normal"]  # 正文样式
-    body_font = body_style.font
-    body_font.name = "宋体"
-    body_font.size = Pt(10.5)  # 五号字体
-    doc.add_paragraph(Content, style = "Normal")
-    doc.save(SavePath)
+        # 设置中文正文样式
+        body_style = doc.styles["Normal"]  # 正文样式
+        body_font = body_style.font
+        body_font.name = "宋体"
+        body_font.size = Pt(10.5)  # 五号字体
+        doc.add_paragraph(Content, style = "Normal")
+        doc.save(SavePath)
+
+    except Exception as e:
+        curTime = GetTime()
+        logging.error(f"[{curTime}]Module:[SaveDocx]" + str(e))
+        raise e
