@@ -460,7 +460,8 @@ def CheckFile():
 
         requestData = request.json
         fileUUID = requestData["uuid"]
-        fullFileName = FileProcess.GetFileInfo(fileUUID)
+        fullFileName = FileProcess.GetFileInfo(UserName = userName,
+                                               UUID = fileUUID)
         txtFileName = fileUUID + ".txt"
         userFolderPath = os.path.join(fileSavePath, userName)
         filePath = os.path.join(fileSavePath, userFolderPath, txtFileName)
