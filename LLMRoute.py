@@ -240,9 +240,20 @@ def CorrectStream():
 @LLMBlueprint.route("/Check", methods = ["POST"])
 def Check():
     try:
+        # 鉴权验证
+        token = request.headers.get("Authorization", None)
+        if token is None:
+            raise Exception("Unauthorized request.")
+        token = token.split(" ")[1]
+        valInfo = ValidToken(token)
+        if valInfo["status"] is False:
+            raise Exception(valInfo["msg"])
+        else:
+            userName = valInfo["username"]
+
         requestData = request.json
         userContent = requestData["content"]
-        userFileList = requestData.get("fileName", None)
+        userFileList = requestData.get("fileList", None)
 
         # 没传文件
         if userFileList is None:
@@ -254,13 +265,13 @@ def Check():
 
         knowledgeContent = ""
         # 获取知识库中txt
-        for fileName in userFileList:
-            rawName = Tools.GetFileName(fileName)
-            TarName = rawName + '.txt'
-            filePath = os.path.join(fileSavePath, TarName)
+        for uuids in userFileList:
+            TarName = uuids + '.txt'
+            fullFileName = FileProcess.GetFileInfo(UserName = userName, UUID = uuids)
+            filePath = os.path.join(fileSavePath, userName, TarName)
             # 文件不存在
             if not os.path.exists(filePath):
-                raise FileNotFoundError(f"File {fileName} does not exist.")
+                raise FileNotFoundError(f"File {fullFileName} does not exist.")
 
             tmpContent = FileProcess.ReadTxt(FilePath = filePath)
             knowledgeContent += tmpContent + "\n"
@@ -290,9 +301,20 @@ def Check():
 @LLMBlueprint.route("/CheckStream", methods = ["POST"])
 def CheckStream():
     try:
+        # 鉴权验证
+        token = request.headers.get("Authorization", None)
+        if token is None:
+            raise Exception("Unauthorized request.")
+        token = token.split(" ")[1]
+        valInfo = ValidToken(token)
+        if valInfo["status"] is False:
+            raise Exception(valInfo["msg"])
+        else:
+            userName = valInfo["username"]
+
         requestData = request.json
         userContent = requestData["content"]
-        userFileList = requestData.get("fileName", None)
+        userFileList = requestData.get("fileList", None)
 
         # 没传文件
         if userFileList is None:
@@ -304,13 +326,13 @@ def CheckStream():
 
         knowledgeContent = ""
         # 获取知识库中txt
-        for fileName in userFileList:
-            rawName = Tools.GetFileName(fileName)
-            TarName = rawName + '.txt'
-            filePath = os.path.join(fileSavePath, TarName)
+        for uuids in userFileList:
+            TarName = uuids + '.txt'
+            fullFileName = FileProcess.GetFileInfo(UserName = userName, UUID = uuids)
+            filePath = os.path.join(fileSavePath, userName, TarName)
             # 文件不存在
             if not os.path.exists(filePath):
-                raise FileNotFoundError(f"File {fileName} does not exist.")
+                raise FileNotFoundError(f"File {fullFileName} does not exist.")
 
             tmpContent = FileProcess.ReadTxt(FilePath = filePath)
             knowledgeContent += tmpContent + "\n"
@@ -336,17 +358,27 @@ def CheckStream():
 @LLMBlueprint.route("/ChatBot", methods = ["POST"])
 def ChatBot():
     try:
+        # 鉴权验证
+        token = request.headers.get("Authorization", None)
+        if token is None:
+            raise Exception("Unauthorized request.")
+        token = token.split(" ")[1]
+        valInfo = ValidToken(token)
+        if valInfo["status"] is False:
+            raise Exception(valInfo["msg"])
+        else:
+            userName = valInfo["username"]
+
         requestData = request.json
         content = requestData["content"]
-        userId = requestData.get("userId", "user")
-        userFileList = requestData.get("fileName", None)
+        userFileList = requestData.get("fileList", None)
 
         # 不传入文件情况下调用聊天机器人
         if userFileList is None:
-            if userId not in bot.Parameter:
+            if userName not in bot.Parameter:
                 prompt = GetPrompt().Data()["ScenePrompt_General"]["Agent"]
                 content = prompt + content
-            response = bot.GetResponse(content, userId)
+            response = bot.GetResponse(Content = content, userName = userName)
             curTime = Tools.GetTime()
             retObj = {
                 "statusCode": 1,
@@ -359,8 +391,8 @@ def ChatBot():
         # 传入文件情况下调用机器人
         else:
             # 存在历史记录，所以不进行文件操作
-            if userId in bot.Parameter:
-                response = bot.GetResponse(content, userId)
+            if userName in bot.Parameter:
+                response = bot.GetResponse(content, userName)
                 curTime = Tools.GetTime()
                 retObj = {
                     "statusCode": 1,
@@ -378,24 +410,24 @@ def ChatBot():
 
                 # 获取知识库中txt
                 knowledgeContent = ""
-                for fileName in userFileList:
-                    rawName = Tools.GetFileName(fileName)
-                    tarName = rawName + '.txt'
-                    filePath = os.path.join(fileSavePath, tarName)
+                for uuids in userFileList:
+                    tarName = uuids + '.txt'
+                    fullFileName = FileProcess.GetFileInfo(UserName = userName, UUID = uuids)
+                    filePath = os.path.join(fileSavePath, userName, tarName)
                     # 文件不存在
                     if not os.path.exists(filePath):
-                        raise FileNotFoundError(f"File {fileName} does not exist.")
+                        raise FileNotFoundError(f"File {fullFileName} does not exist.")
 
                     tmpContent = FileProcess.ReadTxt(FilePath = filePath)
                     knowledgeContent += tmpContent + "\n"
 
                 # 限制Token数
-                if len(knowledgeContent) > 3000:
-                    knowledgeContent = knowledgeContent[:3000]
+                if len(knowledgeContent) > 2500:
+                    knowledgeContent = knowledgeContent[:2500]
                 bot.LoadKnowledgeLib_String(KnowledgeText = knowledgeContent,
-                                            UserId = userId)
+                                            UserId = userName)
 
-                response = bot.GetResponse(content, userId)
+                response = bot.GetResponse(content, userName)
                 curTime = Tools.GetTime()
                 retObj = {
                     "statusCode": 1,
@@ -419,17 +451,27 @@ def ChatBot():
 @LLMBlueprint.route("/ChatBotStream", methods = ["POST"])
 def ChatBotStream():
     try:
+        # 鉴权验证
+        token = request.headers.get("Authorization", None)
+        if token is None:
+            raise Exception("Unauthorized request.")
+        token = token.split(" ")[1]
+        valInfo = ValidToken(token)
+        if valInfo["status"] is False:
+            raise Exception(valInfo["msg"])
+        else:
+            userName = valInfo["username"]
+
         requestData = request.json
         content = requestData["content"]
-        userId = requestData.get("userId", "user")
-        userFileList = requestData.get("fileName", None)
+        userFileList = requestData.get("fileList", None)
 
         # 不传入文件情况下调用聊天机器人
         if userFileList is None:
-            if userId not in bot.Parameter:
+            if userName not in bot.Parameter:
                 prompt = GetPrompt().Data()["ScenePrompt_General"]["Agent"]
                 content = prompt + content
-            responseStream = bot.GetResponseStream(content, userId)
+            responseStream = bot.GetResponseStream(content, userName)
             curTime = Tools.GetTime()
             logging.info(f"[{curTime}]ChatbotStream request successed.")
             return Response(stream_with_context(responseStream))
@@ -437,8 +479,8 @@ def ChatBotStream():
         # 传入文件情况下调用机器人
         else:
             # 存在历史记录，所以不进行文件操作
-            if userId in bot.Parameter:
-                responseStream = bot.GetResponseStream(content, userId)
+            if userName in bot.Parameter:
+                responseStream = bot.GetResponseStream(content, userName)
                 curTime = Tools.GetTime()
                 logging.info(f"[{curTime}]ChatbotStream request successed.")
 
@@ -487,8 +529,18 @@ def ChatBotStream():
 @LLMBlueprint.route("/ClearBotHistory", methods = ["POST"])
 def ClearBotHistory():
     try:
+        # 鉴权验证
+        token = request.headers.get("Authorization", None)
+        if token is None:
+            raise Exception("Unauthorized request.")
+        token = token.split(" ")[1]
+        valInfo = ValidToken(token)
+        if valInfo["status"] is False:
+            raise Exception(valInfo["msg"])
+        else:
+            userName = valInfo["username"]
+
         requestData = request.json
-        userId = requestData.get("userId", "user")
         bot.ClearHistory(userId)
         curTime = Tools.GetTime()
         retObj = {
