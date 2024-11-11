@@ -52,8 +52,8 @@ def ValidToken(Token):
         return retObj
 
 
+# 读取配置文件
 def ReadConfigFile():
-    # 读取配置文件
     filePath = "/Server/SmartEditor/config.json"  # linux
     # filePath = "E:/Code/CodeLibrary/Python/SmartEditor/config.json"  # windows
 
