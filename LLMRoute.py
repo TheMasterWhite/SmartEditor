@@ -341,6 +341,7 @@ def CheckStream():
                                                          KnowledgeContent = knowledgeContent)
         curTime = Tools.GetTime()
         logging.info(f"[{curTime}]Check_Stream successed.")
+
         return Response(stream_with_context(responseStream))
 
     except Exception as e:
@@ -483,6 +484,7 @@ def ChatBotStream():
                 responseStream = bot.GetResponseStream(content, userName)
                 curTime = Tools.GetTime()
                 logging.info(f"[{curTime}]ChatbotStream request successed.")
+                return Response(stream_with_context(responseStream))
 
             # 不存在历史记录
             else:
