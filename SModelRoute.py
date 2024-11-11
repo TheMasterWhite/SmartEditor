@@ -164,8 +164,8 @@ def Image():
         erniebot.access_token = GetAccessToken_Image()
         response = erniebot.Image.create(model = "ernie-vilg-v2",
                                          prompt = prompt,
-                                         width = 1080,
-                                         height = 1080,
+                                         width = 2048,
+                                         height = 2048,
                                          version = "v2",
                                          image_num = 1)
         url = response.get_result()[0]
