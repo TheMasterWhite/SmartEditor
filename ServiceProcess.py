@@ -459,17 +459,15 @@ def CheckFile():
             userName = valInfo["username"]
 
         requestData = request.json
-        fullfileName = requestData["fileName"]
+        fileUUID = requestData["uuid"]
+        fullFileName = FileProcess.GetFileInfo(fileUUID)
+        txtFileName = fileUUID + ".txt"
         userFolderPath = os.path.join(fileSavePath, userName)
-        filePath = os.path.join(userFolderPath, fullfileName)
+        filePath = os.path.join(fileSavePath, userFolderPath, txtFileName)
         if not os.path.exists(filePath):
-            raise FileNotFoundError(f"File [{fullfileName}] does not exist.")
+            raise FileNotFoundError(f"File [{fullFileName}] does not exist.")
 
-        fileName = Tools.GetFileName(fullfileName)
-        txtfileName = fileName + ".txt"
-        filePath = os.path.join(fileSavePath, txtfileName)
         fileContent = FileProcess.ReadTxt(FilePath = filePath)
-
         checkResult = LLMInterface.CheckFile(Tartext = fileContent)
         curTime = Tools.GetTime()
         retObj = {
