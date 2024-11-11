@@ -124,6 +124,7 @@ def UploadFile():
             prs = Presentation(fullFileSavePath)
             textContentList = []
             txtSavePath = os.path.join(userFolderPath, fileUUID + ".txt")
+            text = ""
 
             for slideNum, slide in enumerate(prs.slides):
                 slideText = f"Slide {slideNum + 1}:\n"
@@ -136,6 +137,16 @@ def UploadFile():
             with open(txtSavePath, 'w', encoding = 'utf-8') as f:
                 for content in textContentList:
                     f.write(content + "\n")
+                    text += content + "\n"
+
+            # 将文件信息保存到数据库中
+            summaryText = LLMInterface.FileSummary(text)
+            saveTime = Tools.GetSaveTime()
+            FileProcess.SaveFileInfo(FileName = fullFileName,
+                                     Description = summaryText,
+                                     SaveTime = saveTime,
+                                     UserName = userName,
+                                     UUID = fileUUID)
 
         else:
             # 上传文件格式不支持
