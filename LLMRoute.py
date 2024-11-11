@@ -513,10 +513,21 @@ def ClearBotHistory():
 @LLMBlueprint.route("/TextGen", methods = ["POST"])
 def TextGen():
     try:
+        # 鉴权验证
+        token = request.headers.get("Authorization", None)
+        if token is None:
+            raise Exception("Unauthorized request.")
+        token = token.split(" ")[1]
+        valInfo = ValidToken(token)
+        if valInfo["status"] is False:
+            raise Exception(valInfo["msg"])
+        else:
+            userName = valInfo["username"]
+
         # 获取请求数据
         requestData = request.json
         userContent = requestData["content"]
-        PromptFile = requestData["template"]
+        templateName = requestData["template"]
         materialFileList = requestData.get("materialFiles", None)
         sepLib = "####知识库内容####\n"
         sepContent = "####用户输入文本####\n"
@@ -529,30 +540,28 @@ def TextGen():
                 raise ValueError("The number of files could not be more than 5.")
 
             # 获取知识库文本
-            for fileName in materialFileList:
-                rawName = Tools.GetFileName(fileName)
-                txtName = rawName + ".txt"
-                filePath = os.path.join(fileSavePath, txtName)
+            for uuids in materialFileList:
+                txtName = uuids + ".txt"
+                fileName = FileProcess.GetFileInfo(UserName = userName, UUID = uuids)
+                filePath = os.path.join(fileSavePath, userName, txtName)
                 # 文件不存在
                 if not os.path.exists(filePath):
                     raise FileNotFoundError(f"File [{fileName}] dose not exist.")
                 knowledgeContent += FileProcess.ReadTxt(filePath) + "\n"
 
             # 限制Token数
-            if len(knowledgeContent) > 3500:
-                knowledgeContent = knowledgeContent[:3500]
+            if len(knowledgeContent) > 2500:
+                knowledgeContent = knowledgeContent[:2500]
 
         # 获取文本生成提示词
-        rawName = Tools.GetFileName(PromptFile)
-        txtFileName = rawName + ".txt"
+        txtFileName = templateName + ".txt"
         filePath = os.path.join(resourceSavePath, txtFileName)
         if not os.path.exists(filePath):
-            raise FileNotFoundError(f"Template [{rawName}] dose not exist.")
+            raise FileNotFoundError(f"Template [{txtFileName}] dose not exist.")
         prompt = FileProcess.ReadTxt(filePath)
         prompt += sepLib + knowledgeContent + sepContent + userContent
 
         response = LLMInterface.GetResponse_String(prompt)
-
         curTime = Tools.GetTime()
         logging.info(f"[{curTime}]TextGen request successed.")
         retObj = {
@@ -577,10 +586,21 @@ def TextGen():
 @LLMBlueprint.route("/TextGenStream", methods = ["POST"])
 def TextGenStream():
     try:
+        # 鉴权验证
+        token = request.headers.get("Authorization", None)
+        if token is None:
+            raise Exception("Unauthorized request.")
+        token = token.split(" ")[1]
+        valInfo = ValidToken(token)
+        if valInfo["status"] is False:
+            raise Exception(valInfo["msg"])
+        else:
+            userName = valInfo["username"]
+
         # 获取请求数据
         requestData = request.json
         userContent = requestData["content"]
-        PromptFile = requestData["template"]
+        templateName = requestData["template"]
         materialFileList = requestData.get("materialFiles", None)
         sepLib = "####知识库内容####\n"
         sepContent = "####用户输入文本####\n"
@@ -593,30 +613,28 @@ def TextGenStream():
                 raise ValueError("The number of files could not be more than 5.")
 
             # 获取知识库文本
-            for fileName in materialFileList:
-                rawName = Tools.GetFileName(fileName)
-                txtName = rawName + ".txt"
-                filePath = os.path.join(fileSavePath, txtName)
+            for uuids in materialFileList:
+                txtName = uuids + ".txt"
+                fullFileName = FileProcess.GetFileInfo(UserName = userName, UUID = uuids)
+                filePath = os.path.join(fileSavePath, userName, txtName)
                 # 文件不存在
                 if not os.path.exists(filePath):
-                    raise FileNotFoundError(f"File [{fileName}] dose not exist.")
+                    raise FileNotFoundError(f"File [{fullFileName}] dose not exist.")
                 knowledgeContent += FileProcess.ReadTxt(filePath) + "\n"
 
             # 限制Token数
-            if len(knowledgeContent) > 3500:
-                knowledgeContent = knowledgeContent[:3500]
+            if len(knowledgeContent) > 2500:
+                knowledgeContent = knowledgeContent[:2500]
 
         # 获取文本生成提示词
-        rawName = Tools.GetFileName(PromptFile)
-        txtFileName = rawName + ".txt"
+        txtFileName = templateName + ".txt"
         filePath = os.path.join(resourceSavePath, txtFileName)
         if not os.path.exists(filePath):
-            raise FileNotFoundError(f"Template [{rawName}] dose not exist.")
+            raise FileNotFoundError(f"Template [{txtFileName}] dose not exist.")
         prompt = FileProcess.ReadTxt(filePath)
         prompt += sepLib + knowledgeContent + sepContent + userContent
 
         responseStream = LLMInterface.GetResponseStream_String(prompt)
-
         curTime = Tools.GetTime()
         logging.info(f"[{curTime}]TextGen_Stream request successed.")
         return Response(stream_with_context(responseStream))
