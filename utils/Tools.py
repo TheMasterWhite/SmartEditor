@@ -75,19 +75,19 @@ def SaveDocx(Title, SavePath, Content):
     try:
         doc = Document()
         # 设置中文标题样式
-        title_style = doc.styles.add_style("Title", 1)  # 1代表段落样式
-        title_font = title_style.font
-        title_font.name = "宋体"
-        title_font.size = Pt(22)  # 二号字体
-        title_paragraph_format = title_style.paragraph_format
-        title_paragraph_format.space_after = Pt(0)  # 标题后无空行
+        titleStyle = doc.styles["Title"]  # 标题样式
+        titleFont = titleStyle.font
+        titleFont.name = "宋体"
+        titleFont.size = Pt(22)  # 二号字体
+        titleParagraphFormat = titleStyle.paragraph_format
+        titleParagraphFormat.space_after = Pt(0)  # 标题后无空行
         doc.add_paragraph(Title, style = "Title")
 
         # 设置中文正文样式
-        body_style = doc.styles["Normal"]  # 正文样式
-        body_font = body_style.font
-        body_font.name = "宋体"
-        body_font.size = Pt(10.5)  # 五号字体
+        bodyStyle = doc.styles["Normal"]  # 正文样式
+        bodyFont = bodyStyle.font
+        bodyFont.name = "宋体"
+        bodyFont.size = Pt(10.5)  # 五号字体
         doc.add_paragraph(Content, style = "Normal")
         doc.save(SavePath)
 
