@@ -411,7 +411,7 @@ def Save():
         docFileName = fileUUID + ".docx"
         userFolderPath = os.path.join(fileSavePath, userName)  # 用户文件夹路径
         os.makedirs(userFolderPath, exist_ok = True)
-        txtPath = os.path.join(userFolderPath, fileName + ".txt")
+        txtPath = os.path.join(userFolderPath, fileUUID + ".txt")
         savePath = os.path.join(userFolderPath, docFileName)
 
         Tools.SaveDocx(Title = fileName, Content = content, SavePath = savePath)
