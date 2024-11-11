@@ -494,13 +494,14 @@ def ChatBotStream():
 
                 knowledgeContent = ""
                 # 获取知识库中txt
-                for fileName in userFileList:
-                    rawName = Tools.GetFileName(fileName)
-                    TarName = rawName + '.txt'
-                    filePath = os.path.join(fileSavePath, TarName)
+                for uuids in userFileList:
+                    tarName = uuids + '.txt'
+                    fullFileName = FileProcess.GetFileInfo(UserName = userName, UUID = uuids)
+                    filePath = os.path.join(fileSavePath, userName, tarName)
+
                     # 文件不存在
                     if not os.path.exists(filePath):
-                        raise FileNotFoundError(f"File {fileName} does not exist.")
+                        raise FileNotFoundError(f"File {fullFileName} does not exist.")
 
                     tmpContent = FileProcess.ReadTxt(FilePath = filePath)
                     knowledgeContent += tmpContent + "\n"
@@ -510,8 +511,8 @@ def ChatBotStream():
                     knowledgeContent = knowledgeContent[:3000]
 
                 bot.LoadKnowledgeLib_String(KnowledgeText = knowledgeContent,
-                                            UserId = userId)
-                responseStream = bot.GetResponseStream(content, userId)
+                                            UserId = userName)
+                responseStream = bot.GetResponseStream(content, userName)
                 curTime = Tools.GetTime()
                 logging.info(f"[{curTime}]ChatbotStream request successed.")
                 return Response(stream_with_context(responseStream))
