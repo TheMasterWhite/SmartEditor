@@ -171,7 +171,6 @@ def Image():
                                          version = "v2",
                                          image_num = 1)
         url = response.get_result()[0]
-        erniebot.api_type = "aistudio"
         curTime = Tools.GetTime()
         retObj = {
             "statusCode": 1,
@@ -189,3 +188,6 @@ def Image():
             "response": str(e)
         }
         return jsonify(retObj)
+
+    finally:
+        erniebot.api_type = "aistudio"
