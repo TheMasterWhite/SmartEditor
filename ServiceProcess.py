@@ -515,7 +515,6 @@ def GetFileList():
         else:
             userName = valInfo["username"]
         fileList = []
-
         fileInfo = FileProcess.GetFileList(UserName = userName)
 
         curTime = Tools.GetTime()
