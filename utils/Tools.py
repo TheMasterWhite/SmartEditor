@@ -92,7 +92,8 @@ def SaveDocx(Title, SavePath, Content):
         # |\r 表示或者匹配一个单独的回车符
         lines = re.split(r'\r?\n|\r', Content)
         for data in lines:
-            doc.add_paragraph(data, style = "Normal")
+            if data != "":
+                doc.add_paragraph(data, style = "Normal")
         doc.save(SavePath)
 
     except Exception as e:
