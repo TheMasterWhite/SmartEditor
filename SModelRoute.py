@@ -5,9 +5,18 @@ from utils import Tools
 from utils.SModel.OCR import *
 from utils.SModel.TarDetect import *
 from utils.SModel.STT import *
+import erniebot
 
 SModelBlueprint = Blueprint("SModelBlueprint", __name__, url_prefix = "/SModelInterface")
 fileSavePath = copy.deepcopy(GLOBAL_FileSavePath)
+
+
+def GetAccessToken_Image():  # 百度智能云获取access_token
+    url = "https://aip.baidubce.com/oauth/2.0/token"
+    params = {"grant_type": "client_credentials",
+              "client_id": GLOBAL_Baidu_Image_AK,
+              "client_secret": GLOBAL_Baidu_Image_SK}
+    return str(requests.post(url, params = params).json().get("access_token"))
 
 
 @SModelBlueprint.route("/OCR", methods = ["POST"])
@@ -132,4 +141,47 @@ def GetSTTResult():
             "requestTime": curTime,
             "response": str(e)
         }
-        return jsonify(retObj), 500
+        return jsonify(retObj)
+
+
+@SModelBlueprint.route("/Image", methods = ["POST"])
+def Image():
+    try:
+        # 鉴权验证
+        token = request.headers.get("Authorization", None)
+        if token is None:
+            raise Exception("Unauthorized request.")
+        token = token.split(" ")[1]
+        valInfo = ValidToken(token)
+        if valInfo["status"] is False:
+            raise Exception(valInfo["msg"])
+        else:
+            userName = valInfo["username"]
+
+        requestData = request.json
+        prompt = requestData["prompt"]
+        erniebot.api_type = "yinian"
+        erniebot.access_token = GetAccessToken_Image()
+        response = erniebot.Image.create(model = "ernie-vilg-v2",
+                                         prompt = prompt,
+                                         width = 1080,
+                                         height = 1080,
+                                         version = "v2",
+                                         image_num = 1)
+        url = response.get_result()[0]
+        retObj = {
+            "statusCode": 1,
+            "requestTime": curTime,
+            "response": url
+        }
+        return jsonify(retObj)
+
+    except Exception as e:
+        curTime = Tools.GetTime()
+        logging.error(f"[{curTime}]Module:[Image]" + str(e))
+        retObj = {
+            "statusCode": 0,
+            "requestTime": curTime,
+            "response": str(e)
+        }
+        return jsonify(retObj)

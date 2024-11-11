@@ -7,10 +7,11 @@ from utils.LModel.Interface import *
 
 
 def GetAccessToken():  # 百度智能云获取access_token
-
     url = "https://aip.baidubce.com/oauth/2.0/token"
     params = {"grant_type": "client_credentials", "client_id": GLOBAL_Baidu_AK, "client_secret": GLOBAL_Baidu_SK}
-    return str(requests.post(url, params = params).json().get("access_token"))
+    token = str(requests.post(url, params = params).json().get("access_token"))
+    print(token)
+    return token
 
 
 class TaskThread(threading.Thread):
