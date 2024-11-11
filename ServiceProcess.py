@@ -463,8 +463,7 @@ def CheckFile():
         fullFileName = FileProcess.GetFileInfo(UserName = userName,
                                                UUID = fileUUID)
         txtFileName = fileUUID + ".txt"
-        userFolderPath = os.path.join(fileSavePath, userName)
-        filePath = os.path.join(fileSavePath, userFolderPath, txtFileName)
+        filePath = os.path.join(fileSavePath, userName, txtFileName)
         if not os.path.exists(filePath):
             raise FileNotFoundError(f"File [{fullFileName}] does not exist.")
 
