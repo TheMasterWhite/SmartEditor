@@ -18,38 +18,38 @@ fileSavePath = copy.deepcopy(GLOBAL_FileSavePath)
 resourceSavePath = copy.deepcopy(GLOBAL_ResourcesSavePath)
 
 
-# 验证JWT并返回结果
-def ValidToken(Token):
-    try:
-        payload = jwt.decode(Token, GLOBAL_RSA_PUBLIC_KEY, algorithms = ["RS256"])
-        username = payload["username"]
-        retObj = {
-            "status": True,
-            "msg": "OK",
-            "username": username,
-        }
-        return retObj
-
-    except jwt.ExpiredSignatureError:
-        retObj = {
-            "status": False,
-            "msg": "登录过期，请重新登录！",
-        }
-        return retObj
-
-    except jwt.InvalidTokenError:
-        retObj = {
-            "status": False,
-            "msg": "验证失败，请重试！",
-        }
-        return retObj
-
-    except Exception as e:
-        retObj = {
-            "status": False,
-            "msg": str(e),
-        }
-        return retObj
+# # 验证JWT并返回结果
+# def ValidToken(Token):
+#     try:
+#         payload = jwt.decode(Token, GLOBAL_RSA_PUBLIC_KEY, algorithms = ["RS256"])
+#         username = payload["username"]
+#         retObj = {
+#             "status": True,
+#             "msg": "OK",
+#             "username": username,
+#         }
+#         return retObj
+#
+#     except jwt.ExpiredSignatureError:
+#         retObj = {
+#             "status": False,
+#             "msg": "登录过期，请重新登录！",
+#         }
+#         return retObj
+#
+#     except jwt.InvalidTokenError:
+#         retObj = {
+#             "status": False,
+#             "msg": "验证失败，请重试！",
+#         }
+#         return retObj
+#
+#     except Exception as e:
+#         retObj = {
+#             "status": False,
+#             "msg": str(e),
+#         }
+#         return retObj
 
 
 # 从前端接收文件接口

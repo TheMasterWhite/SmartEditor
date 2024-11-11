@@ -17,6 +17,40 @@ logging.basicConfig(filename = f"Logs/[{curData}][{curTime}].log",
                     level = logging.INFO)
 
 
+# 验证JWT并返回结果
+def ValidToken(Token):
+    try:
+        payload = jwt.decode(Token, GLOBAL_RSA_PUBLIC_KEY, algorithms = ["RS256"])
+        username = payload["username"]
+        retObj = {
+            "status": True,
+            "msg": "OK",
+            "username": username,
+        }
+        return retObj
+
+    except jwt.ExpiredSignatureError:
+        retObj = {
+            "status": False,
+            "msg": "登录过期，请重新登录！",
+        }
+        return retObj
+
+    except jwt.InvalidTokenError:
+        retObj = {
+            "status": False,
+            "msg": "验证失败，请重试！",
+        }
+        return retObj
+
+    except Exception as e:
+        retObj = {
+            "status": False,
+            "msg": str(e),
+        }
+        return retObj
+
+
 def ReadConfigFile():
     # 读取配置文件
     filePath = "/Server/SmartEditor/config.json"  # linux
