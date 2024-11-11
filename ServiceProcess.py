@@ -56,8 +56,11 @@ def ValidToken(Token):
 @ServiceProcessBlueprint.route("/UploadFile", methods = ["POST"])
 def UploadFile():
     try:
-        # 鉴权认证
-        token = request.headers.get("Authorization").split(" ")[1]
+        # 鉴权验证
+        token = request.headers.get("Authorization", None)
+        if token is None:
+            raise Exception("Unauthorized request.")
+        token = token.split(" ")[1]
         valInfo = ValidToken(token)
         if valInfo["status"] is False:
             raise Exception(valInfo["msg"])
@@ -198,7 +201,10 @@ def UploadFile():
 def DownloadFile():
     try:
         # 鉴权验证
-        token = request.headers.get("Authorization").split(" ")[1]
+        token = request.headers.get("Authorization", None)
+        if token is None:
+            raise Exception("Unauthorized request.")
+        token = token.split(" ")[1]
         valInfo = ValidToken(token)
         if valInfo["status"] is False:
             raise Exception(valInfo["msg"])
@@ -233,7 +239,10 @@ def DownloadFile():
 def ReadFile():
     try:
         # 鉴权验证
-        token = request.headers.get("Authorization").split(" ")[1]
+        token = request.headers.get("Authorization", None)
+        if token is None:
+            raise Exception("Unauthorized request.")
+        token = token.split(" ")[1]
         valInfo = ValidToken(token)
         if valInfo["status"] is False:
             raise Exception(valInfo["msg"])
@@ -275,7 +284,10 @@ def ReadFile():
 def DeleteFile():
     try:
         # 鉴权验证
-        token = request.headers.get("Authorization").split(" ")[1]
+        token = request.headers.get("Authorization", None)
+        if token is None:
+            raise Exception("Unauthorized request.")
+        token = token.split(" ")[1]
         valInfo = ValidToken(token)
         if valInfo["status"] is False:
             raise Exception(valInfo["msg"])
@@ -377,7 +389,10 @@ def DeleteFile():
 def Save():
     try:
         # 鉴权验证
-        token = request.headers.get("Authorization").split(" ")[1]
+        token = request.headers.get("Authorization", None)
+        if token is None:
+            raise Exception("Unauthorized request.")
+        token = token.split(" ")[1]
         valInfo = ValidToken(token)
         if valInfo["status"] is False:
             raise Exception(valInfo["msg"])
@@ -390,14 +405,25 @@ def Save():
             raise ValueError("File content is empty.")
 
         prompt = "根据下面这段文字生成一个文件名，字数10个字以内，如果无实质内容就回答“空文件”，只回答文件名不要回复多余的内容，不需要扩展名:\n" + content
-        fullFileName = LLMInterface.GetResponse_String(prompt) + ".txt"
+        fileName = LLMInterface.GetResponse_String(prompt)
+        fullFileName = fileName + ".docx"
         fileUUID = Tools.GetUUID()
-        txtFileName = fileUUID + ".txt"
+        docFileName = fileUUID + ".docx"
         userFolderPath = os.path.join(fileSavePath, userName)  # 用户文件夹路径
         os.makedirs(userFolderPath, exist_ok = True)
-        savePath = os.path.join(userFolderPath, txtFileName)
-        with open(savePath, "w") as f:
-            f.write(content)
+        savePath = os.path.join(userFolderPath, docFileName)
+
+        # doxc文件保存逻辑
+        doc = Document()
+        doc.add_heading(fileName)
+        tmps = ""
+        for char in content:
+            if char != "\n":
+                tmps += char
+            else:
+                doc.add_paragraph(tmps)
+                tmps = ""
+        doc.save(savePath)
 
         saveTime = Tools.GetSaveTime()
         summaryText = LLMInterface.FileSummary(content)
@@ -431,8 +457,11 @@ def Save():
 @ServiceProcessBlueprint.route("/CheckFile", methods = ["POST"])
 def CheckFile():
     try:
-        # 鉴权认证
-        token = request.headers.get("Authorization").split(" ")[1]
+        # 鉴权验证
+        token = request.headers.get("Authorization", None)
+        if token is None:
+            raise Exception("Unauthorized request.")
+        token = token.split(" ")[1]
         valInfo = ValidToken(token)
         if valInfo["status"] is False:
             raise Exception(valInfo["msg"])
@@ -508,15 +537,17 @@ def UploadResource():
 def GetFileList():
     try:
         # 鉴权验证
-        token = request.headers.get("Authorization").split(" ")[1]
+        token = request.headers.get("Authorization", None)
+        if token is None:
+            raise Exception("Unauthorized request.")
+        token = token.split(" ")[1]
         valInfo = ValidToken(token)
         if valInfo["status"] is False:
             raise Exception(valInfo["msg"])
         else:
             userName = valInfo["username"]
-        fileList = []
-        fileInfo = FileProcess.GetFileList(UserName = userName)
 
+        fileInfo = FileProcess.GetFileList(UserName = userName)
         curTime = Tools.GetTime()
         logging.info(f"[{curTime}]Send file list successed.")
         retObj = {
