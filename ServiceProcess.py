@@ -352,6 +352,7 @@ def DeleteFile():
                 os.remove(oriFilePath)
 
         curTime = Tools.GetTime()
+        FileProcess.DeleteFileInfo(UserName = userName, UUID = fileUUID)
         logging.info(f"[{curTime}]\"{fullFileName}\" deleted successfully.")
         retObj = {
             "statusCode": 1,
