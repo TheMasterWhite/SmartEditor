@@ -12,6 +12,7 @@ import hashlib
 import sqlite3
 import datetime
 from docx import Document
+from pptx import Presentation
 
 ServiceProcessBlueprint = Blueprint("ServiceProcessBlueprint", __name__, url_prefix = "/Service")
 fileSavePath = copy.deepcopy(GLOBAL_FileSavePath)
@@ -100,15 +101,15 @@ def UploadFile():
                                               UUID = fileUUID)
 
         elif fileExtension in ["doc", "docx"]:
-            doc = Document(fullFileSavePath)
-            txtSavePath = os.path.join(userFolderPath, fileUUID + ".txt")
-            text = ""
-            with open(txtSavePath, 'w', encoding = 'utf-8') as f:
-                # 遍历文档中的每个段落
-                for para in doc.paragraphs:
-                    # 将段落文本写入txt文件
-                    f.write(para.text + '\n')
-                    text += para.text + "\n"
+            with Document(fullFileSavePath) as doc:
+                txtSavePath = os.path.join(userFolderPath, fileUUID + ".txt")
+                text = ""
+                with open(txtSavePath, 'w', encoding = 'utf-8') as f:
+                    # 遍历文档中的每个段落
+                    for para in doc.paragraphs:
+                        # 将段落文本写入txt文件
+                        f.write(para.text + '\n')
+                        text += para.text + "\n"
 
             # 将文件信息保存到数据库中
             summaryText = LLMInterface.FileSummary(text)
@@ -118,6 +119,23 @@ def UploadFile():
                                      SaveTime = saveTime,
                                      UserName = userName,
                                      UUID = fileUUID)
+
+        elif fileExtension in ["ppt", "pptx"]:
+            with Presentation(fullFileSavePath) as prs:
+                textContentList = []
+                txtSavePath = os.path.join(userFolderPath, fileUUID + ".txt")
+
+                for slideNum, slide in enumerate(prs.slides):
+                    slideText = f"Slide {slideNum + 1}:\n"
+                    for shape in slide.shapes:
+                        if hasattr(shape, "text"):
+                            slideText += shape.text + "\n"
+                    slideText = slideText.strip().replace("\n\n", "\n")
+                    textContentList.append(slideText)
+
+                with open(txtSavePath, 'w', encoding = 'utf-8') as f:
+                    for content in textContentList:
+                        f.write(content + "\n")
 
         else:
             # 上传文件格式不支持
