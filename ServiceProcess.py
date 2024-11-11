@@ -410,9 +410,9 @@ def Save():
         userFolderPath = os.path.join(fileSavePath, userName)  # 用户文件夹路径
         os.makedirs(userFolderPath, exist_ok = True)
         txtPath = os.path.join(userFolderPath, fileUUID + ".txt")
-        savePath = os.path.join(userFolderPath, fullFileName)
+        docxPath = os.path.join(userFolderPath, fileUUID + "docx")
 
-        Tools.SaveDocx(Title = fileName, Content = content, SavePath = savePath)
+        Tools.SaveDocx(Title = fileName, Content = content, SavePath = docxPath)
         with open(txtPath, "w", encoding = "utf-8") as f:
             f.write(content)
         saveTime = Tools.GetSaveTime()
