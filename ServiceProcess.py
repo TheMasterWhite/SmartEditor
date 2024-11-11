@@ -404,15 +404,13 @@ def Save():
         if len(content) <= 5:
             raise ValueError("File content is empty.")
 
-        prompt = "根据下面这段文字生成一个文件名，字数10个字以内，如果无实质内容就回答“空文件”，只回答文件名不要回复多余的内容，不需要扩展名:\n" + content
-        fileName = LLMInterface.GetResponse_String(prompt)
+        fileName = LLMInterface.GetFileName(content)  # 获得文件名
         fullFileName = fileName + ".docx"
         fileUUID = Tools.GetUUID()
-        docFileName = fileUUID + ".docx"
         userFolderPath = os.path.join(fileSavePath, userName)  # 用户文件夹路径
         os.makedirs(userFolderPath, exist_ok = True)
         txtPath = os.path.join(userFolderPath, fileUUID + ".txt")
-        savePath = os.path.join(userFolderPath, docFileName)
+        savePath = os.path.join(userFolderPath, fullFileName)
 
         Tools.SaveDocx(Title = fileName, Content = content, SavePath = savePath)
         with open(txtPath, "w", encoding = "utf-8") as f:

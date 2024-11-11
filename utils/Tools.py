@@ -8,6 +8,7 @@ from docx import Document
 from docx.shared import Pt
 from docx.oxml.ns import qn
 from docx.oxml import OxmlElement
+import re
 
 GLOBAL_RSA_PUBLIC_KEY = os.environ.get("GLOBAL_RSA_PUBLIC_KEY")
 
@@ -74,21 +75,24 @@ def GetUUID():
 def SaveDocx(Title, SavePath, Content):
     try:
         doc = Document()
-        # 设置中文标题样式
-        titleStyle = doc.styles.add_style("DocTitle", 1)
-        titleFont = titleStyle.font
-        titleFont.name = "SimSun"
-        titleFont.size = Pt(22)  # 二号字体
-        titleParagraphFormat = titleStyle.paragraph_format
-        titleParagraphFormat.space_after = Pt(0)  # 标题后无空行
+        # 设置标题样式
+        doc.styles.add_style("DocTitle", 1)
+        doc.styles["DocTitle"].font.name = "Times New Roman"
+        doc.styles["DocTitle"]._element.rPr.rFonts.set(qn('w:eastAsia'), u"宋体")
+        doc.styles["DocTitle"].font.size = Pt(22)
         doc.add_paragraph(Title, style = "DocTitle")
 
-        # 设置中文正文样式
-        bodyStyle = doc.styles["Normal"]  # 正文样式
-        bodyFont = bodyStyle.font
-        bodyFont.name = "SimSun"
-        bodyFont.size = Pt(10.5)  # 五号字体
-        doc.add_paragraph(Content, style = "Normal")
+        # 设置正文样式
+        doc.styles["Normal"].font.name = u"Times New Roman"
+        doc.styles['Normal']._element.rPr.rFonts.set(qn('w:eastAsia'), u"宋体")
+        doc.styles["Normal"].font.size = Pt(10.5)
+
+        # 使用正则表达式分割字符串，处理换行符和回车符
+        # \r?\n 表示匹配一个可选的回车符后跟一个换行符
+        # |\r 表示或者匹配一个单独的回车符
+        lines = re.split(r'\r?\n|\r', Content)
+        for data in lines:
+            doc.add_paragraph(data, style = "Normal")
         doc.save(SavePath)
 
     except Exception as e:

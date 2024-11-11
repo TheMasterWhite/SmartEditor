@@ -274,3 +274,12 @@ class LLMInterface(LLMBasic):  # 大模型高级功能接口类
             return LLMBasic.GetResponse_String(promptText)
         except Exception as e:
             raise e
+
+
+    @staticmethod
+    def GetFileName(FileText):
+        try:
+            promptText = GetPrompt().Data()["FunctionPrompt"]["GetFileName"] + FileText
+            return LLMBasic.GetResponse_String(promptText)
+        except Exception as e:
+            raise e
