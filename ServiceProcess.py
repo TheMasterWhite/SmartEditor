@@ -357,7 +357,7 @@ def DeleteFile():
         retObj = {
             "statusCode": 1,
             "requestTime": curTime,
-            "response": f"File \"{fullFileName}\" were successfully deleted"
+            "response": f"File [{fullFileName}] were successfully deleted"
         }
         return jsonify(retObj)
 
@@ -390,8 +390,9 @@ def Save():
             raise ValueError("File content is empty.")
 
         prompt = "根据下面这段文字生成一个文件名，字数10个字以内，如果无实质内容就回答“空文件”，只回答文件名不要回复多余的内容，不需要扩展名:\n" + content
-        fileName = LLMInterface.GetResponse_String(prompt)
-        txtFileName = fileName + ".txt"
+        fullFileName = LLMInterface.GetResponse_String(prompt) + ".txt"
+        fileUUID = Tools.GetUUID()
+        txtFileName = fileUUID + ".txt"
         userFolderPath = os.path.join(fileSavePath, userName)  # 用户文件夹路径
         os.makedirs(userFolderPath, exist_ok = True)
         savePath = os.path.join(userFolderPath, txtFileName)
@@ -403,10 +404,11 @@ def Save():
         FileProcess.SaveFileInfo(FileName = fullFileName,
                                  Description = summaryText,
                                  SaveTime = saveTime,
-                                 UserName = userName)
+                                 UserName = userName,
+                                 UUID = fileUUID)
 
         curTime = Tools.GetTime()
-        logging.info(f"[{curTime}]User txt file [{txtFileName}] saved successfully.")
+        logging.info(f"[{curTime}]User txt file [{fullFileName}] saved successfully.")
         retObj = {
             "statusCode": 1,
             "requestTime": curTime,
