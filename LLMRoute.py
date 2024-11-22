@@ -3,6 +3,7 @@ import logging, json, os, sys, requests
 from flask import Flask, request, jsonify, Response, stream_with_context, Blueprint
 from utils.LModel.Interface import LLMInterface
 from utils.LModel.ChatBot import BotInterface, bot
+from utils.LModel.PPTGenerator import PPTGenerator
 from utils.Config.FileProcess import *
 from utils.Config.PMTProcess import *
 from utils import Tools
@@ -696,6 +697,50 @@ def TextGenStream():
     except Exception as e:
         curTime = Tools.GetTime()
         logging.error(f"[{curTime}]Module:[TextgenStream]" + str(e))
+        retObj = {
+            "statusCode": 0,
+            "requestTime": curTime,
+            "response": str(e)
+        }
+        return jsonify(retObj)
+
+
+# 生成PPT大纲接口
+@LLMBlueprint.route("/PPTCatalog", methods = ["POST"])
+def PPTCatalog():
+    try:
+        # 鉴权验证
+        token = request.headers.get("Authorization", None)
+        if token is None:
+            raise Exception("Unauthorized request.")
+        token = token.split(" ")[1]
+        valInfo = ValidToken(token)
+        if valInfo["status"] is False:
+            raise Exception(valInfo["msg"])
+        else:
+            userName = valInfo["username"]
+
+        # 获取请求数据
+        requestData = request.json
+        userContent = requestData.get("content", None)
+        UUIDList = requestData.get("materialFiles", None)
+
+        if UUIDList is None:
+            raise Exception("必须传入素材文件!")
+
+        catalog = PPTGenerator.generate_catalog(UUIDList = UUIDList, UserContent = userContent)
+        curTime = Tools.GetTime()
+        logging.info(f"[{curTime}]Generate PPT catalog successed.")
+        retObj = {
+            "statusCode": 1,
+            "requestTime": curTime,
+            "response": catalog
+        }
+        return jsonify(retObj)
+
+    except Exception as e:
+        curTime = Tools.GetTime()
+        logging.error(f"[{curTime}]Module:[PPTCatalog]" + str(e))
         retObj = {
             "statusCode": 0,
             "requestTime": curTime,
