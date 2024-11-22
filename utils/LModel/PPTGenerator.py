@@ -21,9 +21,14 @@ class PPTGenerator:
         # 处理首页
         for name in ["主标题", "副标题", "汇报人"]:
             frontSlide = prs.slides[0]  # 首页
-            PPTGenerator.replace_shape(Slide = frontSlide,
-                                       shapeName = name,
-                                       Content = PPTContent[name])
+            if name == "汇报人":
+                PPTGenerator.replace_shape(Slide = frontSlide,
+                                           shapeName = name,
+                                           Content = f"汇报人：{PPTContent[name]}")
+            else:
+                PPTGenerator.replace_shape(Slide = frontSlide,
+                                           shapeName = name,
+                                           Content = PPTContent[name])
 
         # 处理目录
         catelogIndex = 0  # 目录索引
@@ -138,7 +143,7 @@ class PPTGenerator:
 
             response = LLMInterface.GetResponse_String(prompt + material)[8:-4]
             catalog = json.loads(response)
-            catalog["汇报人"] = f"汇报人：{UserName}"
+            catalog["汇报人"] = f"{UserName}"
             return catalog
 
         except Exception as e:
