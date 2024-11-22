@@ -728,7 +728,7 @@ def PPTCatalog():
         if UUIDList is None:
             raise Exception("必须传入素材文件!")
 
-        catalog = PPTGenerator.generate_catalog(UUIDList = UUIDList, UserContent = userContent)
+        catalog = PPTGenerator.generate_catalog(UUIDList = UUIDList, UserName = userName, UserContent = userContent)
         curTime = Tools.GetTime()
         logging.info(f"[{curTime}]Generate PPT catalog successed.")
         retObj = {

@@ -124,14 +124,14 @@ class PPTGenerator:
 
     @staticmethod
     # 根据用户输入内容与文件列表生成PPT大纲的json结构
-    def generate_catalog(UUIDList, UserContent = ""):
+    def generate_catalog(UUIDList, UserName, UserContent = ""):
         try:
             promptPath = os.path.join(GLOBAL_ResourcesSavePath, "PPT大纲.txt")
             prompt = FileProcess.ReadTxt(promptPath)
 
             material = UserContent + "\n"
             for UUID in UUIDList:
-                material += FileProcess.ReadTxt(os.path.join(fileSavePath, UUID + ".txt")) + "\n"
+                material += FileProcess.ReadTxt(os.path.join(fileSavePath, UserName, UUID + ".txt")) + "\n"
             # 限制素材字数
             if len(material) > 2500:
                 material = material[:2500]
@@ -145,7 +145,7 @@ class PPTGenerator:
 
 
     @staticmethod
-    def generate_content(UUIDList, Catalog, UserContent = ""):
+    def generate_content(UUIDList, UserName, Catalog, UserContent = ""):
         # 生成PPT内容json
         try:
             promptPath = os.path.join(GLOBAL_ResourcesSavePath, "PPT内容.txt")
@@ -153,7 +153,7 @@ class PPTGenerator:
 
             material = UserContent + "\n"
             for UUID in UUIDList:
-                material += FileProcess.ReadTxt(os.path.join(fileSavePath, UUID + ".txt")) + "\n"
+                material += FileProcess.ReadTxt(os.path.join(fileSavePath, UserName, UUID + ".txt")) + "\n"
             # 限制素材字数
             if len(material) > 2500:
                 material = material[:2500]
