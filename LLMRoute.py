@@ -765,9 +765,7 @@ def PPTGenerate():
             userName = valInfo["username"]
 
         requestData = request.json
-        print(777)
         PPTGenerator.main_process(RequestData = requestData, UserName = userName)
-        print(888)
         curTime = Tools.GetTime()
         logging.info(f"[{curTime}]Generate PPT generate successed.")
         retObj = {

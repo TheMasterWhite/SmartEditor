@@ -15,10 +15,9 @@ class PPTGenerator:
     @staticmethod
     def main_process(RequestData, UserName):
         try:
-            requestData = request.json
-            userContent = requestData.get("content", "")
-            UUIDList = requestData.get("materialFiles", None)
-            PPTCatalog = requestData.get("catalog", None)
+            userContent = RequestData.get("content", "")
+            UUIDList = RequestData.get("materialFiles", None)
+            PPTCatalog = RequestData.get("catalog", None)
 
             if UUIDList is None:
                 raise Exception("必须传入素材文件!")
