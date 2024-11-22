@@ -1,6 +1,5 @@
 import os.path
-
-from Interface import *
+from .Interface import *
 import erniebot, copy
 from utils.Config.FileProcess import FileProcess, OSSProcess, JsonOperator
 from Config import *
