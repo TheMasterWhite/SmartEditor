@@ -583,7 +583,7 @@ def TextGen():
         requestData = request.json
         userContent = requestData["content"]
         templateName = requestData["template"]
-        materialFileList = requestData.get("materialFiles", "")
+        materialFileList = requestData.get("materialFiles", None)
         sepLib = "####知识库内容####\n"
         sepContent = "####用户输入文本####\n"
         knowledgeContent = ""
@@ -722,7 +722,7 @@ def PPTCatalog():
 
         # 获取请求数据
         requestData = request.json
-        userContent = requestData.get("content", None)
+        userContent = requestData.get("content", "")
         UUIDList = requestData.get("materialFiles", None)
 
         if UUIDList is None:
