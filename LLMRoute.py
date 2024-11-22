@@ -583,7 +583,7 @@ def TextGen():
         requestData = request.json
         userContent = requestData["content"]
         templateName = requestData["template"]
-        materialFileList = requestData.get("materialFiles", None)
+        materialFileList = requestData.get("materialFiles", "")
         sepLib = "####知识库内容####\n"
         sepContent = "####用户输入文本####\n"
         knowledgeContent = ""
