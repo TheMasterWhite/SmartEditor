@@ -148,7 +148,8 @@ class PPTGenerator:
 
         except Exception as e:
             curTime = Tools.GetTime()
-            logging.error(f"[{curTime}]Module:[PPTcatalog]" + str(e))
+            logging.error(f"[{curTime}]Module:[GenPPTCatalog]" + str(e))
+            raise e
 
 
     @staticmethod
@@ -185,4 +186,5 @@ class PPTGenerator:
 
         except Exception as e:
             curTime = Tools.GetTime()
-            logging.error(f"[{curTime}]Module:[PPTcontent]" + str(e))
+            logging.error(f"[{curTime}]Module:[GenPPTContent]" + str(e))
+            raise e
