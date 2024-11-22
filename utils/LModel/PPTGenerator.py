@@ -13,8 +13,49 @@ fileSavePath = copy.deepcopy(GLOBAL_FileSavePath)
 class PPTGenerator:
 
     @staticmethod
+    def main_process(RequestData, UserName):
+        requestData = request.json
+        userContent = requestData.get("content", "")
+        UUIDList = requestData.get("materialFiles", None)
+        PPTCatalog = requestData.get("materialFiles", None)
+
+        if UUIDList is None:
+            raise Exception("必须传入素材文件!")
+        if PPTCatalog is None:
+            raise Exception("必须传入PPT大纲!")
+
+        pptObj = PPTGenerator.generate_content(UUIDList = UUIDList,
+                                               UserName = UserName,
+                                               Catalog = PPTCatalog,
+                                               UserContent = userContent)
+        fileUUID = Tools.GetUUID()
+        fileName = PPTCatalog["主标题"] + ".pptx"
+        # 解析PPT内容
+        pptContent = PPTCatalog["主标题"] + PPTCatalog["副标题"]
+        for content in PPTCatalog["内容"]:
+            chapterTitle = content["章节标题"]
+            pptContent += f"章节标题：{chapterTitle}\n"
+            for chapterContent in content["章节内容"]:
+                pageTitle = chapterTitle["页标题"]
+                pptContent += f"页标题：{pageTitle}\n"
+                for pageContent in chapterContent["页内容"]:
+                    sectionTitle = pageContent["节标题"]
+                    sectionContent = pageContent["节内容"]
+                    pptContent += f"节标题{pageTitle}节内容{sectionContent}\n"
+
+        summaryText = LLMInterface.FileSummary(pptContent)
+        saveTime = Tools.GetSaveTime()
+        pptObj.save(os.path.join(fileSavePath, UserName, fileName))
+        FileProcess.SaveFileInfo(FileName = fileName,
+                                 Description = summaryText,
+                                 SaveTime = saveTime,
+                                 UserName = UserName,
+                                 UUID = fileUUID)
+
+
     # PPT生成主流程，传入完整的PPT格式json，返回PPT文件对象
-    def main_process(PPTContent, TemplatePath):
+    @staticmethod
+    def generate_ppt(PPTContent, TemplatePath):
 
         prs = Presentation(TemplatePath)
         contentList = PPTContent["内容"]
@@ -92,43 +133,8 @@ class PPTGenerator:
         return prs
 
 
-    @staticmethod
-    def replace_text(shape, content):
-        # 替换文本并保留格式
-        if not shape.has_text_frame:  # 判断是否有文本框
-            return
-        tf = shape.text_frame
-        for paragraph in tf.paragraphs:
-            is_first_run = True
-            for run in paragraph.runs:
-                if is_first_run:
-                    run.text = content
-                    is_first_run = False
-                else:
-                    run.text = ""
-
-
-    @staticmethod
-    # 替换某个特定形状的文本内容
-    def replace_shape(Slide, shapeName, Content):
-        # 遍历所有图形，并替换对应章节
-        for shape in Slide.shapes:
-            # 替换目录内容
-            if shape.name == shapeName:
-                replace_text(shape, Content)
-
-
-    @staticmethod
-    # 根据下标删除某一页的幻灯片
-    def delete_slide(Prs, Index):
-        rid = Prs.slides._sldIdLst[Index].rId
-        Prs.part.drop_rel(rid)
-        del Prs.slides._sldIdLst[Index]
-        return Prs
-
-
-    @staticmethod
     # 根据用户输入内容与文件列表生成PPT大纲的json结构
+    @staticmethod
     def generate_catalog(UUIDList, UserName, UserContent = ""):
         try:
             promptPath = os.path.join(GLOBAL_ResourcesSavePath, "PPT大纲.txt")
@@ -152,9 +158,9 @@ class PPTGenerator:
             raise e
 
 
+    # 生成PPT内容json
     @staticmethod
     def generate_content(UUIDList, UserName, Catalog, UserContent = ""):
-        # 生成PPT内容json
         try:
             promptPath = os.path.join(GLOBAL_ResourcesSavePath, "PPT内容.txt")
             prompt = FileProcess.ReadTxt(promptPath)
@@ -188,3 +194,38 @@ class PPTGenerator:
             curTime = Tools.GetTime()
             logging.error(f"[{curTime}]Module:[GenPPTContent]" + str(e))
             raise e
+
+
+    # 替换文本并保留格式
+    @staticmethod
+    def replace_text(shape, content):
+        if not shape.has_text_frame:  # 判断是否有文本框
+            return
+        tf = shape.text_frame
+        for paragraph in tf.paragraphs:
+            is_first_run = True
+            for run in paragraph.runs:
+                if is_first_run:
+                    run.text = content
+                    is_first_run = False
+                else:
+                    run.text = ""
+
+
+    # 替换某个特定形状的文本内容
+    @staticmethod
+    def replace_shape(Slide, shapeName, Content):
+        # 遍历所有图形，并替换对应章节
+        for shape in Slide.shapes:
+            # 替换目录内容
+            if shape.name == shapeName:
+                replace_text(shape, Content)
+
+
+    # 根据下标删除某一页的幻灯片
+    @staticmethod
+    def delete_slide(Prs, Index):
+        rid = Prs.slides._sldIdLst[Index].rId
+        Prs.part.drop_rel(rid)
+        del Prs.slides._sldIdLst[Index]
+        return Prs

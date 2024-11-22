@@ -747,3 +747,40 @@ def PPTCatalog():
             "response": str(e)
         }
         return jsonify(retObj)
+
+
+# 根据大纲生成PPT接口
+@LLMBlueprint.route("/PPTGenerate", methods = ["POST"])
+def PPTGenerate():
+    try:
+        # 鉴权验证
+        token = request.headers.get("Authorization", None)
+        if token is None:
+            raise Exception("Unauthorized request.")
+        token = token.split(" ")[1]
+        valInfo = ValidToken(token)
+        if valInfo["status"] is False:
+            raise Exception(valInfo["msg"])
+        else:
+            userName = valInfo["username"]
+
+        requestData = request.json
+        PPTGenerator.main_process(RequestData = requestData, UserName = userName)
+        curTime = Tools.GetTime()
+        logging.info(f"[{curTime}]Generate PPT generate successed.")
+        retObj = {
+            "statusCode": 1,
+            "requestTime": curTime,
+            "response": "success"
+        }
+        return jsonify(retObj)
+
+    except Exception as e:
+        curTime = Tools.GetTime()
+        logging.error(f"[{curTime}]Module:[PPTGenerate]" + str(e))
+        retObj = {
+            "statusCode": 0,
+            "requestTime": curTime,
+            "response": str(e)
+        }
+        return jsonify(retObj)
