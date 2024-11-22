@@ -137,7 +137,9 @@ class PPTGenerator:
                 material = material[:2500]
 
             response = LLMInterface.GetResponse_String(prompt + material)[8:-4]
-            return json.loads(response)
+            catalog = json.loads(response)
+            catalog["汇报人"] = f"汇报人：{UserName}"
+            return catalog
 
         except Exception as e:
             curTime = Tools.GetTime()
