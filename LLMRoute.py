@@ -754,6 +754,7 @@ def PPTCatalog():
 def PPTGenerate():
     try:
         # 鉴权验证
+        print(666)
         token = request.headers.get("Authorization", None)
         if token is None:
             raise Exception("Unauthorized request.")
@@ -763,7 +764,7 @@ def PPTGenerate():
             raise Exception(valInfo["msg"])
         else:
             userName = valInfo["username"]
-
+        print(777)
         requestData = request.json
         PPTGenerator.main_process(RequestData = requestData, UserName = userName)
         curTime = Tools.GetTime()
