@@ -24,28 +24,31 @@ class PPTGenerator:
             if PPTCatalog is None:
                 raise Exception("必须传入PPT大纲!")
 
-            pptObj = PPTGenerator.generate_content(UUIDList = UUIDList,
-                                                   UserName = UserName,
-                                                   Catalog = PPTCatalog,
-                                                   UserContent = userContent)
+            pptContent = PPTGenerator.generate_content(UUIDList = UUIDList,
+                                                       UserName = UserName,
+                                                       Catalog = PPTCatalog,
+                                                       UserContent = userContent)
+            templatePath = os.path.join(GLOBAL_ResourcesSavePath, "模版.pptx")
+            pptObj = PPTGenerator.generate_ppt(PPTContent = textContent, TemplatePath = templatePath)
+
             fileUUID = Tools.GetUUID()
-            fileName = PPTCatalog["主标题"] + ".pptx"
+            fileName = pptContent["主标题"] + ".pptx"
             # 解析PPT内容
-            pptContent = PPTCatalog["主标题"] + PPTCatalog["副标题"]
-            for content in PPTCatalog["内容"]:
+            textContent = "主标题:" + pptContent["主标题"] + "\n" + "副标题:" + pptContent["副标题"]
+            for content in pptContent["内容"]:
                 chapterTitle = content["章节标题"]
-                pptContent += f"章节标题：{chapterTitle}\n"
+                textContent += f"章节标题：{chapterTitle}\n"
                 for chapterContent in content["章节内容"]:
-                    pageTitle = chapterTitle["页标题"]
-                    pptContent += f"页标题：{pageTitle}\n"
+                    pageTitle = chapterContent["页标题"]
+                    textContent += f"页标题：{pageTitle}\n"
                     for pageContent in chapterContent["页内容"]:
                         sectionTitle = pageContent["节标题"]
                         sectionContent = pageContent["节内容"]
-                        pptContent += f"节标题{pageTitle}节内容{sectionContent}\n"
+                        textContent += f"节标题{pageTitle}节内容{sectionContent}\n"
 
-            summaryText = LLMInterface.FileSummary(pptContent)
+            summaryText = LLMInterface.FileSummary(textContent)
             saveTime = Tools.GetSaveTime()
-            pptObj.save(os.path.join(fileSavePath, UserName, fileName))
+            pptObj.save(os.path.join(fileSavePath, UserName, fileUUID + ".pptx"))
             FileProcess.SaveFileInfo(FileName = fileName,
                                      Description = summaryText,
                                      SaveTime = saveTime,
@@ -61,81 +64,84 @@ class PPTGenerator:
     # PPT生成主流程，传入完整的PPT格式json，返回PPT文件对象
     @staticmethod
     def generate_ppt(PPTContent, TemplatePath):
+        try:
+            prs = Presentation(TemplatePath)
+            contentList = PPTContent["内容"]
+            # 处理首页
+            for name in ["主标题", "副标题", "汇报人"]:
+                frontSlide = prs.slides[0]  # 首页
+                if name == "汇报人":
+                    PPTGenerator.replace_shape(Slide = frontSlide,
+                                               shapeName = name,
+                                               Content = f"汇报人：{PPTContent[name]}")
+                else:
+                    PPTGenerator.replace_shape(Slide = frontSlide,
+                                               shapeName = name,
+                                               Content = PPTContent[name])
 
-        prs = Presentation(TemplatePath)
-        contentList = PPTContent["内容"]
-        # 处理首页
-        for name in ["主标题", "副标题", "汇报人"]:
-            frontSlide = prs.slides[0]  # 首页
-            if name == "汇报人":
-                PPTGenerator.replace_shape(Slide = frontSlide,
-                                           shapeName = name,
-                                           Content = f"汇报人：{PPTContent[name]}")
-            else:
-                PPTGenerator.replace_shape(Slide = frontSlide,
-                                           shapeName = name,
-                                           Content = PPTContent[name])
+            # 处理目录
+            catelogIndex = 0  # 目录索引
+            chapterCount = len(contentList)  # 章节数量
+            # 遍历所有章节
+            for content in contentList:
+                catelogIndex += 1
+                catelogSlide = prs.slides[1]
+                PPTGenerator.replace_shape(Slide = catelogSlide,
+                                           shapeName = f"目录内容{catelogIndex}",
+                                           Content = content["章节标题"])
 
-        # 处理目录
-        catelogIndex = 0  # 目录索引
-        chapterCount = len(contentList)  # 章节数量
-        # 遍历所有章节
-        for content in contentList:
-            catelogIndex += 1
-            catelogSlide = prs.slides[1]
-            PPTGenerator.replace_shape(Slide = catelogSlide,
-                                       shapeName = f"目录内容{catelogIndex}",
-                                       Content = content["章节标题"])
+            # 删除模版中多余的目录信息
+            for i in range(chapterCount + 1, 7):
+                for shape in [i for i in catelogSlide.shapes]:
+                    if shape.name == f"目录内容{i}":
+                        PPTGenerator.replace_text(shape, "")
+                    elif shape.name == f"目录编号{i}":
+                        PPTGenerator.replace_text(shape, "")
+            ############################################################
+            # 处理当前章节首页
+            # 遍历文本内容中的所有章节
+            for curChapter in range(chapterCount):
+                # 计算ppt页的初始下标
+                initIndex = 2 + curChapter * 4
+                # 设置当前章节的标题
+                chapterInfo = contentList[curChapter]  # 内容列表元素
+                PPTGenerator.replace_shape(Slide = prs.slides[initIndex],
+                                           shapeName = f"章节标题",
+                                           Content = chapterInfo["章节标题"])
+                # 处理章节中3页内容页
+                pageIndex = -1
+                for index in range(initIndex + 1, initIndex + 4):
+                    pageIndex += 1
+                    # print(len(contentList))
+                    curSlide = prs.slides[index]  # 当前页的对象
+                    pageList = chapterInfo["章节内容"]  # 章节内容的页信息列表
+                    curPageInfo = pageList[pageIndex]  # 当前页的信息
 
-        # 删除模版中多余的目录信息
-        for i in range(chapterCount + 1, 7):
-            for shape in [i for i in catelogSlide.shapes]:
-                if shape.name == f"目录内容{i}":
-                    PPTGenerator.replace_text(shape, "")
-                elif shape.name == f"目录编号{i}":
-                    PPTGenerator.replace_text(shape, "")
-        ############################################################
-        # 处理当前章节首页
-        # 遍历文本内容中的所有章节
-        for curChapter in range(chapterCount):
-            # 计算ppt页的初始下标
-            initIndex = 2 + curChapter * 4
-            # 设置当前章节的标题
-            chapterInfo = contentList[curChapter]  # 内容列表元素
-            PPTGenerator.replace_shape(Slide = prs.slides[initIndex],
-                                       shapeName = f"章节标题",
-                                       Content = chapterInfo["章节标题"])
-            # 处理章节中3页内容页
-            pageIndex = -1
-            for index in range(initIndex + 1, initIndex + 4):
-                pageIndex += 1
-                # print(len(contentList))
-                curSlide = prs.slides[index]  # 当前页的对象
-                pageList = chapterInfo["章节内容"]  # 章节内容的页信息列表
-                curPageInfo = pageList[pageIndex]  # 当前页的信息
-
-                PPTGenerator.replace_shape(Slide = curSlide,
-                                           shapeName = "页标题",
-                                           Content = curPageInfo["页标题"])
-                # 处理该页中的3小节内容
-                section = 0
-                for pageContent in curPageInfo["页内容"]:
-                    section += 1
-                    title = pageContent["节标题"]
-                    text = pageContent["节内容"]
                     PPTGenerator.replace_shape(Slide = curSlide,
-                                               shapeName = f"节标题{section}",
-                                               Content = title)
-                    PPTGenerator.replace_shape(Slide = curSlide,
-                                               shapeName = f"节内容{section}",
-                                               Content = text)
+                                               shapeName = "页标题",
+                                               Content = curPageInfo["页标题"])
+                    # 处理该页中的3小节内容
+                    section = 0
+                    for pageContent in curPageInfo["页内容"]:
+                        section += 1
+                        title = pageContent["节标题"]
+                        text = pageContent["节内容"]
+                        PPTGenerator.replace_shape(Slide = curSlide,
+                                                   shapeName = f"节标题{section}",
+                                                   Content = title)
+                        PPTGenerator.replace_shape(Slide = curSlide,
+                                                   shapeName = f"节内容{section}",
+                                                   Content = text)
+            # 删除多余的内容页
+            startIndex = 2 + chapterCount * 4
+            for i in range(25, startIndex - 1, -1):
+                PPTGenerator.delete_slide(prs, i)
+            return prs
 
-        # 删除多余的内容页
-        startIndex = 2 + chapterCount * 4
-        for i in range(25, startIndex - 1, -1):
-            PPTGenerator.delete_slide(prs, i)
-
-        return prs
+        except Exception as e:
+            curTime = Tools.GetTime()
+            logging.error(f"[{curTime}]Module:[GeneratePPT]" + str(e))
+            raise e
 
 
     # 根据用户输入内容与文件列表生成PPT大纲的json结构
