@@ -189,7 +189,7 @@ class PPTGenerator:
                 sectionContent = f"章节标题：{title}\n页标题:\n{sectionContent}\n"
                 sep = "[用户输入内容]" + "\n" + material
                 finalPrompt = prompt + sectionContent + sep
-                resp = GetResponse_String(finalPrompt)[8:-4]
+                resp = LLMInterface.GetResponse_String(finalPrompt)[8:-4]
                 contentList.append(json.loads(resp))
 
             response["内容"] = contentList
