@@ -14,43 +14,49 @@ class PPTGenerator:
 
     @staticmethod
     def main_process(RequestData, UserName):
-        requestData = request.json
-        userContent = requestData.get("content", "")
-        UUIDList = requestData.get("materialFiles", None)
-        PPTCatalog = requestData.get("catalog", None)
+        try:
+            requestData = request.json
+            userContent = requestData.get("content", "")
+            UUIDList = requestData.get("materialFiles", None)
+            PPTCatalog = requestData.get("catalog", None)
 
-        if UUIDList is None:
-            raise Exception("必须传入素材文件!")
-        if PPTCatalog is None:
-            raise Exception("必须传入PPT大纲!")
+            if UUIDList is None:
+                raise Exception("必须传入素材文件!")
+            if PPTCatalog is None:
+                raise Exception("必须传入PPT大纲!")
 
-        pptObj = PPTGenerator.generate_content(UUIDList = UUIDList,
-                                               UserName = UserName,
-                                               Catalog = PPTCatalog,
-                                               UserContent = userContent)
-        fileUUID = Tools.GetUUID()
-        fileName = PPTCatalog["主标题"] + ".pptx"
-        # 解析PPT内容
-        pptContent = PPTCatalog["主标题"] + PPTCatalog["副标题"]
-        for content in PPTCatalog["内容"]:
-            chapterTitle = content["章节标题"]
-            pptContent += f"章节标题：{chapterTitle}\n"
-            for chapterContent in content["章节内容"]:
-                pageTitle = chapterTitle["页标题"]
-                pptContent += f"页标题：{pageTitle}\n"
-                for pageContent in chapterContent["页内容"]:
-                    sectionTitle = pageContent["节标题"]
-                    sectionContent = pageContent["节内容"]
-                    pptContent += f"节标题{pageTitle}节内容{sectionContent}\n"
+            pptObj = PPTGenerator.generate_content(UUIDList = UUIDList,
+                                                   UserName = UserName,
+                                                   Catalog = PPTCatalog,
+                                                   UserContent = userContent)
+            fileUUID = Tools.GetUUID()
+            fileName = PPTCatalog["主标题"] + ".pptx"
+            # 解析PPT内容
+            pptContent = PPTCatalog["主标题"] + PPTCatalog["副标题"]
+            for content in PPTCatalog["内容"]:
+                chapterTitle = content["章节标题"]
+                pptContent += f"章节标题：{chapterTitle}\n"
+                for chapterContent in content["章节内容"]:
+                    pageTitle = chapterTitle["页标题"]
+                    pptContent += f"页标题：{pageTitle}\n"
+                    for pageContent in chapterContent["页内容"]:
+                        sectionTitle = pageContent["节标题"]
+                        sectionContent = pageContent["节内容"]
+                        pptContent += f"节标题{pageTitle}节内容{sectionContent}\n"
 
-        summaryText = LLMInterface.FileSummary(pptContent)
-        saveTime = Tools.GetSaveTime()
-        pptObj.save(os.path.join(fileSavePath, UserName, fileName))
-        FileProcess.SaveFileInfo(FileName = fileName,
-                                 Description = summaryText,
-                                 SaveTime = saveTime,
-                                 UserName = UserName,
-                                 UUID = fileUUID)
+            summaryText = LLMInterface.FileSummary(pptContent)
+            saveTime = Tools.GetSaveTime()
+            pptObj.save(os.path.join(fileSavePath, UserName, fileName))
+            FileProcess.SaveFileInfo(FileName = fileName,
+                                     Description = summaryText,
+                                     SaveTime = saveTime,
+                                     UserName = UserName,
+                                     UUID = fileUUID)
+
+        except Exception as e:
+            curTime = Tools.GetTime()
+            logging.error(f"[{curTime}]Module:[PPTMain]" + str(e))
+            raise e
 
 
     # PPT生成主流程，传入完整的PPT格式json，返回PPT文件对象
