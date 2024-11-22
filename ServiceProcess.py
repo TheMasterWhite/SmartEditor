@@ -624,7 +624,7 @@ def Register():
         cursor = conn.cursor()
 
         if Tools.ValidUsername(username) is False:
-            raise Exception("用户名长度限制3-10，只允许大小写字母和数字！")
+            raise Exception("用户名长度限制3-32，只允许大小写字母和数字！")
         if Tools.ValidPassword(password) is False:
             raise Exception("密码长度限制8-16，至少需要一个大小写字母和数字！")
         if username is None:

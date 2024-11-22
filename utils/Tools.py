@@ -59,7 +59,7 @@ def ValidPassword(Password):
 
 # 验证用户名合法性
 def ValidUsername(Username):
-    if len(Username) < 3 or len(Username) > 10:
+    if len(Username) < 3 or len(Username) > 32:
         return False
     return Username.isalnum()
 
