@@ -17,7 +17,7 @@ class PPTGenerator:
         requestData = request.json
         userContent = requestData.get("content", "")
         UUIDList = requestData.get("materialFiles", None)
-        PPTCatalog = requestData.get("materialFiles", None)
+        PPTCatalog = requestData.get("catalog", None)
 
         if UUIDList is None:
             raise Exception("必须传入素材文件!")
