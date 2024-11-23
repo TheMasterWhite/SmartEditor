@@ -60,41 +60,49 @@ class SlideOperator:
     # 插入图片
     @staticmethod
     def insert_image(Slide, PageSummary):
-        # 遍历所有图形，并替换图片
-        imageCount = 0
-        for shape in Slide.shapes:
-            # 替换目录内容
-            if shape.name == "图片":
-                imageCount = 1
-                break
-            elif shape.name == "图片1":
-                imageCount = 3
-                break
-        if imageCount == 0:
-            return
+        try:
+            # 遍历所有图形，并替换图片
+            imageCount = 0
+            for shape in Slide.shapes:
+                # 替换目录内容
+                if shape.name == "图片":
+                    imageCount = 1
+                    break
+                elif shape.name == "图片1":
+                    imageCount = 3
+                    break
+            if imageCount == 0:
+                return
 
-        promptPath = os.path.join(GLOBAL_ResourcesSavePath, "PPT配图.txt")
-        with open(promptPath, "r", encoding = "utf-8") as f:
-            prompt = f.read()
+            promptPath = os.path.join(GLOBAL_ResourcesSavePath, "PPT配图.txt")
+            with open(promptPath, "r", encoding = "utf-8") as f:
+                prompt = f.read()
 
-        if imageCount == 1:
-            prompt += PageSummary["标题"]
-            for content in PageSummary["内容"]:
-                prompt += content
-            imagePrompt = LLMInterface.GetResponse_String(prompt)
-            imageUrl = ImageGenerator.generate_image(Prompt = imagePrompt, Size = (540, 540))
-            savePath = ImageGenerator.download_image(imageUrl)
-            ImageGenerator.resize_image(ImagePath = savePath, size = (400, 400))
-            PPTGenerator.replace_image(Slide = Slide, ImagePath = savePath, ShapeName = "图片")
-
-        elif imageCount == 3:
-            prompt += PageSummary["标题"]
-            for i in range(3):
+            if imageCount == 1:
+                prompt += PageSummary["标题"]
+                for content in PageSummary["内容"]:
+                    prompt += content
                 imagePrompt = LLMInterface.GetResponse_String(prompt)
-                imageUrl = ImageGenerator.generate_image(Prompt = imagePrompt, Size = (640, 360))
+                imageUrl = ImageGenerator.generate_image(Prompt = imagePrompt, Size = (540, 540))
                 savePath = ImageGenerator.download_image(imageUrl)
-                ImageGenerator.resize_image(ImagePath = savePath, Size = (352, 198))
-                PPTGenerator.replace_image(Slide = Slide, ImagePath = savePath, ShapeName = f"图片{i}")
+                ImageGenerator.resize_image(ImagePath = savePath, size = (400, 400))
+                PPTGenerator.replace_image(Slide = Slide, ImagePath = savePath, ShapeName = "图片")
+                logging.info(f"90")
+
+            elif imageCount == 3:
+                prompt += PageSummary["标题"]
+                for i in range(3):
+                    imagePrompt = LLMInterface.GetResponse_String(prompt)
+                    imageUrl = ImageGenerator.generate_image(Prompt = imagePrompt, Size = (640, 360))
+                    savePath = ImageGenerator.download_image(imageUrl)
+                    ImageGenerator.resize_image(ImagePath = savePath, Size = (352, 198))
+                    PPTGenerator.replace_image(Slide = Slide, ImagePath = savePath, ShapeName = f"图片{i}")
+                    logging.info(f"99  {i}")
+
+        except Exception as e:
+            curTime = Tools.GetTime()
+            logging.error(f"[{curTime}]Module:[InsertImage]" + str(e))
+            raise e
 
 
 # PPT生成器类
