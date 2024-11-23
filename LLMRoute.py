@@ -765,14 +765,13 @@ def PPTGenerate():
             userName = valInfo["username"]
 
         requestData = request.json
-        a = PPTGenerator.main_process(RequestData = requestData, UserName = userName)
-        # retObj = {
-        #     "statusCode": 1,
-        #     "requestTime": curTime,
-        #     "response": "success"
-        # }
-        # return jsonify(retObj)
-        return a
+        PPTGenerator.main_process(RequestData = requestData, UserName = userName)
+        retObj = {
+            "statusCode": 1,
+            "requestTime": curTime,
+            "response": "success"
+        }
+        return jsonify(retObj)
 
     except Exception as e:
         curTime = Tools.GetTime()

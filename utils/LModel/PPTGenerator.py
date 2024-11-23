@@ -28,9 +28,8 @@ class PPTGenerator:
                                                        UserName = UserName,
                                                        Catalog = PPTCatalog,
                                                        UserContent = userContent)
-            return pptContent
             templatePath = os.path.join(GLOBAL_ResourcesSavePath, "模版.pptx")
-            pptObj = PPTGenerator.generate_ppt(PPTContent = textContent, TemplatePath = templatePath)
+            pptObj = PPTGenerator.generate_ppt(PPTContent = pptContent, TemplatePath = templatePath)
 
             fileUUID = Tools.GetUUID()
             fileName = pptContent["主标题"] + ".pptx"
