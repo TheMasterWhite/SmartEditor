@@ -190,16 +190,16 @@ class PPTGenerator:
 
             response = Catalog
             contentList = []
-            for section in response["内容"]:
+            for chapter in response["内容"]:
                 sectionContent = ""
                 cnt = 0
-                title = section["章节标题"]
-                for contentTitle in section["章节内容"]:
+                chapterTitle = chapter["章节标题"]
+                for pageTitle in chapter["章节内容"]:
                     cnt += 1
-                    sectionContent += str(cnt) + "." + contentTitle + "\n"
-                sectionContent = f"章节标题：{title}\n页标题:\n{sectionContent}\n"
+                    sectionContent += str(cnt) + "." + pageTitle + "\n"
+                chapterContent = f"章节标题：{chapterTitle}\n页标题:\n{sectionContent}\n"
                 sep = "[用户输入内容]" + "\n" + material
-                finalPrompt = prompt + sectionContent + sep
+                finalPrompt = prompt + chapterContent + sep
                 resp = LLMInterface.GetResponse_String(finalPrompt)[8:-4]
                 contentList.append(json.loads(resp))
 
