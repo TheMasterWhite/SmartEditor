@@ -765,7 +765,11 @@ def PPTGenerate():
             userName = valInfo["username"]
 
         requestData = request.json
-        PPTGenerator.main_process(RequestData = requestData, UserName = userName)
+        # PPTGenerator.main_process(RequestData = requestData, UserName = userName)
+
+        thread = Thread(target = PPTGenerator.main_process, args = (requestData, userName))
+        thread.start()
+
         curTime = Tools.GetTime()
         retObj = {
             "statusCode": 1,
