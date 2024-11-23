@@ -49,16 +49,15 @@ class ImageGenerator():
         maxRetries = 5
         for attempt in range(maxRetries):
             try:
-                erniebot.api_type = "yinian"
-                erniebot.access_token = ImageGenerator.get_access_token_image()
-
                 promptPath = os.path.join(GLOBAL_ResourcesSavePath, "PPT配图.txt")
                 with open(promptPath, "r", encoding = "utf-8") as f:
                     prompt = f.read()
                 prompt += Content
-
+                print(prompt)
                 imagePrompt = LLMInterface.GetResponse_String(prompt)
                 print(imagePrompt)
+                erniebot.api_type = "yinian"
+                erniebot.access_token = ImageGenerator.get_access_token_image()
                 response = erniebot.Image.create(model = "ernie-vilg-v2",
                                                  prompt = imagePrompt,
                                                  width = Size[0],
