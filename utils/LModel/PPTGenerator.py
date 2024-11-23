@@ -87,7 +87,7 @@ class SlideOperator:
                 logging.info(imagePrompt)
                 imageUrl = ImageGenerator.generate_image(Prompt = imagePrompt, Size = (512, 512))
                 savePath = ImageGenerator.download_image(imageUrl)
-                ImageGenerator.resize_image(ImagePath = savePath, size = (400, 400))
+                ImageGenerator.resize_image(ImagePath = savePath, Size = (400, 400))
                 PPTGenerator.replace_image(Slide = Slide, ImagePath = savePath, ShapeName = "图片")
                 logging.info("replaced count1")
 
