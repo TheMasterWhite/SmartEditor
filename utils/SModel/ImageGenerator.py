@@ -24,7 +24,6 @@ class ImageGenerator():
     @staticmethod
     def generate_image(Prompt, Size):
         try:
-            logging.info(f"Prompt:{Prompt}")
             erniebot.api_type = "yinian"
             erniebot.access_token = ImageGenerator.get_access_token_image()
             response = erniebot.Image.create(model = "ernie-vilg-v2",
@@ -34,6 +33,7 @@ class ImageGenerator():
                                              version = "v2",
                                              image_num = 1)
             url = response.get_result()[0]
+            curTime = Tools.GetTime()
             logging.info(f"[{curTime}]PPT image generated")
             return url
 
