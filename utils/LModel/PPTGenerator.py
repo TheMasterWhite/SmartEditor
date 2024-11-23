@@ -36,7 +36,7 @@ class PPTOperator:
         for shape in Slide.shapes:
             # 替换目录内容
             if shape.name == shapeName:
-                replace_text(shape, Content)
+                PPTOperator.replace_text(shape, Content)
 
 
     # 根据下标删除某一页的幻灯片
@@ -128,17 +128,13 @@ class PPTGenerator(PPTOperator):
                 PPTGenerator.replace_shape(Slide = catelogSlide,
                                            shapeName = f"目录内容{catelogIndex}",
                                            Content = content["章节标题"])
-            logging.info("131")
             # 删除模版中多余的目录信息
             for i in range(chapterCount + 1, 7):
                 for shape in [i for i in catelogSlide.shapes]:
                     if shape.name == f"目录内容{i}":
-                        logging.info("135")
                         PPTGenerator.replace_text(shape, "")
                     elif shape.name == f"目录编号{i}":
-                        logging.info("139")
                         PPTGenerator.replace_text(shape, "")
-            logging.info("141")
             ############################################################
             # 处理当前章节首页
             # 遍历文本内容中的所有章节
