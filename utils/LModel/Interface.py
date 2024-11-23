@@ -15,6 +15,7 @@ class LLMBasic:  # 大模型基本通信接口类
 
         try:
             erniebot.api_type = "aistudio"
+            erniebot.access_token = GLOBAL_ERNIETOKEN
             Parameter = [{"role": "user", "content": Prompt}]
             Response = erniebot.ChatCompletion.create(
                 model = "ernie-4.0",
@@ -32,6 +33,7 @@ class LLMBasic:  # 大模型基本通信接口类
 
         try:
             erniebot.api_type = "aistudio"
+            erniebot.access_token = GLOBAL_ERNIETOKEN
             Parameter = [{"role": "user", "content": Prompt}]
             Response = erniebot.ChatCompletion.create(
                 model = "ernie-4.0",
@@ -51,6 +53,7 @@ class LLMBasic:  # 大模型基本通信接口类
 
         try:
             erniebot.api_type = "aistudio"
+            erniebot.access_token = GLOBAL_ERNIETOKEN
             Response = erniebot.ChatCompletion.create(
                 model = "ernie-4.0",
                 messages = ListPrompt,
@@ -67,6 +70,7 @@ class LLMBasic:  # 大模型基本通信接口类
 
         try:
             erniebot.api_type = "aistudio"
+            erniebot.access_token = GLOBAL_ERNIETOKEN
             Response = erniebot.ChatCompletion.create(
                 model = "ernie-4.0",
                 messages = ListPrompt,
