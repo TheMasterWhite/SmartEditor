@@ -10,12 +10,22 @@ import cv2
 
 class ImageGenerator():
 
+    # 百度智能云获取access_token
+    @staticmethod
+    def get_access_token_image():  # 百度智能云获取access_token
+        url = "https://aip.baidubce.com/oauth/2.0/token"
+        params = {"grant_type": "client_credentials",
+                  "client_id": GLOBAL_Baidu_Image_AK,
+                  "client_secret": GLOBAL_Baidu_Image_SK}
+        return str(requests.post(url, params = params).json().get("access_token"))
+
+
     # 图片生成，返回图片url
     @staticmethod
     def generate_image(Prompt, Size):
         try:
             erniebot.api_type = "yinian"
-            erniebot.access_token = GetAccessToken_Image()
+            erniebot.access_token = ImageGenerator.get_access_token_image()
             response = erniebot.Image.create(model = "ernie-vilg-v2",
                                              prompt = Prompt,
                                              width = Size[0],

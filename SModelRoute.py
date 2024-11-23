@@ -11,7 +11,7 @@ SModelBlueprint = Blueprint("SModelBlueprint", __name__, url_prefix = "/SModelIn
 fileSavePath = copy.deepcopy(GLOBAL_FileSavePath)
 
 
-def GetAccessToken_Image():  # 百度智能云获取access_token
+def GetAccessToken_Image():
     url = "https://aip.baidubce.com/oauth/2.0/token"
     params = {"grant_type": "client_credentials",
               "client_id": GLOBAL_Baidu_Image_AK,
