@@ -235,7 +235,7 @@ class PPTGenerator(SlideOperator):
                 PPTGenerator.delete_slide(prs, i)
 
             curTime = Tools.GetTime()
-            logging.info(f"[{curTime}]PPT generate successed.")
+            logging.info(f"[{curTime}]PPT file generate successed.")
             return prs
 
         except Exception as e:
