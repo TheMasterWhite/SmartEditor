@@ -53,9 +53,8 @@ class ImageGenerator():
                 with open(promptPath, "r", encoding = "utf-8") as f:
                     prompt = f.read()
                 prompt += Content
-                print(prompt)
                 imagePrompt = LLMInterface.GetResponse_String(prompt)
-                print(imagePrompt)
+                logging.info(imagePrompt)
                 erniebot.api_type = "yinian"
                 erniebot.access_token = ImageGenerator.get_access_token_image()
                 response = erniebot.Image.create(model = "ernie-vilg-v2",
