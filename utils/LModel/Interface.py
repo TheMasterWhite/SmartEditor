@@ -14,6 +14,7 @@ class LLMBasic:  # 大模型基本通信接口类
     def GetResponse_String(Prompt):
 
         try:
+            erniebot.api_type = "aistudio"
             Parameter = [{"role": "user", "content": Prompt}]
             Response = erniebot.ChatCompletion.create(
                 model = "ernie-4.0",
@@ -30,6 +31,7 @@ class LLMBasic:  # 大模型基本通信接口类
     def GetResponseStream_String(Prompt):
 
         try:
+            erniebot.api_type = "aistudio"
             Parameter = [{"role": "user", "content": Prompt}]
             Response = erniebot.ChatCompletion.create(
                 model = "ernie-4.0",
@@ -48,6 +50,7 @@ class LLMBasic:  # 大模型基本通信接口类
     def GetResponse_List(ListPrompt):
 
         try:
+            erniebot.api_type = "aistudio"
             Response = erniebot.ChatCompletion.create(
                 model = "ernie-4.0",
                 messages = ListPrompt,
@@ -63,6 +66,7 @@ class LLMBasic:  # 大模型基本通信接口类
     def GetResponseStream_List(ListPrompt):
 
         try:
+            erniebot.api_type = "aistudio"
             Response = erniebot.ChatCompletion.create(
                 model = "ernie-4.0",
                 messages = ListPrompt,
