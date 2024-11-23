@@ -60,7 +60,7 @@ class ImageGenerator():
     @staticmethod
     def download_image(ImageUrl):
         try:
-            with requests.get(Url, stream = True) as r:
+            with requests.get(ImageUrl, stream = True) as r:
                 r.raise_for_status()  # 确保请求成功
                 savePath = os.path.join(GLOBAL_ResourcesSavePath, "PPTImage.jpg")
                 with open(savePath, 'wb') as f:
