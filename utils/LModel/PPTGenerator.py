@@ -83,6 +83,7 @@ class SlideOperator:
                 for content in PageSummary["内容"]:
                     prompt += content
                 imagePrompt = LLMInterface.GetResponse_String(prompt)
+                logging.info(imagePrompt)
                 imageUrl = ImageGenerator.generate_image(Prompt = imagePrompt, Size = (540, 540))
                 savePath = ImageGenerator.download_image(imageUrl)
                 ImageGenerator.resize_image(ImagePath = savePath, size = (400, 400))
@@ -93,6 +94,7 @@ class SlideOperator:
                 prompt += PageSummary["标题"]
                 for i in range(3):
                     imagePrompt = LLMInterface.GetResponse_String(prompt)
+                    logging.info(imagePrompt)
                     imageUrl = ImageGenerator.generate_image(Prompt = imagePrompt, Size = (640, 360))
                     savePath = ImageGenerator.download_image(imageUrl)
                     ImageGenerator.resize_image(ImagePath = savePath, Size = (352, 198))
