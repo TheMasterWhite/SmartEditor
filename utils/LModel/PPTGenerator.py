@@ -83,7 +83,6 @@ class SlideOperator:
                 savePath = ImageGenerator.download_image(imageUrl)
                 ImageGenerator.resize_image(ImagePath = savePath, Size = (400, 400))
                 PPTGenerator.replace_image(Slide = Slide, ImagePath = savePath, ShapeName = "图片")
-                logging.info("replaced count1")
 
             elif imageCount == 3:
                 for i in range(1, 4):
@@ -92,7 +91,6 @@ class SlideOperator:
                     savePath = ImageGenerator.download_image(imageUrl)
                     ImageGenerator.resize_image(ImagePath = savePath, Size = (352, 198))
                     PPTGenerator.replace_image(Slide = Slide, ImagePath = savePath, ShapeName = f"图片{i}")
-                    logging.info(f"103replacedPic{i}")
 
         except Exception as e:
             curTime = Tools.GetTime()

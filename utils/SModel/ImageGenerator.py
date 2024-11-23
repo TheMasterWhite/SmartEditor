@@ -54,7 +54,6 @@ class ImageGenerator():
                     prompt = f.read()
                 prompt += Content
                 imagePrompt = LLMInterface.GetResponse_String(prompt)
-                logging.info(imagePrompt)
                 erniebot.api_type = "yinian"
                 erniebot.access_token = ImageGenerator.get_access_token_image()
                 response = erniebot.Image.create(model = "ernie-vilg-v2",
@@ -65,7 +64,6 @@ class ImageGenerator():
                                                  image_num = 1)
                 url = response.get_result()[0]
                 curTime = Tools.GetTime()
-                logging.info(f"[{curTime}]PPT image generated")
                 return url
 
             except Exception as e:
