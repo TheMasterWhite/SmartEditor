@@ -24,6 +24,7 @@ class ImageGenerator():
     @staticmethod
     def generate_image(Prompt, Size):
         try:
+            logging.info(f"Prompt:{Prompt}")
             erniebot.api_type = "yinian"
             erniebot.access_token = ImageGenerator.get_access_token_image()
             response = erniebot.Image.create(model = "ernie-vilg-v2",
