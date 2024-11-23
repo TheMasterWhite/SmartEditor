@@ -7,6 +7,7 @@ from utils.LModel.PPTGenerator import PPTGenerator
 from utils.Config.FileProcess import *
 from utils.Config.PMTProcess import *
 from utils import Tools
+from threading import Thread
 
 LLMBlueprint = Blueprint("LLMBlueprint", __name__, url_prefix = '/LLMInterface')
 fileSavePath = copy.deepcopy(GLOBAL_FileSavePath)
