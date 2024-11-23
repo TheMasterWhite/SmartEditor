@@ -23,6 +23,7 @@ class ImageGenerator():
                                              version = "v2",
                                              image_num = 1)
             url = response.get_result()[0]
+            logging.info(f"[{curTime}]PPT image generated")
             return url
 
         except Exception as e:
@@ -56,6 +57,8 @@ class ImageGenerator():
                         # 如果是有效的chunk，写入到文件中
                         if chunk:
                             f.write(chunk)
+            curTime = Tools.GetTime()
+            logging.info(f"[{curTime}]PPT image downloaded")
             return savePath
 
         except Exception as e:
