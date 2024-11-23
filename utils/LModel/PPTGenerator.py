@@ -83,7 +83,7 @@ class SlideOperator:
                 prompt += content
             imagePrompt = LLMInterface.GetResponse_String(prompt)
             imageUrl = ImageGenerator.generate_image(Prompt = imagePrompt, Size = (540, 540))
-            savePath = ImageGenerator.download_image(imageUrl = imageUrl)
+            savePath = ImageGenerator.download_image(imageUrl)
             ImageGenerator.resize_image(ImagePath = savePath, size = (400, 400))
             PPTGenerator.replace_image(Slide = Slide, ImagePath = savePath, ShapeName = "图片")
 
@@ -92,7 +92,7 @@ class SlideOperator:
             for i in range(3):
                 imagePrompt = LLMInterface.GetResponse_String(prompt)
                 imageUrl = ImageGenerator.generate_image(Prompt = imagePrompt, Size = (640, 360))
-                savePath = ImageGenerator.download_image(imageUrl = imageUrl)
+                savePath = ImageGenerator.download_image(imageUrl)
                 ImageGenerator.resize_image(ImagePath = savePath, size = (352, 198))
                 PPTGenerator.replace_image(Slide = Slide, ImagePath = savePath, ShapeName = f"图片{i}")
 
