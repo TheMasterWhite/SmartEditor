@@ -88,6 +88,7 @@ class PPTGenerator(PPTOperator):
             summaryText = LLMInterface.FileSummary(textContent)
             saveTime = Tools.GetSaveTime()
             pptObj.save(os.path.join(fileSavePath, UserName, fileUUID + ".pptx"))
+            FileProcess.SaveTxt(UUID = fileUUID, Content = textContent, UserName = UserName)
             FileProcess.SaveFileInfo(FileName = fileName,
                                      Description = summaryText,
                                      SaveTime = saveTime,
