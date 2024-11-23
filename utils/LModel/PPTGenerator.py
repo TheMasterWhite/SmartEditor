@@ -35,8 +35,8 @@ class SlideOperator:
     def replace_image(Slide, ImagePath, ShapeName):
         for shape in Slide.shapes:
             if shape.name == ShapeName:
-                slide.shapes._spTree.remove(shape._element)
-                slide.shapes.add_picture(ImagePath, shape.left, shape.top, shape.width, shape.height)
+                Slide.shapes._spTree.remove(shape._element)
+                Slide.shapes.add_picture(ImagePath, shape.left, shape.top, shape.width, shape.height)
 
 
     # 根据形状名字替换文本
