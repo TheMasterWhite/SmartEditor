@@ -46,32 +46,37 @@ class ImageGenerator():
     # 为ppt图片图片，返回图片url
     @staticmethod
     def generate_image_ppt(Content, Size):
-        try:
-            erniebot.api_type = "yinian"
-            erniebot.access_token = ImageGenerator.get_access_token_image()
+        maxRetries = 5
+        for attempt in range(maxRetries):
+            try:
+                erniebot.api_type = "yinian"
+                erniebot.access_token = ImageGenerator.get_access_token_image()
 
-            promptPath = os.path.join(GLOBAL_ResourcesSavePath, "PPT配图.txt")
-            with open(promptPath, "r", encoding = "utf-8") as f:
-                prompt = f.read()
-            prompt += Content
+                promptPath = os.path.join(GLOBAL_ResourcesSavePath, "PPT配图.txt")
+                with open(promptPath, "r", encoding = "utf-8") as f:
+                    prompt = f.read()
+                prompt += Content
 
-            imagePrompt = LLMInterface.GetResponse_String(prompt)
-            print(imagePrompt)
-            response = erniebot.Image.create(model = "ernie-vilg-v2",
-                                             prompt = imagePrompt,
-                                             width = Size[0],
-                                             height = Size[1],
-                                             version = "v2",
-                                             image_num = 1)
-            url = response.get_result()[0]
-            curTime = Tools.GetTime()
-            logging.info(f"[{curTime}]PPT image generated")
-            return url
+                imagePrompt = LLMInterface.GetResponse_String(prompt)
+                print(imagePrompt)
+                response = erniebot.Image.create(model = "ernie-vilg-v2",
+                                                 prompt = imagePrompt,
+                                                 width = Size[0],
+                                                 height = Size[1],
+                                                 version = "v2",
+                                                 image_num = 1)
+                url = response.get_result()[0]
+                curTime = Tools.GetTime()
+                logging.info(f"[{curTime}]PPT image generated")
+                return url
 
-        except Exception as e:
-            curTime = Tools.GetTime()
-            logging.error(f"[{curTime}]Module:[GenImage]" + str(e))
-            raise e
+            except Exception as e:
+                curTime = Tools.GetTime()
+                if attempt < maxRetries - 1:
+                    sleep(1)
+                else:
+                    logging.error(f"[{curTime}]Module:[GenImage]" + str(e))
+                    raise e
 
 
     # 调整图像大小
