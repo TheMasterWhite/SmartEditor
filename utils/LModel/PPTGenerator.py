@@ -9,8 +9,46 @@ from pptx import Presentation
 fileSavePath = copy.deepcopy(GLOBAL_FileSavePath)
 
 
+# PPT操作器类
+class PPTOperator:
+
+    # 替换文本并保留格式
+    @staticmethod
+    def replace_text(shape, content):
+        if not shape.has_text_frame:  # 判断是否有文本框
+            return
+        tf = shape.text_frame
+        for paragraph in tf.paragraphs:
+            is_first_run = True
+            for run in paragraph.runs:
+                if is_first_run:
+                    run.text = content
+                    is_first_run = False
+                else:
+                    run.text = ""
+
+
+    # 替换某个特定形状的文本内容
+    @staticmethod
+    def replace_shape(Slide, shapeName, Content):
+        # 遍历所有图形，并替换对应章节
+        for shape in Slide.shapes:
+            # 替换目录内容
+            if shape.name == shapeName:
+                replace_text(shape, Content)
+
+
+    # 根据下标删除某一页的幻灯片
+    @staticmethod
+    def delete_slide(Prs, Index):
+        rid = Prs.slides._sldIdLst[Index].rId
+        Prs.part.drop_rel(rid)
+        del Prs.slides._sldIdLst[Index]
+        return Prs
+
+
 # PPT生成器类
-class PPTGenerator:
+class PPTGenerator(PPTOperator):
 
     @staticmethod
     def main_process(RequestData, UserName):
@@ -212,38 +250,3 @@ class PPTGenerator:
             curTime = Tools.GetTime()
             logging.error(f"[{curTime}]Module:[GenPPTContent]" + str(e))
             raise e
-
-
-    # 替换文本并保留格式
-    @staticmethod
-    def replace_text(shape, content):
-        if not shape.has_text_frame:  # 判断是否有文本框
-            return
-        tf = shape.text_frame
-        for paragraph in tf.paragraphs:
-            is_first_run = True
-            for run in paragraph.runs:
-                if is_first_run:
-                    run.text = content
-                    is_first_run = False
-                else:
-                    run.text = ""
-
-
-    # 替换某个特定形状的文本内容
-    @staticmethod
-    def replace_shape(Slide, shapeName, Content):
-        # 遍历所有图形，并替换对应章节
-        for shape in Slide.shapes:
-            # 替换目录内容
-            if shape.name == shapeName:
-                replace_text(shape, Content)
-
-
-    # 根据下标删除某一页的幻灯片
-    @staticmethod
-    def delete_slide(Prs, Index):
-        rid = Prs.slides._sldIdLst[Index].rId
-        Prs.part.drop_rel(rid)
-        del Prs.slides._sldIdLst[Index]
-        return Prs
