@@ -89,18 +89,18 @@ class SlideOperator:
                 savePath = ImageGenerator.download_image(imageUrl)
                 ImageGenerator.resize_image(ImagePath = savePath, size = (400, 400))
                 PPTGenerator.replace_image(Slide = Slide, ImagePath = savePath, ShapeName = "图片")
-                logging.info(f"90")
+                logging.info("replaced count1")
 
             elif imageCount == 3:
                 prompt += PageSummary["标题"]
-                for i in range(3):
+                for i in range(1, 4):
                     imagePrompt = LLMInterface.GetResponse_String(prompt)
-                    logging.info(imagePrompt)
+                    logging.info(f"98{imagePrompt}")
                     imageUrl = ImageGenerator.generate_image(Prompt = imagePrompt, Size = (640, 360))
                     savePath = ImageGenerator.download_image(imageUrl)
                     ImageGenerator.resize_image(ImagePath = savePath, Size = (352, 198))
                     PPTGenerator.replace_image(Slide = Slide, ImagePath = savePath, ShapeName = f"图片{i}")
-                    logging.info(f"99  {i}")
+                    logging.info(f"103replacePic{i}")
 
         except Exception as e:
             curTime = Tools.GetTime()
