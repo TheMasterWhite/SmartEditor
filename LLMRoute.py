@@ -766,6 +766,7 @@ def PPTGenerate():
 
         requestData = request.json
         PPTGenerator.main_process(RequestData = requestData, UserName = userName)
+        curTime = Tools.GetTime()
         retObj = {
             "statusCode": 1,
             "requestTime": curTime,
