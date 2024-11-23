@@ -73,7 +73,7 @@ class ImageGenerator():
             except Exception as e:
                 curTime = Tools.GetTime()
                 if attempt < maxRetries - 1:
-                    sleep(1)
+                    logging.info(f"[{curTime}]PPT image generate failed, tried {attempt + 1}")
                 else:
                     logging.error(f"[{curTime}]Module:[GenImage]" + str(e))
                     raise e
