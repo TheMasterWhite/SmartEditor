@@ -85,7 +85,7 @@ class SlideOperator:
                     prompt += content
                 imagePrompt = LLMInterface.GetResponse_String(prompt)
                 logging.info(imagePrompt)
-                imageUrl = ImageGenerator.generate_image(Prompt = imagePrompt, Size = (540, 540))
+                imageUrl = ImageGenerator.generate_image(Prompt = imagePrompt, Size = (512, 512))
                 savePath = ImageGenerator.download_image(imageUrl)
                 ImageGenerator.resize_image(ImagePath = savePath, size = (400, 400))
                 PPTGenerator.replace_image(Slide = Slide, ImagePath = savePath, ShapeName = "图片")
