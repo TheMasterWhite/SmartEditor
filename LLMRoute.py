@@ -765,15 +765,14 @@ def PPTGenerate():
             userName = valInfo["username"]
 
         requestData = request.json
-        PPTGenerator.main_process(RequestData = requestData, UserName = userName)
-        curTime = Tools.GetTime()
-        logging.info(f"[{curTime}]Generate PPT generate successed.")
-        retObj = {
-            "statusCode": 1,
-            "requestTime": curTime,
-            "response": "success"
-        }
-        return jsonify(retObj)
+        a = PPTGenerator.main_process(RequestData = requestData, UserName = userName)
+        # retObj = {
+        #     "statusCode": 1,
+        #     "requestTime": curTime,
+        #     "response": "success"
+        # }
+        # return jsonify(retObj)
+        return a
 
     except Exception as e:
         curTime = Tools.GetTime()

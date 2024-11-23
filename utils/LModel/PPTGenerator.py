@@ -28,6 +28,7 @@ class PPTGenerator:
                                                        UserName = UserName,
                                                        Catalog = PPTCatalog,
                                                        UserContent = userContent)
+            return pptContent
             templatePath = os.path.join(GLOBAL_ResourcesSavePath, "模版.pptx")
             pptObj = PPTGenerator.generate_ppt(PPTContent = textContent, TemplatePath = templatePath)
 
@@ -136,6 +137,9 @@ class PPTGenerator:
             startIndex = 2 + chapterCount * 4
             for i in range(25, startIndex - 1, -1):
                 PPTGenerator.delete_slide(prs, i)
+
+            curTime = Tools.GetTime()
+            logging.info(f"[{curTime}]PPT generate successed.")
             return prs
 
         except Exception as e:
@@ -161,6 +165,8 @@ class PPTGenerator:
             response = LLMInterface.GetResponse_String(prompt + material)[8:-4]
             catalog = json.loads(response)
             catalog["汇报人"] = f"{UserName}"
+            curTime = Tools.GetTime()
+            logging.info(f"[{curTime}]PPT catalog generation finished")
             return catalog
 
         except Exception as e:
@@ -199,6 +205,8 @@ class PPTGenerator:
                 contentList.append(json.loads(resp))
 
             response["内容"] = contentList
+            curTime = Tools.GetTime()
+            logging.info(f"[{curTime}]PPT content generation finished")
             return response
 
         except Exception as e:
