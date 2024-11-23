@@ -75,32 +75,24 @@ class SlideOperator:
             if imageCount == 0:
                 return
 
-            promptPath = os.path.join(GLOBAL_ResourcesSavePath, "PPT配图.txt")
-            with open(promptPath, "r", encoding = "utf-8") as f:
-                prompt = f.read()
-
+            contentText = PageSummary["标题"]
             if imageCount == 1:
-                prompt += PageSummary["标题"]
                 for content in PageSummary["内容"]:
-                    prompt += content
-                imagePrompt = LLMInterface.GetResponse_String(prompt)
-                logging.info(imagePrompt)
-                imageUrl = ImageGenerator.generate_image(Prompt = imagePrompt, Size = (512, 512))
+                    contentText += content
+                imageUrl = ImageGenerator.generate_image_ppt(Content = contentText, Size = (512, 512))
                 savePath = ImageGenerator.download_image(imageUrl)
                 ImageGenerator.resize_image(ImagePath = savePath, Size = (400, 400))
                 PPTGenerator.replace_image(Slide = Slide, ImagePath = savePath, ShapeName = "图片")
                 logging.info("replaced count1")
 
             elif imageCount == 3:
-                prompt += PageSummary["标题"]
                 for i in range(1, 4):
-                    imagePrompt = LLMInterface.GetResponse_String(prompt)
-                    logging.info(f"98{imagePrompt}")
-                    imageUrl = ImageGenerator.generate_image(Prompt = imagePrompt, Size = (640, 360))
+                    contentText = PageSummary["标题"] + PageSummary["内容"][i - 1]
+                    imageUrl = ImageGenerator.generate_image_ppt(Content = contentText, Size = (640, 360))
                     savePath = ImageGenerator.download_image(imageUrl)
                     ImageGenerator.resize_image(ImagePath = savePath, Size = (352, 198))
                     PPTGenerator.replace_image(Slide = Slide, ImagePath = savePath, ShapeName = f"图片{i}")
-                    logging.info(f"103replacePic{i}")
+                    logging.info(f"103replacedPic{i}")
 
         except Exception as e:
             curTime = Tools.GetTime()
