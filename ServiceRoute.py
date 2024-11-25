@@ -206,7 +206,7 @@ def DownloadFile():
         else:
             userName = valInfo["username"]
 
-        fileUUID = request.args.get('uuid')
+        fileUUID = request.args.get("uuid")
         fullFileName = FileProcess.GetFileInfo(UUID = fileUUID, UserName = userName)
         # 文件不存在
         if fullFileName is None:

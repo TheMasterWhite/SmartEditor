@@ -788,3 +788,52 @@ def PPTGenerate():
             "response": str(e)
         }
         return jsonify(retObj)
+
+
+# 首页AI写作接口
+@LLMBlueprint.route("/AIWriting", methods = ["POST"])
+def AIWriting():
+    try:
+
+        requestData = request.json
+        content = requestData["content"]
+        response = LLMInterface.GetResponse_String(content)
+
+        curTime = Tools.GetTime()
+        retObj = {
+            "statusCode": 1,
+            "requestTime": curTime,
+            "response": response
+        }
+        return jsonify(retObj)
+
+    except Exception as e:
+        curTime = Tools.GetTime()
+        logging.error(f"[{curTime}]Module:[AIWriting]" + str(e))
+        retObj = {
+            "statusCode": 0,
+            "requestTime": curTime,
+            "response": str(e)
+        }
+        return jsonify(retObj)
+
+
+# 首页AI写作接口
+@LLMBlueprint.route("/AIWritingStream", methods = ["POST"])
+def AIWritingStream():
+    try:
+        requestData = request.json
+        content = requestData["content"]
+        responseStream = LLMInterface.GetResponseStream_String(content)
+        curTime = Tools.GetTime()
+        return Response(stream_with_context(responseStream))
+
+    except Exception as e:
+        curTime = Tools.GetTime()
+        logging.error(f"[{curTime}]Module:[AIWritingStream]" + str(e))
+        retObj = {
+            "statusCode": 0,
+            "requestTime": curTime,
+            "response": str(e)
+        }
+        return jsonify(retObj)

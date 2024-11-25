@@ -238,7 +238,6 @@ class LLMInterface(LLMBasic):  # 大模型高级功能接口类
     # 检查输入内容与知识库的差异，传入目标文本和初始化之后的列表
     @staticmethod
     def Check_List(Tartext, KnowledgeList):
-
         try:
             promptText = GetPrompt().Data()["FunctionPrompt"]["Check"]
             promptText += Tartext
@@ -252,7 +251,6 @@ class LLMInterface(LLMBasic):  # 大模型高级功能接口类
     # 检查输入内容与知识库的差异，传入目标文本和初始化之后的列表，返回迭代器
     @staticmethod
     def CheckStream_List(Tartext, KnowledgeList):
-
         try:
             promptText = GetPrompt().Data()["FunctionPrompt"]["Check"]
             promptText += Tartext
@@ -284,10 +282,34 @@ class LLMInterface(LLMBasic):  # 大模型高级功能接口类
             raise e
 
 
+    # 生成文件名
     @staticmethod
     def GetFileName(FileText):
         try:
             promptText = GetPrompt().Data()["FunctionPrompt"]["GetFileName"] + FileText
             return LLMBasic.GetResponse_String(promptText)
+        except Exception as e:
+            raise e
+
+
+    @staticmethod
+    def AIWriting(Tartext):
+        try:
+            promptText = GetPrompt().Data()["FunctionPrompt"]["Check"]
+            promptText += Tartext
+            return LLMBasic.GetResponse_String(promptText)
+
+        except Exception as e:
+            raise e
+
+
+    @staticmethod
+    def AIWriting_Stream(Tartext):
+        try:
+            promptText = GetPrompt().Data()["FunctionPrompt"]["Check"]
+            promptText += Tartext
+            for i in LLMBasic.GetResponseStream_String(promptText):
+                yield i
+
         except Exception as e:
             raise e

@@ -43,7 +43,7 @@ class ImageGenerator():
             raise e
 
 
-    # 为ppt图片图片，返回图片url
+    # 为ppt生成图片，返回图片url
     @staticmethod
     def generate_image_ppt(Content, Size):
         maxRetries = 5
@@ -53,15 +53,9 @@ class ImageGenerator():
                 with open(promptPath, "r", encoding = "utf-8") as f:
                     prompt = f.read()
                 prompt += Content
+
                 imagePrompt = LLMInterface.GetResponse_String(prompt)
-                erniebot.api_type = "yinian"
-                erniebot.access_token = ImageGenerator.get_access_token_image()
-                response = erniebot.Image.create(model = "ernie-vilg-v2",
-                                                 prompt = imagePrompt,
-                                                 width = Size[0],
-                                                 height = Size[1],
-                                                 version = "v2",
-                                                 image_num = 1)
+                response = ImageGenerator.generate_image(Prompt = imagePrompt, Size = Size)
                 url = response.get_result()[0]
                 curTime = Tools.GetTime()
                 return url
