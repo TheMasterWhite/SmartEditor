@@ -337,7 +337,7 @@ def DeleteFile():
 
         # 判断文件存不存在
         if not os.path.exists(filePath):
-            raise FileNotFoundError(f"File does not exist.")
+            raise FileNotFoundError(f"{filePath}File does not exist.")
 
         else:
             fullFileName = FileProcess.GetFileInfo(UUID = fileUUID, UserName = userName)
