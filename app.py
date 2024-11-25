@@ -5,7 +5,7 @@ from wsgiref.simple_server import WSGIServer
 from Config import *
 from LLMRoute import LLMBlueprint
 from SModelRoute import SModelBlueprint
-from ServiceProcess import ServiceProcessBlueprint
+from ServiceRoute import ServiceProcessBlueprint
 from utils.SModel.STT import TaskThread
 from utils import Tools
 
