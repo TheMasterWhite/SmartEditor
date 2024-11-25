@@ -55,9 +55,7 @@ class ImageGenerator():
                 prompt += Content
 
                 imagePrompt = LLMInterface.GetResponse_String(prompt)
-                response = ImageGenerator.generate_image(Prompt = imagePrompt, Size = Size)
-                url = response.get_result()[0]
-                curTime = Tools.GetTime()
+                url = ImageGenerator.generate_image(Prompt = imagePrompt, Size = Size)
                 return url
 
             except Exception as e:
@@ -65,7 +63,7 @@ class ImageGenerator():
                 if attempt < maxRetries - 1:
                     logging.info(f"[{curTime}]PPT image generate failed, tried {attempt + 1}")
                 else:
-                    logging.error(f"[{curTime}]Module:[GenImage]" + str(e))
+                    logging.error(f"[{curTime}]Module:[GenImagePPT]" + str(e))
                     raise e
 
 
