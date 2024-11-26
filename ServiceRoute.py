@@ -215,7 +215,7 @@ def DownloadFile():
             fileExtension = Tools.GetExtension(fullFileName)
             retFileName = fileUUID + "." + fileExtension
             filePath = os.path.join(fileSavePath, userName, retFileName)
-            return send_file(filePath, as_attachment = True)
+            return send_file(filePath, as_attachment = True, download_name = fullFileName)
 
     except Exception as e:
         curTime = Tools.GetTime()
