@@ -797,7 +797,7 @@ def AIWriting():
 
         requestData = request.json
         content = requestData["content"]
-        response = LLMInterface.GetResponse_String(content)
+        response = LLMInterface.AIWriting(content)
 
         curTime = Tools.GetTime()
         retObj = {
@@ -824,7 +824,7 @@ def AIWritingStream():
     try:
         requestData = request.json
         content = requestData["content"]
-        responseStream = LLMInterface.GetResponseStream_String(content)
+        responseStream = LLMInterface.AIWriting_Stream(content)
         curTime = Tools.GetTime()
         return Response(stream_with_context(responseStream))
 

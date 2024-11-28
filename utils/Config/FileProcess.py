@@ -12,7 +12,7 @@ from oss2.credentials import EnvironmentVariableCredentialsProvider
 import sqlite3
 
 fileSavePath = copy.deepcopy(GLOBAL_FileSavePath)
-
+AudioSegment.ffmpeg = "/path/to/ffmpeg"
 
 # 文件处理类
 class FileProcess:
