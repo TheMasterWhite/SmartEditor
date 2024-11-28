@@ -825,7 +825,6 @@ def AIWritingStream():
         requestData = request.json
         content = requestData["content"]
         responseStream = LLMInterface.AIWriting_Stream(content)
-        curTime = Tools.GetTime()
         return Response(stream_with_context(responseStream))
 
     except Exception as e:

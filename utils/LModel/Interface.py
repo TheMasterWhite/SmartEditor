@@ -295,7 +295,7 @@ class LLMInterface(LLMBasic):  # 大模型高级功能接口类
     @staticmethod
     def AIWriting(Tartext):
         try:
-            promptText = GetPrompt().Data()["FunctionPrompt"]["Check"]
+            promptText = GetPrompt().Data()["FunctionPrompt"]["AIWriting"]
             promptText += Tartext
             return LLMBasic.GetResponse_String(promptText)
 
@@ -306,7 +306,7 @@ class LLMInterface(LLMBasic):  # 大模型高级功能接口类
     @staticmethod
     def AIWriting_Stream(Tartext):
         try:
-            promptText = GetPrompt().Data()["FunctionPrompt"]["Check"]
+            promptText = GetPrompt().Data()["FunctionPrompt"]["AIWriting"]
             promptText += Tartext
             for i in LLMBasic.GetResponseStream_String(promptText):
                 yield i
