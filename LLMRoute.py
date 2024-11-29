@@ -381,7 +381,7 @@ def ChatBot():
             if userName not in bot.Parameter:
                 prompt = GetPrompt().Data()["ScenePrompt_General"]["Agent"]
                 content = prompt + content
-            response = bot.GetResponse(Content = content, UserName = userName)
+            response = bot.GetResponse(Content = content, UserID = userName)
             curTime = Tools.GetTime()
             retObj = {
                 "statusCode": 1,
