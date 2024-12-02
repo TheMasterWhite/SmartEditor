@@ -336,8 +336,8 @@ def DeleteFile():
         filePath = os.path.join(fileSavePath, userName, fileUUID + ".txt")
 
         # 判断文件存不存在
-        # if not os.path.exists(filePath):
-        #     raise FileNotFoundError("File does not exist.")
+        if not os.path.exists(filePath):
+            raise FileNotFoundError("File does not exist.")
 
         else:
             fullFileName = FileProcess.GetFileInfo(UUID = fileUUID, UserName = userName)
