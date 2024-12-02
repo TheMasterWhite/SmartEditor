@@ -64,7 +64,6 @@ class ImageGenerator():
                     logging.info(f"[{curTime}]PPT image generate failed, tried {attempt + 1}")
                 else:
                     logging.error(f"[{curTime}]Module:[GenImagePPT]" + str(e))
-                    raise e
 
 
     # 调整图像大小
