@@ -336,8 +336,8 @@ def DeleteFile():
         filePath = os.path.join(fileSavePath, userName, fileUUID + ".txt")
 
         # 判断文件存不存在
-        if not os.path.exists(filePath):
-            raise FileNotFoundError("File does not exist.")
+        # if not os.path.exists(filePath):
+        #     raise FileNotFoundError("File does not exist.")
 
         else:
             fullFileName = FileProcess.GetFileInfo(UUID = fileUUID, UserName = userName)
@@ -348,7 +348,6 @@ def DeleteFile():
 
             # 目标文件是多媒体文件
             else:
-                fileName = Tools.GetFileName(fullFileName)
                 if fileExtension in ["mp4"]:
                     wavPath = os.path.join(fileSavePath, userName, fileUUID + ".wav")
                     os.remove(wavPath)
