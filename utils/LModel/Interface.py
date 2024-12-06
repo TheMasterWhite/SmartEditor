@@ -297,7 +297,7 @@ class LLMInterface(LLMBasic):  # 大模型高级功能接口类
         try:
             promptText = GetPrompt().Data()["FunctionPrompt"]["AIWriting"]
             promptText += Tartext
-            return LLMBasic.GetResponse_String(Prompt = promptText, Model = "ernie-lite")
+            return LLMBasic.GetResponse_String(Prompt = promptText, Model = "ernie-speed")
 
         except Exception as e:
             raise e
@@ -308,7 +308,7 @@ class LLMInterface(LLMBasic):  # 大模型高级功能接口类
         try:
             promptText = GetPrompt().Data()["FunctionPrompt"]["AIWriting"]
             promptText += Tartext
-            for i in LLMBasic.GetResponseStream_String(promptText):
+            for i in LLMBasic.GetResponseStream_String(Prompt = prompt, Model = "ernie-speed"):
                 yield i
 
         except Exception as e:
