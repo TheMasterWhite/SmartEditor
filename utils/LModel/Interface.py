@@ -11,14 +11,14 @@ class LLMBasic:  # 大模型基本通信接口类
 
     # 获取推理结果，传入字符串，返回String
     @staticmethod
-    def GetResponse_String(Prompt):
+    def GetResponse_String(Prompt, Model = "ernie-4.0"):
 
         try:
             erniebot.api_type = "aistudio"
             erniebot.access_token = GLOBAL_ERNIETOKEN
             Parameter = [{"role": "user", "content": Prompt}]
             Response = erniebot.ChatCompletion.create(
-                model = "ernie-4.0",
+                model = Model,
                 messages = Parameter
             )
             return Response.get_result()
@@ -29,14 +29,14 @@ class LLMBasic:  # 大模型基本通信接口类
 
     # 流式获取推理结果，传入字符串，返回迭代器
     @staticmethod
-    def GetResponseStream_String(Prompt):
+    def GetResponseStream_String(Prompt, Model = "ernie-4.0"):
 
         try:
             erniebot.api_type = "aistudio"
             erniebot.access_token = GLOBAL_ERNIETOKEN
             Parameter = [{"role": "user", "content": Prompt}]
             Response = erniebot.ChatCompletion.create(
-                model = "ernie-4.0",
+                model = Model,
                 messages = Parameter,
                 stream = True
             )
@@ -95,7 +95,7 @@ class LLMInterface(LLMBasic):  # 大模型高级功能接口类
             prompt = GetPrompt().Data()[sceneLocation]["Translate"]
             prompt = prompt.replace("@Replace@", Tarlanguage)
             prompt += Tartext
-            return LLMBasic.GetResponse_String(prompt)
+            return LLMBasic.GetResponse_String(Prompt = prompt, Model = "ernie-lite")
 
         except Exception as e:
             raise e
@@ -111,7 +111,7 @@ class LLMInterface(LLMBasic):  # 大模型高级功能接口类
             prompt = GetPrompt().Data()[sceneLocation]["Translate"]
             prompt = prompt.replace("@Replace@", Tarlanguage)
             prompt += Tartext
-            for i in LLMBasic.GetResponseStream_String(prompt):
+            for i in LLMBasic.GetResponseStream_String(Prompt = prompt, Model = "ernie-lite"):
                 yield i
 
         except Exception as e:
@@ -126,7 +126,7 @@ class LLMInterface(LLMBasic):  # 大模型高级功能接口类
             sceneLocation = "ScenePrompt_" + Scene
             prompt = GetPrompt().Data()[sceneLocation]["Summary"]
             prompt += Tartext
-            return LLMBasic.GetResponse_String(prompt)
+            return LLMBasic.GetResponse_String(Prompt = prompt, Model = "ernie-lite")
 
         except Exception as e:
             raise e
@@ -140,7 +140,7 @@ class LLMInterface(LLMBasic):  # 大模型高级功能接口类
             sceneLocation = "ScenePrompt_" + Scene
             prompt = GetPrompt().Data()[sceneLocation]["Summary"]
             prompt += Tartext
-            for i in LLMBasic.GetResponseStream_String(prompt):
+            for i in LLMBasic.GetResponseStream_String(Prompt = prompt, Model = "ernie-lite"):
                 yield i
 
         except Exception as e:
@@ -155,7 +155,7 @@ class LLMInterface(LLMBasic):  # 大模型高级功能接口类
             sceneLocation = "ScenePrompt_" + Scene
             prompt = GetPrompt().Data()[sceneLocation]["Correct"]
             prompt += Tartext
-            return LLMBasic.GetResponse_String(prompt)
+            return LLMBasic.GetResponse_String(Prompt = prompt, Model = "ernie-lite")
 
         except Exception as e:
             raise e
@@ -169,7 +169,7 @@ class LLMInterface(LLMBasic):  # 大模型高级功能接口类
             sceneLocation = "ScenePrompt_" + Scene
             prompt = GetPrompt().Data()[sceneLocation]["Correct"]
             prompt += Tartext
-            for i in LLMBasic.GetResponseStream_String(prompt):
+            for i in LLMBasic.GetResponseStream_String(Prompt = prompt, Model = "ernie-lite"):
                 yield i
 
         except Exception as e:
@@ -297,7 +297,7 @@ class LLMInterface(LLMBasic):  # 大模型高级功能接口类
         try:
             promptText = GetPrompt().Data()["FunctionPrompt"]["AIWriting"]
             promptText += Tartext
-            return LLMBasic.GetResponse_String(promptText)
+            return LLMBasic.GetResponse_String(Prompt = promptText, Model = "ernie-lite")
 
         except Exception as e:
             raise e
