@@ -95,7 +95,7 @@ class LLMInterface(LLMBasic):  # 大模型高级功能接口类
             prompt = GetPrompt().Data()[sceneLocation]["Translate"]
             prompt = prompt.replace("@Replace@", Tarlanguage)
             prompt += Tartext
-            return LLMBasic.GetResponse_String(Prompt = prompt, Model = "ernie-speed")
+            return LLMBasic.GetResponse_String(Prompt = prompt)
 
         except Exception as e:
             raise e
@@ -111,7 +111,7 @@ class LLMInterface(LLMBasic):  # 大模型高级功能接口类
             prompt = GetPrompt().Data()[sceneLocation]["Translate"]
             prompt = prompt.replace("@Replace@", Tarlanguage)
             prompt += Tartext
-            for i in LLMBasic.GetResponseStream_String(Prompt = prompt, Model = "ernie-speed"):
+            for i in LLMBasic.GetResponseStream_String(Prompt = prompt):
                 yield i
 
         except Exception as e:
