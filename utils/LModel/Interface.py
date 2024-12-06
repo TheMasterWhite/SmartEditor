@@ -95,7 +95,7 @@ class LLMInterface(LLMBasic):  # 大模型高级功能接口类
             prompt = GetPrompt().Data()[sceneLocation]["Translate"]
             prompt = prompt.replace("@Replace@", Tarlanguage)
             prompt += Tartext
-            return LLMBasic.GetResponse_String(Prompt = prompt, Model = "ernie-lite")
+            return LLMBasic.GetResponse_String(Prompt = prompt, Model = "ernie-speed")
 
         except Exception as e:
             raise e
@@ -111,7 +111,7 @@ class LLMInterface(LLMBasic):  # 大模型高级功能接口类
             prompt = GetPrompt().Data()[sceneLocation]["Translate"]
             prompt = prompt.replace("@Replace@", Tarlanguage)
             prompt += Tartext
-            for i in LLMBasic.GetResponseStream_String(Prompt = prompt, Model = "ernie-lite"):
+            for i in LLMBasic.GetResponseStream_String(Prompt = prompt, Model = "ernie-speed"):
                 yield i
 
         except Exception as e:
@@ -126,7 +126,7 @@ class LLMInterface(LLMBasic):  # 大模型高级功能接口类
             sceneLocation = "ScenePrompt_" + Scene
             prompt = GetPrompt().Data()[sceneLocation]["Summary"]
             prompt += Tartext
-            return LLMBasic.GetResponse_String(Prompt = prompt, Model = "ernie-lite")
+            return LLMBasic.GetResponse_String(Prompt = prompt, Model = "ernie-speed")
 
         except Exception as e:
             raise e
@@ -140,7 +140,7 @@ class LLMInterface(LLMBasic):  # 大模型高级功能接口类
             sceneLocation = "ScenePrompt_" + Scene
             prompt = GetPrompt().Data()[sceneLocation]["Summary"]
             prompt += Tartext
-            for i in LLMBasic.GetResponseStream_String(Prompt = prompt, Model = "ernie-lite"):
+            for i in LLMBasic.GetResponseStream_String(Prompt = prompt, Model = "ernie-speed"):
                 yield i
 
         except Exception as e:
@@ -155,7 +155,7 @@ class LLMInterface(LLMBasic):  # 大模型高级功能接口类
             sceneLocation = "ScenePrompt_" + Scene
             prompt = GetPrompt().Data()[sceneLocation]["Correct"]
             prompt += Tartext
-            return LLMBasic.GetResponse_String(Prompt = prompt, Model = "ernie-lite")
+            return LLMBasic.GetResponse_String(Prompt = prompt, Model = "ernie-speed")
 
         except Exception as e:
             raise e
@@ -169,7 +169,7 @@ class LLMInterface(LLMBasic):  # 大模型高级功能接口类
             sceneLocation = "ScenePrompt_" + Scene
             prompt = GetPrompt().Data()[sceneLocation]["Correct"]
             prompt += Tartext
-            for i in LLMBasic.GetResponseStream_String(Prompt = prompt, Model = "ernie-lite"):
+            for i in LLMBasic.GetResponseStream_String(Prompt = prompt, Model = "ernie-speed"):
                 yield i
 
         except Exception as e:
