@@ -155,7 +155,7 @@ class LLMInterface(LLMBasic):  # 大模型高级功能接口类
             sceneLocation = "ScenePrompt_" + Scene
             prompt = GetPrompt().Data()[sceneLocation]["Correct"]
             prompt += Tartext
-            return LLMBasic.GetResponse_String(Prompt = prompt, Model = "ernie-speed")
+            return LLMBasic.GetResponse_String(Prompt = prompt)
 
         except Exception as e:
             raise e
@@ -169,7 +169,7 @@ class LLMInterface(LLMBasic):  # 大模型高级功能接口类
             sceneLocation = "ScenePrompt_" + Scene
             prompt = GetPrompt().Data()[sceneLocation]["Correct"]
             prompt += Tartext
-            for i in LLMBasic.GetResponseStream_String(Prompt = prompt, Model = "ernie-speed"):
+            for i in LLMBasic.GetResponseStream_String(Prompt = prompt):
                 yield i
 
         except Exception as e:
