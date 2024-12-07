@@ -798,6 +798,7 @@ def AIWriting():
         requestData = request.json
         content = requestData["content"]
         response = LLMInterface.AIWriting(content)
+        response = response.replace("\n\n", "\n")
 
         curTime = Tools.GetTime()
         retObj = {
