@@ -4,7 +4,7 @@ import pathlib
 import json
 from pathlib import Path
 
-promptsLibPath = "/Server/SmartEditor/utils/Config/Prompts.json"
+promptsLibPath = "/srv/Server/SmartEditor/utils/Config/Prompts.json"
 
 
 class GetPrompt:  # 获取Prompt的单例类
