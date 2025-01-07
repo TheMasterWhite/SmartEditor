@@ -54,7 +54,7 @@ def ValidToken(Token):
 
 # 读取配置文件
 def ReadConfigFile():
-    filePath = "/Server/SmartEditor/config.json"  # linux
+    filePath = "/srv/Server/SmartEditor/config.json"  # linux
     # filePath = "E:/Code/CodeLibrary/Python/SmartEditor/config.json"  # windows
 
     with open(filePath, "r", encoding = "utf-8") as f:
