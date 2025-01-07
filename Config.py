@@ -63,10 +63,10 @@ def ReadConfigFile():
     for key, value in configData.items():
         globals()[key] = value
         if key == "GLOBAL_RSA_PUBLIC_KEY":
-            with open("/Server/RSA公钥.pem", "r", encoding = "utf-8") as f:
+            with open("/srv/Server/RSA公钥.pem", "r", encoding = "utf-8") as f:
                 globals()[key] = f.read()
         if key == "GLOBAL_RSA_PRIVATE_KEY":
-            with open("/Server/RSA私钥.pem", "r", encoding = "utf-8") as f:
+            with open("/srv/Server/RSA私钥.pem", "r", encoding = "utf-8") as f:
                 globals()[key] = f.read()
 
 
