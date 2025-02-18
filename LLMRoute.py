@@ -18,7 +18,6 @@ resourceSavePath = copy.deepcopy(GLOBAL_ResourcesSavePath)
 @LLMBlueprint.route("/Translate", methods = ["POST"])
 def Translate():
     try:
-
         requestData = request.json
         language = requestData.get("language", "English")  # 目标语言
         content = requestData["content"]  # 待润色文本内容
