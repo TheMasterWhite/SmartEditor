@@ -1,0 +1,18 @@
+{
+  "GLOBAL_ERNIETOKEN": "百度飞桨平台api key",
+  "GLOBAL_DOC_OCRURL": "百度飞桨平台文档抽取OCR url",
+  "GLOBAL_RAW_OCRURL": "百度飞桨平台OCR url",
+  "OSS_ACCESS_KEY_ID": "阿里云OSS ak",
+  "OSS_ACCESS_KEY_SECRET": "阿里云OSS sk",
+  "OSS_ENDPOINT": "阿里云OSS endpoint地址",
+  "GLOBAL_Baidu_AK": "百度千帆平台AK",
+  "GLOBAL_Baidu_SK": "百度千帆平台SK",
+  "GLOBAL_TarDetectURL": "百度飞桨平台目标检测服务url",
+  "GLOBAL_FileSavePath": "服务器储存用户文件的绝对路径",
+  "GLOBAL_ResourcesSavePath": "服务器资源文件的绝对路径，即项目中resources文件夹的绝对路径",
+  "GLOBAL_ZHIPU_KEY": "智谱大模型开放平台Key",
+  "GLOBAL_RSA_PRIVATE_KEY": "服务器RSA私钥",
+  "GLOBAL_RSA_PUBLIC_KEY": "服务器RSA公钥",
+  "GLOBAL_Baidu_Image_AK": "百度千帆平台图像生成服务AK",
+  "GLOBAL_Baidu_Image_SK": "百度千帆平台图像生成服务SK"
+}
